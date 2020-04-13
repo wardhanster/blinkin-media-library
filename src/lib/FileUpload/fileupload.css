@@ -1,0 +1,92 @@
+.fileUploader {
+  width: 100%;
+  height: auto;
+  text-align: center;
+  height: 100%;
+  /* background-image: linear-gradient(to right, #6a11cb 0%, #2575fc 100%); */
+  background-image: linear-gradient(
+    171.8deg,
+    rgba(5, 111, 146, 1) 13.5%,
+    rgba(6, 57, 84, 1) 78.6%
+  );
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.5rem;
+}
+.fileLabel {
+  color: white !important;
+}
+.centered-container {
+  text-align: center;
+  width: 10rem;
+  border: 3px solid white;
+  border-style: dashed;
+  padding: 2rem;
+}
+.centered-container .fa-cloud-upload {
+  color: white;
+}
+[hidden] {
+  display: none !important;
+}
+/* .table-fixed {
+  display: block;
+}
+.table-fixed th {
+  width: 100%;
+} */
+.files_list {
+  display: block;
+  height: 300px;
+  overflow: auto;
+}
+.upload-footer {
+  border-top: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.fileupload_progress {
+  padding: 3% 0.5% 3% 0.5%;
+}
+.fileupload_progress .progress {
+  height: 3px;
+}
+
+.table-fixed tbody {
+  display: block;
+  overflow-y: scroll;
+  height: 300px;
+  width: 100%;
+  scrollbar-width: thin;
+}
+.table-fixed thead tr {
+  display: block;
+}
+.name-header {
+  width: 46%;
+}
+.type-header {
+  width: 5%;
+}
+.size-header,
+.view-header,
+.delete-header {
+  width: 5%;
+}
+
+/* Preview Modal */
+@media (min-width: 768px) {
+  .modal-xl {
+    width: 90%;
+    max-width: 1200px;
+  }
+}
+
+.preview-modal .modal-body {
+  padding: 0 !important;
+}
+.preview-video {
+  width: 100%;
+}
