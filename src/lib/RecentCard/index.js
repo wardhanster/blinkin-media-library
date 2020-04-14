@@ -24,7 +24,7 @@ export default function RecentCard(props) {
           {result &&
             result.map((card) => {
               return (
-                <Col key={`${card.upload_name}`}>
+                <Col xs="3" key={`${card.upload_name}`}>
                   <Card>
                     {card.file_extension === "image" ? (
                       <img
@@ -48,7 +48,7 @@ export default function RecentCard(props) {
                 </Col>
               );
             })}
-          <Col>
+          <Col xs="3">
             <FileUpload
               sideModal={props.sideModal}
               toggle={props.toggle}
