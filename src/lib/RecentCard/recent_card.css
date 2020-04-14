@@ -7,13 +7,19 @@
 .recent-card .card-title {
   font-weight: bolder;
 }
+.fileUploader {
+  padding: 5%;
+}
 .file_preview {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
-.fileUploader {
-  padding: 5%;
+.file_preview i {
+  margin-right: 3%;
 }
