@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Table } from "reactstrap";
+import { Table, Button } from "reactstrap";
 
 import TableList from "./TableList";
 import SidePreview from "./SidePreview";
-// import SideModal from "../sideModal";
 import Loading from "../Loading";
 
 let isApiCallSuccess = false;
@@ -11,7 +10,14 @@ let initialLoad = true;
 let perPageCount = 10;
 
 export default function TableItem(props) {
-  let { fetchAPI, search, handleClick, bytesToSize } = props;
+  let {
+    fetchAPI,
+    search,
+    handleClick,
+    bytesToSize,
+    icons,
+    searchClear,
+  } = props;
 
   let [activePreviewData, setActivePreviewData] = useState(null);
   let [apicallTimes, setApiCallTimes] = useState(1);
@@ -22,12 +28,12 @@ export default function TableItem(props) {
   let bottomRef = useRef(null);
   let pageNumRef = useRef(1);
   let searchFirst = useRef(false);
+  let [showLoadMoreBtn, setShowLoadMoreBtn] = useState(false);
 
   const preview = (file, size) => {
     file.actualSizeInKb = size;
     file.url = `${baseUrl} ${file.file_url}`;
     file.random = Math.random();
-    console.log("preview");
     setActivePreviewData(file);
   };
 
@@ -71,6 +77,14 @@ export default function TableItem(props) {
     }
 
     initialLoad = false;
+    if (
+      document.documentElement.scrollHeight >
+      document.documentElement.clientHeight
+    ) {
+      setShowLoadMoreBtn(false);
+    } else {
+      setShowLoadMoreBtn(true);
+    }
   };
 
   const scrollCallback = (entries) => {
@@ -102,12 +116,14 @@ export default function TableItem(props) {
   }, [apicallTimes]);
 
   let refresh = () => {
-    pageNumRef.current = pageNumRef.current - 1;
+    if (pageNumRef > 1) {
+      pageNumRef.current = pageNumRef.current - 1;
+    }
     setApiCallTimes((apicallTimes) => apicallTimes + 1);
   };
 
   useEffect(() => {
-    if (search) {
+    if (search || searchClear) {
       setFileList([]);
       setLoading(true);
       setShowMoreDataMsg(false);
@@ -116,7 +132,12 @@ export default function TableItem(props) {
       searchFirst.current = true;
       callAPI(search);
     }
-  }, [search]);
+  }, [search, searchClear]);
+
+  let loadNext = () => {
+    pageNumRef.current = pageNumRef.current + 1;
+    setApiCallTimes((apicallTimes) => apicallTimes + 1);
+  };
 
   return (
     <>
@@ -129,11 +150,11 @@ export default function TableItem(props) {
             <th>Size</th>
             <th>Created At</th>
             <th>Preview</th>
-            <th>Delete</th>
+            {/* <th>Delete</th> */}
             <th>
               <i
                 onClick={refresh}
-                className="fa fa-refresh"
+                className="fa fa-refresh refresh-btn"
                 aria-hidden="true"
               ></i>
             </th>
@@ -142,6 +163,7 @@ export default function TableItem(props) {
         <tbody>
           {fileList.length > 0 && (
             <TableList
+              icons={icons}
               fileList={fileList}
               preview={preview}
               bytesToSize={bytesToSize}
@@ -150,6 +172,13 @@ export default function TableItem(props) {
         </tbody>
       </Table>
       {loading && <Loading />}
+      {showLoadMoreBtn && (
+        <div className="text-center">
+          <Button color="primary" onClick={loadNext}>
+            Load More
+          </Button>
+        </div>
+      )}
       {showMoreDataMsg && (
         <div className="no_more p-3 border mb-2">
           <p className="text-muted text-center mb-0">No More Results</p>
