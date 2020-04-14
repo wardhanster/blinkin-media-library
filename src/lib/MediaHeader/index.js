@@ -14,13 +14,14 @@ import {
 import "./media_header.css";
 
 export default function MediaHeader(props) {
-  let { searchCallback } = props;
+  let { searchCallback, clearSearch } = props;
   let [showSearch, setshowSearch] = useState(false);
 
   let [fileType, setFileType] = useState([]);
   let [tags, setTags] = useState([]);
   let [description, setDescription] = useState("");
   let [clear, setClear] = useState("btn btn-outline-primary");
+  let [searchText, setSearchText] = useState("");
 
   const handleClicktoShowSearch = () => {
     setshowSearch(!showSearch);
@@ -90,18 +91,33 @@ export default function MediaHeader(props) {
     }
   }, [showSearch]);
 
+  let handleSearchSubmit = () => {
+    searchCallback(searchText);
+  };
+
+  let handleClearSearch = () => {
+    setSearchText("");
+    clearSearch();
+  };
+
   return (
     <Container className="media_header">
       <Row className="media_header_title mb-3">
-        <Col xs="7">
-          <h1>Media</h1>
-        </Col>
+        <Col xs="7"></Col>
         <Col xs="4">
           <InputGroup className="mt-2">
-            <Input placeholder="Search" />
+            <Input
+              placeholder="Search"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            />
             <InputGroupAddon addonType="append">
-              <Button color="primary">Search</Button>
-              <Button color="primary">Clear</Button>
+              <Button color="primary" onClick={handleSearchSubmit}>
+                Search
+              </Button>
+              <Button color="primary" onClick={handleClearSearch}>
+                Clear
+              </Button>
             </InputGroupAddon>
           </InputGroup>
         </Col>
@@ -113,7 +129,6 @@ export default function MediaHeader(props) {
           </div>
         </Col>
       </Row>
-      <hr />
       <div id="filter" className="filter-container slideup">
         <Container>
           <Row>
