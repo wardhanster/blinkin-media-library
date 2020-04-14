@@ -14,6 +14,8 @@ function fileshow(file_extension, url) {
         Your browser does not support the video tag.
       </video>
     );
+  } else if (file_extension === "pdf") {
+    filePreview = <iframe className="pdf-iframe" url={url}></iframe>;
   } else {
     filePreview = (
       <div className="default_preview">
@@ -37,12 +39,18 @@ export default function SidePreview(props) {
     <>
       <Card>
         <CardBody>
-          <CardTitle>{upload_name}</CardTitle>
+          <CardTitle>
+            <h3>{upload_name}</h3>
+          </CardTitle>
         </CardBody>
         {fileshow(file_extension, url)}
         <CardBody>
-          <CardText>{upload_description}</CardText>
-          <p>{actualSizeInKb}</p>
+          <CardText>
+            <b>{upload_description}</b>
+          </CardText>
+          <p>
+            <b>File size - {actualSizeInKb}</b>
+          </p>
         </CardBody>
       </Card>
     </>
