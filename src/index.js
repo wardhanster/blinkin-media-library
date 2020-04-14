@@ -22,11 +22,37 @@ export default function MediaFileList(props) {
   let [data, setData] = useState(null);
   let [activeModal, setActiveModal] = useState(null);
   let [recentData, setRecentData] = useState(null);
+  let [searchClear, setsearchClear] = useState(false);
 
   let searchTerms = (search) => {
-    // setSearch(search);
+    setSearch(search);
   };
-
+  let clearSearch = () => {
+    setSearch(null);
+    setsearchClear((searchClear) => true);
+  };
+  function fontAwesomeIcons(format) {
+    switch (format) {
+      case "docx":
+        return "fa fa-file-word-o";
+        break;
+      case "image":
+        return "fa fa-file-image-o";
+        break;
+      case "pdf":
+        return "fa fa-file-pdf-o";
+        break;
+      case "video":
+        return "fa fa-file-video-o";
+        break;
+      case "rtf":
+        return "fa fa-file-text-o";
+        break;
+      default:
+        return "fa fa-file-text";
+        break;
+    }
+  }
   let handleClick = (data, callback) => {
     setData(data);
     setActiveModal(true);
@@ -38,7 +64,6 @@ export default function MediaFileList(props) {
     let response = await fetchAPI(pagenum, search);
     let result = response.data;
     let baseUrl = response.baseUrl;
-    debugger;
     if (!recentData && result) {
       if (result.length > 3) {
         setRecentData(result.slice(0, 3));
@@ -53,21 +78,28 @@ export default function MediaFileList(props) {
 
   return (
     <Container>
-      <MediaHeader searchCallback={searchTerms} />
+      <MediaHeader searchCallback={searchTerms} clearSearch={clearSearch} />
       <RecentCard
+        icons={fontAwesomeIcons}
         result={recentData}
         uploadFiles={uploadFiles}
         bytesToSize={bytesToSize}
         baseUrl={baseUrl}
       />
       <TableItem
+        icons={fontAwesomeIcons}
         baseUrl={baseUrl}
+        searchClear={searchClear}
         search={search}
         fetchAPI={fetchApi}
         handleClick={handleClick}
         bytesToSize={bytesToSize}
       />
-      {activeModal && sideModal(data)}
+      {activeModal &&
+        sideModal(
+          data,
+          `${data.props.data.upload_name} - ${data.props.data.actualSizeInKb}`
+        )}
     </Container>
   );
 }
