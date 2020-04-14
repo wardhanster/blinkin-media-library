@@ -2,14 +2,14 @@ import React from "react";
 import { Button } from "reactstrap";
 
 export default function TableList(props) {
-  let { preview, fileList, bytesToSize } = props;
+  let { preview, fileList, bytesToSize, icons } = props;
 
   return fileList.map((file) => {
     let filesize = bytesToSize(file.file_size);
     return (
       <tr key={`${file.upload_name} ${Math.random()}`}>
         <th scope="row">
-          <i className="fa fa-file-pdf-o" aria-hidden="true"></i>{" "}
+          <i className={icons(file.file_extension)} aria-hidden="true"></i>{" "}
           {file.upload_name}
         </th>
         <td>{file.upload_description}</td>
@@ -25,11 +25,11 @@ export default function TableList(props) {
             Preview
           </Button>
         </td>
-        <td>
+        {/* <td> 
           <Button color="danger" className="btn-sm">
             Delete
           </Button>
-        </td>
+        </td>*/}
       </tr>
     );
   });
