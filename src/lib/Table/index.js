@@ -41,24 +41,26 @@ export default function TableItem(props) {
 
   const callAPI = async (search = null) => {
     let { result: data, baseUrl } = await fetchAPI(pageNumRef.current, search);
-    setBaseUrl(baseUrl);
-    if (data.length > 0) {
-      setLoading(false);
-      isApiCallSuccess = true;
+    try {
+      setBaseUrl(baseUrl);
+      if (data.length > 0) {
+        setLoading(false);
+        isApiCallSuccess = true;
 
-      if (searchFirst.current) {
-        searchFirst.current = false;
-        let newFileList = [...data];
-        setFileList(newFileList);
-      } else {
-        // setFileList((fileList) => [...fileList, ...data]);
-        // Remove duplicates in case if exist
-        setFileList((fileList) => Array.from(new Set(fileList.concat(data))));
+        if (searchFirst.current) {
+          searchFirst.current = false;
+          let newFileList = [...data];
+          setFileList(newFileList);
+        } else {
+          // setFileList((fileList) => [...fileList, ...data]);
+          // Remove duplicates in case if exist
+          setFileList((fileList) => Array.from(new Set(fileList.concat(data))));
+        }
+        if (data.length >= perPageCount) {
+          pageNumRef.current++;
+        }
       }
-      if (data.length >= perPageCount) {
-        pageNumRef.current++;
-      }
-    } else {
+    } catch (e) {
       isApiCallSuccess = false;
       setLoading(false);
       setShowMoreDataMsg(true);
