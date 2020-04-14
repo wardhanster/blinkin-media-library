@@ -13,9 +13,6 @@ function bytesToSize(bytes) {
   return Math.round(bytes / Math.pow(1024, i), 2) + " " + sizes[i];
 }
 
-// baseUrl to preview files
-let baseUrl;
-
 export default function MediaFileList(props) {
   const { uploadFiles, fetchAPI, sideModal, toggle } = props;
   let [search, setSearch] = useState(null);
@@ -35,9 +32,7 @@ export default function MediaFileList(props) {
   };
 
   let fetchApi = async (pagenum, search) => {
-    let result = await fetchAPI(pagenum, search);
-    baseUrl =
-      "https://blinkin-staging.s3.eu-central-1.amazonaws.com/media_library/1/7/";
+    let { result, baseUrl } = await fetchAPI(pagenum, search);
     if (!recentData && result) {
       if (result.length > 3) {
         setRecentData(result.slice(0, 3));
