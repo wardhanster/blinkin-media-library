@@ -7,7 +7,7 @@ import Loading from "../Loading";
 
 let isApiCallSuccess = false;
 let initialLoad = true;
-let perPageCount = 10;
+let perPageCount = 4;
 
 export default function TableItem(props) {
   let {
@@ -135,7 +135,9 @@ export default function TableItem(props) {
   }, [search, searchClear]);
 
   let loadNext = () => {
-    pageNumRef.current = pageNumRef.current + 1;
+    if (pageNumRef.current >= fileList.length) {
+      pageNumRef.current = pageNumRef.current + 1;
+    }
     setApiCallTimes((apicallTimes) => apicallTimes + 1);
   };
 
