@@ -14,7 +14,7 @@ import FileUpload from "../FileUpload";
 import "./recent_card.css";
 
 export default function RecentCard(props) {
-  const { uploadFiles, result, bytesToSize } = props;
+  const { uploadFiles, result, bytesToSize, icons } = props;
 
   return (
     <div className="mb-4 mt-2 recent-card">
@@ -33,11 +33,14 @@ export default function RecentCard(props) {
                         className="image-fluid"
                       />
                     ) : (
-                      <div className="file_preview">{card.file_extension}</div>
+                      <div className="file_preview">
+                        <i className={icons(card.file_extension)}></i>{" "}
+                        {card.file_extension}
+                      </div>
                     )}
                     <CardBody>
                       <CardTitle>
-                        <i className="fa fa-file-image-o"></i>
+                        <i className={icons(card.file_extension)}></i>
                         {card.upload_name}
                       </CardTitle>
                       <CardText className="text-muted">
