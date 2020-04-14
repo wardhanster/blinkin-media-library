@@ -32,3 +32,35 @@ import MediaFileList from "media-list";
           </SideModal>
 )} />
 ```
+## How i handled props
+
+```javascript
+
+let uploadFiles = (files, callback) => {
+  console.log(files);
+  files.forEach((element, index) => {
+    callback(index, element, true);
+  });
+};
+
+let fetchAPI = (pagenum, searchTerm) => {
+  console.log(searchTerm);
+  let baseUrl =
+    "https://blinkin-staging.s3.eu-central-1.amazonaws.com/media_library/1/7/";
+  if (pagenum === 1) {
+    let promise = new Promise(function (resolve, reject) {
+      setTimeout(() => resolve({ data: initialData, baseUrl }), 1000);
+    });
+    return promise;
+  } else if (pagenum === 2) {
+    let promise = new Promise(function (resolve, reject) {
+      setTimeout(() => resolve({ data: secondData, baseUrl }), 1000);
+    });
+    return promise;
+  } else if (pagenum >= 3) {
+    return [];
+  }
+};
+
+```
+
