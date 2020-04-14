@@ -64,3 +64,13 @@ let fetchAPI = (pagenum, searchTerm) => {
 
 ```
 
+# For sidepopup
+
+```javascript
+ let [sideModalOpen, setSideModalOpen] = useState(false);
+
+  const toggle = (toggleType) => {
+    setSideModalOpen(!sideModalOpen);
+  };
+```
+toggle is passed to sidepopup component prop
