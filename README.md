@@ -74,3 +74,9 @@ let fetchAPI = (pagenum, searchTerm) => {
   };
 ```
 toggle is passed to sidepopup component prop
+
+# why Refresh in table ?
+
+There may be a condition where we miss some data. For example on first api request we got 4 items and for 2nd request we may have 3 items in that case we can use this refresh
+
+## Note - only in case of more then perPageCount > n then it page number will update (n is set to 4 now)
