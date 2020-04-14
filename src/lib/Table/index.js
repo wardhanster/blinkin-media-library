@@ -59,6 +59,10 @@ export default function TableItem(props) {
         if (data.length >= perPageCount) {
           pageNumRef.current++;
         }
+      } else {
+        isApiCallSuccess = false;
+        setLoading(false);
+        setShowMoreDataMsg(true);
       }
     } catch (e) {
       isApiCallSuccess = false;
