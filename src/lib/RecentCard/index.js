@@ -14,7 +14,7 @@ import FileUpload from "../FileUpload";
 import "./recent_card.css";
 
 export default function RecentCard(props) {
-  const { uploadFiles, result, bytesToSize, icons } = props;
+  const { uploadFiles, result, bytesToSize, icons, loadNewContent } = props;
 
   return (
     <div className="mb-4 mt-2 recent-card">
@@ -25,7 +25,7 @@ export default function RecentCard(props) {
             result.map((card) => {
               return (
                 <Col xs="3" key={`${card.upload_name}`}>
-                  <Card>
+                  <Card className="quick_card">
                     {card.file_extension === "image" ? (
                       <img
                         alt="preview"
@@ -57,6 +57,7 @@ export default function RecentCard(props) {
               toggle={props.toggle}
               uploadFiles={uploadFiles}
               bytesToSize={bytesToSize}
+              loadNewContent={loadNewContent}
             />
           </Col>
         </Row>
