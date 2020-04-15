@@ -7,6 +7,7 @@ export default function FileUploadList(props) {
   let [url, setUrl] = useState(null);
   let [selectFile, setSelectFile] = useState(null);
   let [selectFileType, setSelectFileType] = useState(null);
+  let [fileIndex, setFileIndex] = useState(null);
   let {
     files,
     deleteFile,
@@ -18,9 +19,21 @@ export default function FileUploadList(props) {
 
   let handlePreview = (index, e) => {
     setSelectFile(files[index]);
+    setFileIndex(String(index));
     let fileType = files[index].type.split("/")[0];
     console.log(files[index]);
     setSelectFileType(fileType);
+  };
+
+  let handelDelete = (index, e) => {
+    let indexString = String(index);
+    if (fileIndex) {
+      if (fileIndex === indexString) {
+        setSelectFileType((selectFileType) => null);
+        setSelectFile((selectFile) => null);
+      }
+    }
+    deleteFile(index, e);
   };
 
   useEffect(() => {
@@ -32,19 +45,31 @@ export default function FileUploadList(props) {
       reader.readAsDataURL(selectFile);
     } else if (selectFileType === "video") {
       setUrl(URL.createObjectURL(selectFile));
+    } else if (selectFileType) {
+      setUrl("not_valid");
+    } else {
+      setUrl(null);
     }
   }, [selectFile]);
 
   let preview;
   if (url) {
     if (selectFileType === "image") {
-      preview = <img src={url} className="img-fluid" alt="preview" />;
+      preview = (
+        <img src={url} className="img-fluid preview-image" alt="preview" />
+      );
     } else if (selectFileType === "video") {
       preview = (
         <video className="preview-video" controls>
           <source src={url} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
+      );
+    } else {
+      preview = (
+        <div className="d-flex justify-content-center align-items-center">
+          {selectFileType} Format Not able to load
+        </div>
       );
     }
   } else {
@@ -107,7 +132,7 @@ export default function FileUploadList(props) {
                           <td className="delete-header">
                             <button
                               className="btn btn-danger btn-sm"
-                              onClick={(e) => deleteFile(index, e)}
+                              onClick={(e) => handelDelete(index, e)}
                             >
                               <i className="fa fa-trash" aria-hidden="true"></i>
                             </button>
