@@ -8,6 +8,7 @@ import Loading from "../Loading";
 let isApiCallSuccess = false;
 let initialLoad = true;
 let perPageCount = 4;
+let scroll;
 
 export default function TableItem(props) {
   let {
@@ -45,6 +46,12 @@ export default function TableItem(props) {
     }
   }, [activePreviewData]);
 
+  const removeDuplicates = (res, keyItem) => {
+    return Array.from(new Set(res.map((a) => a.file_url))).map((file_url) => {
+      return res.find((a) => a.file_url === file_url);
+    });
+  };
+
   const callAPI = async (search = null) => {
     let { result: data, baseUrl } = await fetchAPI(pageNumRef.current, search);
     try {
@@ -60,7 +67,10 @@ export default function TableItem(props) {
         } else {
           // setFileList((fileList) => [...fileList, ...data]);
           // Remove duplicates in case if exist
-          setFileList((fileList) => Array.from(new Set(fileList.concat(data))));
+          let newFiles = [...fileList, ...data];
+          console.log(newFiles);
+          let newfileList = removeDuplicates(newFiles);
+          setFileList((fileList) => newfileList);
         }
         if (data.length >= perPageCount) {
           pageNumRef.current++;
@@ -87,7 +97,7 @@ export default function TableItem(props) {
     }
   };
 
-  const scrollCallback = (entries) => {
+  const scrollCallback = (entries, observer) => {
     setLoading(true);
     if (entries[0].isIntersecting) {
       if (!initialLoad) {
@@ -101,13 +111,13 @@ export default function TableItem(props) {
   };
 
   useEffect(() => {
-    const scroll = new IntersectionObserver(scrollCallback, {
+    scroll = new IntersectionObserver(scrollCallback, {
       rootMargin: "50px",
       threshold: 1,
     });
     scroll.observe(bottomRef.current);
     return () => {
-      scroll.unobserve(bottomRef);
+      scroll.unobserve(bottomRef.current);
     };
   }, [bottomRef]);
 
@@ -153,13 +163,13 @@ export default function TableItem(props) {
             <th>Created At</th>
             <th>Preview</th>
             {/* <th>Delete</th> */}
-            <th>
+            {/* <th>
               <i
                 onClick={refresh}
                 className="fa fa-refresh refresh-btn"
                 aria-hidden="true"
               ></i>
-            </th>
+            </th> */}
           </tr>
         </thead>
         <tbody>
