@@ -27,7 +27,8 @@ export default function MediaFileList(props) {
   let searchTerms = (search) => {
     setSearch(search);
   };
-  let clearSearch = () => {
+
+  let loadNewContent = () => {
     setSearch(null);
     setsearchClear((searchClear) => true);
   };
@@ -78,13 +79,14 @@ export default function MediaFileList(props) {
 
   return (
     <Container>
-      <MediaHeader searchCallback={searchTerms} clearSearch={clearSearch} />
+      <MediaHeader searchCallback={searchTerms} clearSearch={loadNewContent} />
       <RecentCard
         icons={fontAwesomeIcons}
         result={recentData}
         uploadFiles={uploadFiles}
         bytesToSize={bytesToSize}
         baseUrl={baseUrl}
+        loadNewContent={loadNewContent}
       />
       <TableItem
         icons={fontAwesomeIcons}
