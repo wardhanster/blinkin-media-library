@@ -9,6 +9,7 @@
 }
 .fileUploader {
   padding: 5%;
+  height: 197px;
 }
 .file_preview {
   display: flex;
@@ -22,4 +23,7 @@
 }
 .file_preview i {
   margin-right: 3%;
+}
+.quick_card {
+  height: 197px !important;
 }
