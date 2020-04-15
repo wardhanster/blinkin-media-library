@@ -7,7 +7,7 @@ import FileUploadList from "./FileUploadList";
 import FilePreviewModal from "./FilePreviewModal";
 
 export default function FileUpload(props) {
-  const { uploadFiles, bytesToSize } = props;
+  const { uploadFiles, bytesToSize, loadNewContent } = props;
 
   let fileInput = useRef(null);
   let [files, setFiles] = useState([]);
@@ -32,9 +32,21 @@ export default function FileUpload(props) {
     }
   };
 
-  const handleFileProgress = (fileIndex, progressPercentage, failed) => {
+  let fileCount = 0;
+
+  const handleFileProgress = (progressPercentage, fileIndex) => {
     setLoadingMsg(`Uploading ${files[fileIndex].name}`);
     setUploadPercentage(progressPercentage);
+    if (fileCount === files.length - 1) {
+      fileCount = 0;
+      setLoadingMsg(null);
+      setUploadPercentage(null);
+      setModalStatus((modalStatus) => !modalStatus);
+      loadNewContent();
+    } else {
+      fileCount++;
+    }
+    // console.log(files[fileIndex]);
   };
 
   const handleSubmitFiles = () => {
