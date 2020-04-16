@@ -2,12 +2,34 @@ import React from "react";
 import { Card, CardText, CardBody, CardTitle } from "reactstrap";
 
 import "./sidepreview.css";
-
+let image = [
+  "bmp",
+  "gif",
+  "jpeg",
+  "jpg",
+  "png",
+  "svg+xml",
+  "tiff",
+  "webp",
+  "image",
+];
+let video = [
+  "mpeg",
+  "ogg",
+  "mp2t",
+  "webm",
+  "3gpp",
+  "3gpp2",
+  "x-ms-video",
+  "video",
+];
 function fileshow(file_extension, url) {
   let filePreview;
-  if (file_extension === "image") {
-    filePreview = <img src={url} className="img-fluid" alt={"preview_image"} />;
-  } else if (file_extension === "video") {
+  if (image.indexOf(file_extension) > -1) {
+    filePreview = (
+      <img src={url} className="image_preview" alt="preview_image" />
+    );
+  } else if (video.indexOf(file_extension) > -1) {
     filePreview = (
       <video className="preview-video" controls>
         <source src={url} type="video/mp4" />
@@ -23,7 +45,7 @@ function fileshow(file_extension, url) {
   } else {
     filePreview = (
       <div className="default_preview">
-        {file_extension} File format Not able to load
+        <b>{file_extension}</b> File format Not able to load
       </div>
     );
   }
