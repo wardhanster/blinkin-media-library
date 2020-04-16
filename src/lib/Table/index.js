@@ -12,6 +12,14 @@ let initialLoad = true;
 let perPageCount = 4;
 let scroll;
 
+const snackBar = (status) => {
+  return (
+    <div id="snackbar" className={status && "show"}>
+      Copied to Clipboard
+    </div>
+  );
+};
+
 export default function TableItem(props) {
   let {
     fetchAPI,
@@ -32,6 +40,7 @@ export default function TableItem(props) {
   let pageNumRef = useRef(1);
   let searchFirst = useRef(false);
   let [showLoadMoreBtn, setShowLoadMoreBtn] = useState(false);
+  let [showSnackBar, setShowSnackBar] = useState(false);
 
   const preview = (file, size) => {
     file.actualSizeInKb = size;
@@ -154,8 +163,13 @@ export default function TableItem(props) {
   };
 
   let copyClipBoard = async (file) => {
+    setShowSnackBar(true);
     let url = `${baseUrl}${file}`;
-    window.navigator.clipboard.writeText(url);
+    window.navigator.clipboard.writeText(url).then(() => {
+      setTimeout(() => {
+        setShowSnackBar(false);
+      }, 1000);
+    });
   };
 
   return (
@@ -204,6 +218,7 @@ export default function TableItem(props) {
           <p className="text-muted text-center mb-0">No More Results</p>
         </div>
       )}
+      <div>{snackBar(showSnackBar)}</div>
       <div ref={bottomRef}></div>
     </>
   );
