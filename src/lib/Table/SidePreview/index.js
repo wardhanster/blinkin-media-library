@@ -15,7 +15,11 @@ function fileshow(file_extension, url) {
       </video>
     );
   } else if (file_extension === "pdf") {
-    filePreview = <iframe className="pdf-iframe" url={url}></iframe>;
+    filePreview = (
+      <object data={url} type="application/pdf" className="pdf-iframe">
+        <iframe src={url}></iframe>
+      </object>
+    );
   } else {
     filePreview = (
       <div className="default_preview">
