@@ -11,3 +11,7 @@
   border: transparent;
   overflow: auto;
 }
+.image_preview {
+  height: 200px;
+  width: 100%;
+}
