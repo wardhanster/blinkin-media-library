@@ -26,7 +26,6 @@ export default function FileUpload(props) {
     } else {
       if (e.target.files.length > 0) {
         setFiles(Array.from(e.target.files));
-        console.log(files);
         setModalStatus(true);
       }
     }
@@ -34,20 +33,23 @@ export default function FileUpload(props) {
 
   let fileItems = [];
   const handleFileProgress = (progressPercentage, fileIndex) => {
-    setLoadingMsg(`Uploading ${files[fileIndex].name}`);
-    setUploadPercentage(progressPercentage);
+    let fileIndexString = new String(fileIndex);
+    if (fileIndexString && Number.isInteger(progressPercentage)) {
+      setLoadingMsg(`Uploading ${files[fileIndex].name}`);
+      setUploadPercentage(progressPercentage);
 
-    if (fileItems.indexOf(files[fileIndex].name) <= -1) {
-      fileItems.push(files[fileIndex].name);
-    }
+      if (fileItems.indexOf(files[fileIndex].name) <= -1) {
+        fileItems.push(files[fileIndex].name);
+      }
 
-    if (fileItems.length === files.length) {
-      if (progressPercentage > 80) {
-        fileItems.length = 0;
-        setLoadingMsg(null);
-        setUploadPercentage(null);
-        setModalStatus((modalStatus) => !modalStatus);
-        loadNewContent();
+      if (fileItems.length === files.length) {
+        if (progressPercentage >= 95) {
+          fileItems.length = 0;
+          setLoadingMsg(null);
+          setUploadPercentage(null);
+          setModalStatus((modalStatus) => !modalStatus);
+          loadNewContent();
+        }
       }
     }
   };
