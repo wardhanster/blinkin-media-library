@@ -15,7 +15,27 @@ function bytesToSize(bytes) {
 
 // baseUrl to preview files
 let baseUrl;
-
+let image = [
+  "bmp",
+  "gif",
+  "jpeg",
+  "jpg",
+  "png",
+  "svg+xml",
+  "tiff",
+  "webp",
+  "image",
+];
+let video = [
+  "mpeg",
+  "ogg",
+  "mp2t",
+  "webm",
+  "3gpp",
+  "3gpp2",
+  "x-ms-video",
+  "video",
+];
 export default function MediaFileList(props) {
   const { uploadFiles, fetchAPI, sideModal, toggle } = props;
   let [search, setSearch] = useState(null);
@@ -33,32 +53,39 @@ export default function MediaFileList(props) {
     setsearchClear((searchClear) => true);
   };
   function fontAwesomeIcons(format) {
-    switch (format) {
+    let formatType;
+
+    if (image.indexOf[format] >= 0) {
+      formatType = "image";
+    } else if (video.indexOf[format] >= 0) {
+      formatType = "video";
+    } else {
+      formatType = format;
+    }
+
+    switch (formatType) {
       case "docx":
         return "fa fa-file-word-o";
-        break;
       case "image":
         return "fa fa-file-image-o";
-        break;
       case "pdf":
         return "fa fa-file-pdf-o";
-        break;
       case "video":
         return "fa fa-file-video-o";
-        break;
       case "rtf":
         return "fa fa-file-text-o";
-        break;
       default:
         return "fa fa-file-text";
-        break;
     }
   }
+
   let handleClick = (data, callback) => {
     setData(data);
     setActiveModal(true);
     toggle();
-    callback();
+    if (callback) {
+      callback();
+    }
   };
 
   let fetchApi = async (pagenum, search) => {
@@ -87,6 +114,7 @@ export default function MediaFileList(props) {
         bytesToSize={bytesToSize}
         baseUrl={baseUrl}
         loadNewContent={loadNewContent}
+        handleClick={handleClick}
       />
       <TableItem
         icons={fontAwesomeIcons}
