@@ -1,0 +1,16 @@
+.file_name_preview {
+  margin-left: 3%;
+}
+.file_name_preview:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.th_name {
+  width: 200px !important;
+}
+.table_header_filename {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 200px;
+  text-overflow: ellipsis;
+}
