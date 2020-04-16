@@ -7,7 +7,7 @@ export default function TableList(props) {
     let filesize = bytesToSize(file.file_size);
     return (
       <tr key={`${file.upload_name} ${Math.random()}`}>
-        <th scope="row" className="table_header_filename">
+        <th scope="row" color="primary" className="table_header_filename">
           <i className={icons(file.file_extension)} aria-hidden="true"></i>
           <span
             className="file_name_preview"
@@ -23,8 +23,9 @@ export default function TableList(props) {
         <td>{file.created_at}</td>
         <td>
           <i
+            title="Copy Url"
             onClick={() => copyClipBoard(file.file_url)}
-            className="fa fa-clone"
+            className="fa fa-clone copy-icon"
             aria-hidden="true"
           ></i>
         </td>
