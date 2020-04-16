@@ -75,9 +75,30 @@ let fetchAPI = (pagenum, searchTerm) => {
 ```
 toggle is passed to sidepopup component prop
 
-# why Refresh in table ?
+# How i handled upload files callback
+since callback will be called for every update on progress percentage handled something like below
 
-There may be a condition where we miss some data. For example on first api request we got 4 items and for 2nd request we may have 3 items in that case we can use this refresh
+```js
+ let fileItems = [];
+  const handleFileProgress = (progressPercentage, fileIndex) => {
+    setLoadingMsg(`Uploading ${files[fileIndex].name}`);
+    setUploadPercentage(progressPercentage);
+
+    if (fileItems.indexOf(files[fileIndex].name) <= -1) {
+      fileItems.push(files[fileIndex].name);
+    }
+
+    if (fileItems.length === files.length) {
+      if (progressPercentage > 80) {
+        fileItems.length = 0;
+        setLoadingMsg(null);
+        setUploadPercentage(null);
+        setModalStatus((modalStatus) => !modalStatus);
+        loadNewContent();
+      }
+    }
+  };
+```
 
 ## Note - only in case of more then perPageCount > n then page number will update (n is set to 4 now) or else it will remain as same page and data will update into next api request
 
