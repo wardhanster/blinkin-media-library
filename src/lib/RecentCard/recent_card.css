@@ -1,5 +1,9 @@
 .recent-card .card-title {
   margin-bottom: 0.3rem !important;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .recent-card .card-title i {
   margin-right: 0.5rem;
@@ -9,13 +13,13 @@
 }
 .fileUploader {
   padding: 5%;
-  height: 197px;
+  height: 230px;
 }
 .file_preview {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100px;
+  height: 138px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   font-weight: bold;
   text-transform: uppercase;
@@ -25,5 +29,13 @@
   margin-right: 3%;
 }
 .quick_card {
-  height: 197px !important;
+  height: 230px !important;
+}
+.recent_fileName:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.card_image {
+  max-width: 98%;
+  height: auto;
 }
