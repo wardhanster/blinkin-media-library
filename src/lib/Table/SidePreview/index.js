@@ -45,7 +45,8 @@ function fileshow(file_extension, url) {
   } else {
     filePreview = (
       <div className="default_preview">
-        <b>{file_extension}</b> File format Not able to load
+        <b className="file_format">{file_extension}</b> File format Not able to
+        load
       </div>
     );
   }
