@@ -43,6 +43,7 @@ export default function MediaFileList(props) {
   let [activeModal, setActiveModal] = useState(null);
   let [recentData, setRecentData] = useState(null);
   let [searchClear, setsearchClear] = useState(false);
+  let [newBaseUrl, setNewBaseUrl] = useState(null);
 
   let searchTerms = (search) => {
     setSearch(search);
@@ -55,9 +56,9 @@ export default function MediaFileList(props) {
   function fontAwesomeIcons(format) {
     let formatType;
 
-    if (image.indexOf[format] >= 0) {
+    if (image.indexOf(format) >= 0) {
       formatType = "image";
-    } else if (video.indexOf[format] >= 0) {
+    } else if (video.indexOf(format) >= 0) {
       formatType = "video";
     } else {
       formatType = format;
@@ -95,6 +96,7 @@ export default function MediaFileList(props) {
     if (!recentData && result) {
       if (result.length > 3) {
         setRecentData(result.slice(0, 3));
+        setNewBaseUrl(baseUrl);
       }
     }
 
@@ -112,7 +114,7 @@ export default function MediaFileList(props) {
         result={recentData}
         uploadFiles={uploadFiles}
         bytesToSize={bytesToSize}
-        baseUrl={baseUrl}
+        baseUrl={newBaseUrl}
         loadNewContent={loadNewContent}
         handleClick={handleClick}
       />
