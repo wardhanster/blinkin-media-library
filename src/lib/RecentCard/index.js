@@ -36,7 +36,6 @@ export default function RecentCard(props) {
     loadNewContent,
     handleClick,
   } = props;
-
   const handleCardTitleClick = (file) => {
     file.actualSizeInKb = bytesToSize(file.file_size);
     file.url = `${baseUrl}${file.file_url}`;
@@ -57,6 +56,7 @@ export default function RecentCard(props) {
                     {image.indexOf(card.file_extension) > -1 ? (
                       <CardImg
                         top
+                        className="card_image"
                         width="100%"
                         src={`${baseUrl}${card.file_url}`}
                         alt="Card image cap"
@@ -78,7 +78,7 @@ export default function RecentCard(props) {
                           {card.upload_name}
                         </span>
                       </CardTitle>
-                      <CardText className="text-muted">
+                      <CardText className="text-muted card_desc">
                         {card.upload_description}
                       </CardText>
                     </CardBody>
