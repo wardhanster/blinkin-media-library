@@ -104,7 +104,7 @@ export default function MediaHeader(props) {
     <Container className="media_header">
       <Row className="media_header_title mb-3">
         <Col xs="7"></Col>
-        <Col xs="4">
+        <Col xs="5">
           <InputGroup className="mt-2">
             <Input
               placeholder="Search"
@@ -121,13 +121,13 @@ export default function MediaHeader(props) {
             </InputGroupAddon>
           </InputGroup>
         </Col>
-        <Col xs="1">
+        {/* <Col xs="1">
           <div className="mt-2">
             <Button color="primary" onClick={handleClicktoShowSearch} disabled>
               <i className="fa fa-filter" aria-hidden="true"></i>
             </Button>
           </div>
-        </Col>
+        </Col> */}
       </Row>
       <div id="filter" className="filter-container slideup">
         <Container>
