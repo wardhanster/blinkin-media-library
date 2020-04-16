@@ -7,14 +7,42 @@ import {
   Container,
   Row,
   Col,
+  CardImg,
 } from "reactstrap";
 
 import FileUpload from "../FileUpload";
+import SidePreview from "../Table/SidePreview";
 
 import "./recent_card.css";
+let image = [
+  "bmp",
+  "gif",
+  "jpeg",
+  "jpg",
+  "png",
+  "svg+xml",
+  "tiff",
+  "webp",
+  "image",
+];
 
 export default function RecentCard(props) {
-  const { uploadFiles, result, bytesToSize, icons, loadNewContent } = props;
+  const {
+    uploadFiles,
+    result,
+    bytesToSize,
+    icons,
+    baseUrl,
+    loadNewContent,
+    handleClick,
+  } = props;
+
+  const handleCardTitleClick = (file) => {
+    file.actualSizeInKb = bytesToSize(file.file_size);
+    file.url = `${baseUrl}${file.file_url}`;
+    file.random = Math.random();
+    handleClick(<SidePreview data={file} />);
+  };
 
   return (
     <div className="mb-4 mt-2 recent-card">
@@ -26,11 +54,12 @@ export default function RecentCard(props) {
               return (
                 <Col xs="3" key={`${card.upload_name}`}>
                   <Card className="quick_card">
-                    {card.file_extension === "image" ? (
-                      <img
-                        alt="preview"
-                        src={card.url}
-                        className="image-fluid"
+                    {image.indexOf(card.file_extension) > -1 ? (
+                      <CardImg
+                        top
+                        width="100%"
+                        src={`${baseUrl}${card.file_url}`}
+                        alt="Card image cap"
                       />
                     ) : (
                       <div className="file_preview">
@@ -41,7 +70,13 @@ export default function RecentCard(props) {
                     <CardBody>
                       <CardTitle>
                         <i className={icons(card.file_extension)}></i>
-                        {card.upload_name}
+                        <span
+                          className="recent_fileName"
+                          onClick={() => handleCardTitleClick(card)}
+                          title={card.upload_name}
+                        >
+                          {card.upload_name}
+                        </span>
                       </CardTitle>
                       <CardText className="text-muted">
                         {card.upload_description}
