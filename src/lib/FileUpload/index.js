@@ -32,21 +32,22 @@ export default function FileUpload(props) {
     }
   };
 
-  let fileCount = 0;
-
+  let fileItems = [];
   const handleFileProgress = (progressPercentage, fileIndex) => {
     setLoadingMsg(`Uploading ${files[fileIndex].name}`);
     setUploadPercentage(progressPercentage);
-    if (fileCount === files.length - 1) {
-      fileCount = 0;
+
+    if (fileItems.indexOf(files[fileIndex].name) <= -1) {
+      fileItems.push(files[fileIndex].name);
+    }
+
+    if (fileItems.length === files.length) {
+      fileItems.length = 0;
       setLoadingMsg(null);
       setUploadPercentage(null);
       setModalStatus((modalStatus) => !modalStatus);
       loadNewContent();
-    } else {
-      fileCount++;
     }
-    // console.log(files[fileIndex]);
   };
 
   const handleSubmitFiles = () => {
