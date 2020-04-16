@@ -5,6 +5,8 @@ import TableList from "./TableList";
 import SidePreview from "./SidePreview";
 import Loading from "../Loading";
 
+import "./table.css";
+
 let isApiCallSuccess = false;
 let initialLoad = true;
 let perPageCount = 4;
@@ -33,7 +35,7 @@ export default function TableItem(props) {
 
   const preview = (file, size) => {
     file.actualSizeInKb = size;
-    file.url = `${baseUrl} ${file.file_url}`;
+    file.url = `${baseUrl}${file.file_url}`;
     file.random = Math.random();
     setActivePreviewData(file);
   };
@@ -151,17 +153,22 @@ export default function TableItem(props) {
     setApiCallTimes((apicallTimes) => apicallTimes + 1);
   };
 
+  let copyClipBoard = async (file) => {
+    let url = `${baseUrl}${file}`;
+    window.navigator.clipboard.writeText(url);
+  };
+
   return (
     <>
       <Table>
         <thead>
           <tr>
-            <th>Name</th>
+            <th className="th_name">Name</th>
             <th>Description</th>
             <th>Type</th>
             <th>Size</th>
             <th>Created At</th>
-            <th>Preview</th>
+            <th>Copy</th>
             {/* <th>Delete</th> */}
             {/* <th>
               <i
@@ -179,6 +186,7 @@ export default function TableItem(props) {
               fileList={fileList}
               preview={preview}
               bytesToSize={bytesToSize}
+              copyClipBoard={copyClipBoard}
             />
           )}
         </tbody>
