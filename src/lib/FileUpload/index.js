@@ -42,11 +42,13 @@ export default function FileUpload(props) {
     }
 
     if (fileItems.length === files.length) {
-      fileItems.length = 0;
-      setLoadingMsg(null);
-      setUploadPercentage(null);
-      setModalStatus((modalStatus) => !modalStatus);
-      loadNewContent();
+      if (progressPercentage > 80) {
+        fileItems.length = 0;
+        setLoadingMsg(null);
+        setUploadPercentage(null);
+        setModalStatus((modalStatus) => !modalStatus);
+        loadNewContent();
+      }
     }
   };
 
