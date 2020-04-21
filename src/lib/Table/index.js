@@ -33,10 +33,12 @@ export default function TableItem(props) {
   let [activePreviewData, setActivePreviewData] = useState(null);
   let [apicallTimes, setApiCallTimes] = useState(1);
   let [fileList, setFileList] = useState([]);
-  let [loading, setLoading] = useState(true);
+  let [mainLoading, setMainLoading] = useState(true);
+  let [loading, setLoading] = useState(false);
   let [showMoreDataMsg, setShowMoreDataMsg] = useState(false);
   let [baseUrl, setBaseUrl] = useState(null);
   let bottomRef = useRef(null);
+  let [noResults, setNoResults] = useState(false);
   let pageNumRef = useRef(1);
   let searchFirst = useRef(false);
   let [showLoadMoreBtn, setShowLoadMoreBtn] = useState(false);
@@ -89,7 +91,8 @@ export default function TableItem(props) {
       } else {
         isApiCallSuccess = false;
         setLoading(false);
-        setShowMoreDataMsg(true);
+        setShowMoreDataMsg(false);
+        setNoResults(true);
       }
     } catch (e) {
       isApiCallSuccess = false;
@@ -98,13 +101,18 @@ export default function TableItem(props) {
     }
 
     initialLoad = false;
+    setMainLoading(false);
     if (
       document.documentElement.scrollHeight >
       document.documentElement.clientHeight
     ) {
       setShowLoadMoreBtn(false);
     } else {
-      setShowLoadMoreBtn(true);
+      if (data.length > 0) {
+        setShowLoadMoreBtn(true);
+      } else {
+        setShowLoadMoreBtn(false);
+      }
     }
   };
 
@@ -174,41 +182,42 @@ export default function TableItem(props) {
 
   return (
     <>
-      <Table>
-        <thead>
-          <tr>
-            <th className="th_name">Name</th>
-            <th>Description</th>
-            <th>Type</th>
-            <th>Size</th>
-            <th>Created At</th>
-            <th>Copy</th>
-            {/* <th>Delete</th> */}
-            {/* <th>
-              <i
-                onClick={refresh}
-                className="fa fa-refresh refresh-btn"
-                aria-hidden="true"
-              ></i>
-            </th> */}
-          </tr>
-        </thead>
-        <tbody>
-          {fileList.length > 0 && (
-            <TableList
-              icons={icons}
-              fileList={fileList}
-              preview={preview}
-              bytesToSize={bytesToSize}
-              copyClipBoard={copyClipBoard}
-            />
-          )}
-        </tbody>
-      </Table>
-      {loading && <Loading />}
+      {mainLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <Table>
+            <thead>
+              <tr>
+                <th className="th_name">Name</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Created At</th>
+                <th>Copy</th>
+                {/* <th>Delete</th> */}
+              </tr>
+            </thead>
+            <tbody>
+              {fileList.length > 0 && (
+                <TableList
+                  icons={icons}
+                  fileList={fileList}
+                  preview={preview}
+                  bytesToSize={bytesToSize}
+                  copyClipBoard={copyClipBoard}
+                />
+              )}
+            </tbody>
+          </Table>
+          {noResults && <div className="center">No Results. Please Update</div>}
+          {loading === true ? <Loading /> : null}
+        </>
+      )}
+
       {showLoadMoreBtn && (
         <div className="text-center">
-          <Button color="primary" onClick={loadNext}>
+          <Button color="link" onClick={loadNext}>
             Load More
           </Button>
         </div>
