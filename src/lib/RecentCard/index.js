@@ -35,6 +35,7 @@ export default function RecentCard(props) {
     baseUrl,
     loadNewContent,
     handleClick,
+    tags
   } = props;
   const handleCardTitleClick = (file) => {
     file.actualSizeInKb = bytesToSize(file.file_size);
@@ -89,6 +90,7 @@ export default function RecentCard(props) {
           <Col xs="3">
             <FileUpload
               sideModal={props.sideModal}
+              tags={tags}
               toggle={props.toggle}
               uploadFiles={uploadFiles}
               bytesToSize={bytesToSize}
