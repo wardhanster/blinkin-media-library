@@ -29,13 +29,14 @@ function fileshow(file_extension, url) {
   } else if (file_extension === "pdf") {
     filePreview = (
       <object data={url} type="application/pdf" className="pdf-iframe">
-        <iframe src={url}></iframe>
+        <iframe title={file_extension} src={url}></iframe>
       </object>
     );
   } else {
     filePreview = (
       <div className="default_preview">
-        <b className="file_format">{file_extension}</b> File format Not able to load
+        <b className="file_format">{file_extension}</b> File format Not able to
+        load
       </div>
     );
   }
