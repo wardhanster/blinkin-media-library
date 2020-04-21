@@ -1,13 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, createRef } from "react";
 
-import { Container, Button, Row, Col, Progress } from "reactstrap";
+import {
+  Container,
+  Button,
+  Row,
+  Col,
+  Progress,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+} from "reactstrap";
 
 export default function FileUploadList(props) {
-  let { bytesToSize } = props;
+  let { bytesToSize, tags, handleFileTagsDesc } = props;
   let [url, setUrl] = useState(null);
   let [selectFile, setSelectFile] = useState(null);
   let [selectFileType, setSelectFileType] = useState(null);
   let [fileIndex, setFileIndex] = useState(null);
+  let [description, setDescription] = useState("");
+  let [selectedTags, setSelectedTags] = useState([]);
+  const elementsRef = useRef([]);
+  let [displayName, setDisplayName] = useState();
+
   let {
     files,
     deleteFile,
@@ -17,15 +32,35 @@ export default function FileUploadList(props) {
     uploadPercentage,
   } = props;
 
-  let handlePreview = (index, e) => {
-    setSelectFile(files[index]);
-    setFileIndex(String(index));
-    let fileType = files[index].type.split("/")[0];
-    console.log(files[index]);
-    setSelectFileType(fileType);
+  let resetClass = () => {
+    elementsRef.current.forEach((item) => {
+      if (item.classList.contains("btn-primary")) {
+        item.classList.remove("btn-primary");
+        item.classList.add("btn-outline-primary");
+      }
+    });
   };
 
-  let handelDelete = (index, e) => {
+  let handlePreview = (index, e) => {
+    resetClass();
+    setSelectFile(files[index]);
+    setFileIndex(String(index));
+    setDisplayName(files[index].name);
+    let fileType = files[index].type.split("/")[0];
+    setSelectFileType(fileType);
+    if (files[index].description) {
+      setDescription(files[index].description);
+    } else {
+      setDescription("");
+    }
+    if (files[index].tags) {
+      setSelectedTags(files[index].tags);
+    } else {
+      setSelectedTags([]);
+    }
+  };
+
+  let handleDelete = (index, e) => {
     let indexString = String(index);
     if (fileIndex) {
       if (fileIndex === indexString) {
@@ -80,11 +115,105 @@ export default function FileUploadList(props) {
     );
   }
 
+  let handleTags = (tag, index) => {
+    if (elementsRef.current[index].classList.contains("btn-outline-primary")) {
+      elementsRef.current[index].classList.add("btn-primary");
+      elementsRef.current[index].classList.remove("btn-outline-primary");
+      setSelectedTags((selectedTags) => [...selectedTags, tag]);
+      console.log(selectedTags);
+    } else {
+      elementsRef.current[index].classList.remove("btn-primary");
+      elementsRef.current[index].classList.add("btn-outline-primary");
+      const tagIndex = selectedTags.indexOf(tag);
+      if (tagIndex > -1) {
+        selectedTags.splice(tagIndex, 1);
+        setSelectedTags(selectedTags);
+      }
+    }
+  };
+
+  let handleDescription = (e) => {
+    setDescription(e.target.value);
+    e.preventDefault();
+  };
+
+  let updateFileTagsDesc = () => {
+    handleFileTagsDesc(fileIndex, { tags: selectedTags, description });
+  };
+
+  let returnBtnGroup = (selectFile) => {
+    let returnItem = tags.map((tag, index) => {
+      let classNew;
+      if (selectFile.tags) {
+        classNew = selectedTags.indexOf(tag) >= 0;
+        if (classNew) {
+          elementsRef.current[index].classList.add("btn-primary");
+          elementsRef.current[index].classList.remove("btn-outline-primary");
+        }
+      } else {
+        classNew = false;
+      }
+      return (
+        <button
+          key={index}
+          ref={(ref) => (elementsRef.current[index] = ref)}
+          type="button"
+          className={"btn btn-outline-primary"}
+          onClick={() => handleTags(tag, index)}
+        >
+          {tag}
+        </button>
+      );
+    });
+    return returnItem;
+  };
+
   return (
     <>
       <Container>
         <Row>
-          <Col xs="6">{preview}</Col>
+          <Col xs="6">
+            {preview}
+            {selectFile && (
+              <Row form className="desc_tags_container">
+                <Col md={12}>
+                  <FormGroup>
+                    <Label for="name">Name {displayName}</Label>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="tags">Tags - </Label>
+                    <div
+                      className="btn-group btn-group-sm tags-container"
+                      role="group"
+                    >
+                      {returnBtnGroup(selectFile)}
+                    </div>
+                  </FormGroup>
+                </Col>
+                <Col md={12}>
+                  <FormGroup>
+                    <Label for="description">
+                      Description (Max 100 Character)
+                    </Label>
+                    <textarea
+                      value={description}
+                      onChange={handleDescription}
+                      className="form-control"
+                      maxLength="100"
+                      rows="3"
+                    ></textarea>
+                  </FormGroup>
+                </Col>
+                <Col md={12}>
+                  <FormGroup>
+                    <Button color="primary" onClick={updateFileTagsDesc}>
+                      Update
+                    </Button>
+                  </FormGroup>
+                </Col>
+              </Row>
+            )}
+          </Col>
           <Col xs="6">
             {files.length > 0 ? (
               <div className="table-responsive">
@@ -132,7 +261,7 @@ export default function FileUploadList(props) {
                           <td className="delete-header">
                             <button
                               className="btn btn-danger btn-sm"
-                              onClick={(e) => handelDelete(index, e)}
+                              onClick={(e) => handleDelete(index, e)}
                             >
                               <i className="fa fa-trash" aria-hidden="true"></i>
                             </button>
