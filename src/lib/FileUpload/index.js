@@ -68,9 +68,12 @@ export default function FileUpload(props) {
   };
 
   let handleFileTagsDesc = (index, data) => {
+    console.log(index);
+    console.log(data);
     files[index].tags = data.tags;
     files[index].description = data.description;
     setFiles(files);
+    console.log(files);
   };
 
   return (
