@@ -44,6 +44,8 @@ import MediaFileList from "media-list";
 
 ```javascript
 
+let tags = ["file", "file2", "file3", "file4"];
+
 let uploadFiles = (files, callback) => {
   console.log(files);
   files.forEach((element, index) => {
