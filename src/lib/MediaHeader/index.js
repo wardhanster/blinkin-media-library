@@ -7,7 +7,6 @@ import {
   InputGroupAddon,
   Button,
   Input,
-  InputGroupText,
   Container,
 } from "reactstrap";
 
@@ -19,7 +18,6 @@ export default function MediaHeader(props) {
 
   let [fileType, setFileType] = useState([]);
   let [tags, setTags] = useState([]);
-  let [clear, setClear] = useState("btn btn-outline-primary");
   let [searchText, setSearchText] = useState(null);
 
   const tagsRef = useRef([]);
@@ -30,21 +28,6 @@ export default function MediaHeader(props) {
     if (showSearch) {
       clearAllUpdates(true);
     }
-  };
-
-  const clearAllSearchTerms = () => {
-    setFileType([]);
-    setTags([]);
-    handleSearch();
-    setClear((clear) => "btn btn-outline-primary");
-  };
-
-  const handleSearch = () => {
-    let searchTerms = {
-      tags,
-      fileType,
-    };
-    searchCallback(searchTerms);
   };
 
   React.useEffect(() => {
@@ -145,14 +128,10 @@ export default function MediaHeader(props) {
   };
 
   let handleUpdate = () => {
-    console.log(searchText);
-    console.log(tags);
-    console.log(fileType);
-
     let searchTerms = {
       search: searchText,
       tags,
-      fileType,
+      file_extension: fileType,
     };
     searchCallback(searchTerms);
   };
@@ -189,7 +168,7 @@ export default function MediaHeader(props) {
               value={searchText || ""}
               onChange={(e) => setSearchText(e.target.value)}
             />
-            <InputGroupAddon className="clearSearchBtn">
+            <InputGroupAddon className="clearSearchBtn" addonType="append">
               <Button color="primary" onClick={handleSearchSubmit}>
                 Search
               </Button>
