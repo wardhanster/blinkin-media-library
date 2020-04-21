@@ -24,13 +24,21 @@ import MediaFileList from "media-list";
 ## implementation
 
 ```javascript
-<MediaFileList uploadFiles={uploadFiles} fetchAPI={fetchAPI} toggle={toggle}
-    sideModal={(val) => ( <SideModal SideModalOpen={sideModalOpen}
+ <MediaFileList
+        uploadFiles={uploadFiles}
+        fetchAPI={fetchAPI}
+        toggle={toggle}
+        tags={tags}
+        sideModal={(file, title) => (
+          <SideModal
+            SideModalOpen={sideModalOpen}
             onToggle={toggle}
-            title="File Upload">
-            {val}
+            title={title}
+          >
+            {file}
           </SideModal>
-)} />
+        )}
+      />
 ```
 ## How i handled props
 
@@ -44,7 +52,14 @@ let uploadFiles = (files, callback) => {
 };
 
 let fetchAPI = (pagenum, searchTerm) => {
-  console.log(searchTerm);
+  let queryString;
+  if (searchTerm) {
+  queryString = Object.keys(searchTerm)
+      .map((key) => key + "=" + searchTerm[key])
+      .join("&");
+  }
+   console.log(queryString); // query string to search
+  
   let baseUrl =
     "https://blinkin-staging.s3.eu-central-1.amazonaws.com/media_library/1/7/";
   if (pagenum === 1) {
