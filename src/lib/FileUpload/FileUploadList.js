@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, createRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import {
   Container,
@@ -6,10 +6,8 @@ import {
   Row,
   Col,
   Progress,
-  Form,
   FormGroup,
   Label,
-  Input,
 } from "reactstrap";
 
 export default function FileUploadList(props) {
