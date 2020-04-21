@@ -33,11 +33,12 @@ let video = [
   "webm",
   "3gpp",
   "3gpp2",
+  "mp4",
   "x-ms-video",
   "video",
 ];
 export default function MediaFileList(props) {
-  const { uploadFiles, fetchAPI, sideModal, toggle } = props;
+  const { uploadFiles, fetchAPI, sideModal, toggle, tags } = props;
   let [search, setSearch] = useState(null);
   let [data, setData] = useState(null);
   let [activeModal, setActiveModal] = useState(null);
@@ -108,8 +109,13 @@ export default function MediaFileList(props) {
 
   return (
     <Container>
-      <MediaHeader searchCallback={searchTerms} clearSearch={loadNewContent} />
+      <MediaHeader
+        defaultTags={tags}
+        searchCallback={searchTerms}
+        clearSearch={loadNewContent}
+      />
       <RecentCard
+        tags={tags}
         icons={fontAwesomeIcons}
         result={recentData}
         uploadFiles={uploadFiles}
