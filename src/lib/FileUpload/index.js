@@ -7,7 +7,7 @@ import FileUploadList from "./FileUploadList";
 import FilePreviewModal from "./FilePreviewModal";
 
 export default function FileUpload(props) {
-  const { uploadFiles, bytesToSize, loadNewContent } = props;
+  const { uploadFiles, bytesToSize, loadNewContent, tags } = props;
 
   let fileInput = useRef(null);
   let [files, setFiles] = useState([]);
@@ -66,6 +66,13 @@ export default function FileUpload(props) {
       fileInput.current.value = null;
     }
   };
+
+  let handleFileTagsDesc = (index, data) => {
+    files[index].tags = data.tags;
+    files[index].description = data.description;
+    setFiles(files);
+  };
+
   return (
     <Container className="fileUploader">
       <FilePreviewModal
@@ -75,12 +82,14 @@ export default function FileUpload(props) {
         render={() => (
           <FileUploadList
             files={files}
+            tags={tags}
             deleteFile={deleteFile}
             updateFile={handleOnChange}
             submitFiles={handleSubmitFiles}
             fileStatusMsg={loadingMsg}
             uploadPercentage={uploadPercentage}
             bytesToSize={bytesToSize}
+            handleFileTagsDesc={handleFileTagsDesc}
           />
         )}
       />
