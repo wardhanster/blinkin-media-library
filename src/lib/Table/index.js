@@ -14,7 +14,7 @@ let scroll;
 
 const snackBar = (status) => {
   return (
-    <div id="snackbar" className={status && "show"}>
+    <div id="snackbar" className={status ? "show" : ""}>
       Copied to Clipboard
     </div>
   );
