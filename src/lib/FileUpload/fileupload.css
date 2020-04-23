@@ -97,3 +97,11 @@
 .tags-container {
   margin-left: 2%;
 }
+
+.ind_progress {
+  height: 5px !important;
+  margin-top: 3% !important;
+}
+.ind_progress .progress-bar {
+  height: 5px !important;
+}
