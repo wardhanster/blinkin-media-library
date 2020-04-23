@@ -31,3 +31,9 @@
 .clearSearchBtn {
   display: flex !important;
 }
+.search_container {
+  margin-top: 1.7%;
+}
+.tags_select {
+  height: 30px !important;
+}
