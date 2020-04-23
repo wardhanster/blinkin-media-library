@@ -14,6 +14,7 @@ export default function FileUpload(props) {
   let [modalStatus, setModalStatus] = useState(false);
   let [loadingMsg, setLoadingMsg] = useState(null);
   let [uploadPercentage, setUploadPercentage] = useState(0);
+  let [allUploadPercentage, setAllUploadPercentage] = useState({});
 
   const deleteFile = useCallback((val, e) => {
     setFiles((files) => files.filter((file, index) => index !== val));
@@ -31,36 +32,46 @@ export default function FileUpload(props) {
     }
   };
 
-  let fileItems = [];
+  let fileItems = {};
+  let expectedPercentage;
+
   const handleFileProgress = (progressPercentage, fileIndex) => {
     let fileIndexString = new String(fileIndex);
     if (fileIndexString && Number.isInteger(progressPercentage)) {
       setLoadingMsg(`Uploading ${files[fileIndex].name}`);
       setUploadPercentage(progressPercentage);
 
-      if (fileItems.indexOf(files[fileIndex].name) <= -1) {
-        fileItems.push(files[fileIndex].name);
-      }
+      fileItems[files[fileIndex].name] = progressPercentage;
 
-      if (fileItems.length === files.length) {
-        if (progressPercentage >= 95) {
-          fileItems.length = 0;
-          setLoadingMsg(null);
-          setUploadPercentage(null);
-          setModalStatus((modalStatus) => !modalStatus);
-          loadNewContent();
-        }
+      let res = Object.values(fileItems).reduce((total, num) => {
+        return total + num;
+      });
+
+      let newState = Object.assign({}, fileItems);
+      newState[files[fileIndex].name] = progressPercentage;
+      setAllUploadPercentage(newState);
+
+      if (res === expectedPercentage) {
+        fileItems = {};
+        setLoadingMsg(null);
+        setUploadPercentage(null);
+        setAllUploadPercentage({});
+        setModalStatus((modalStatus) => !modalStatus);
+        loadNewContent();
       }
     }
   };
 
   const handleSubmitFiles = () => {
+    expectedPercentage = files.length * 100;
     uploadFiles(files, handleFileProgress);
   };
 
   let onToggle = () => {
+    fileItems = {};
     setLoadingMsg(null);
-    setFiles([]);
+    setUploadPercentage(null);
+    setAllUploadPercentage({});
     setModalStatus((modalStatus) => !modalStatus);
     if (fileInput) {
       fileInput.current.value = null;
@@ -68,12 +79,9 @@ export default function FileUpload(props) {
   };
 
   let handleFileTagsDesc = (index, data) => {
-    console.log(index);
-    console.log(data);
     files[index].tags = data.tags;
     files[index].description = data.description;
     setFiles(files);
-    console.log(files);
   };
 
   return (
@@ -93,6 +101,7 @@ export default function FileUpload(props) {
             uploadPercentage={uploadPercentage}
             bytesToSize={bytesToSize}
             handleFileTagsDesc={handleFileTagsDesc}
+            allUploadPercentage={allUploadPercentage}
           />
         )}
       />
