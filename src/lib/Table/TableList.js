@@ -3,10 +3,10 @@ import React from "react";
 export default function TableList(props) {
   let { preview, fileList, bytesToSize, icons, copyClipBoard } = props;
 
-  return fileList.map((file) => {
+  return fileList.map((file, index) => {
     let filesize = bytesToSize(file.file_size);
     return (
-      <tr key={`${file.upload_name} ${Math.random()}`}>
+      <tr key={index}>
         <th scope="row" color="primary" className="table_header_filename">
           <i className={icons(file.file_extension)} aria-hidden="true"></i>
           <span
