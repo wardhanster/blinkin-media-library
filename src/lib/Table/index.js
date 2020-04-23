@@ -9,7 +9,6 @@ import "./table.css";
 
 let isApiCallSuccess = false;
 let initialLoad = true;
-let perPageCount = 4;
 let scroll;
 
 const snackBar = (status) => {
@@ -28,6 +27,7 @@ export default function TableItem(props) {
     bytesToSize,
     icons,
     searchClear,
+    perPageCount,
   } = props;
 
   let [activePreviewData, setActivePreviewData] = useState(null);
@@ -40,9 +40,11 @@ export default function TableItem(props) {
   let bottomRef = useRef(null);
   let [noResults, setNoResults] = useState(false);
   let pageNumRef = useRef(1);
+  let isIntersectRef = useRef(false);
   let searchFirst = useRef(false);
   let [showLoadMoreBtn, setShowLoadMoreBtn] = useState(false);
   let [showSnackBar, setShowSnackBar] = useState(false);
+  let [intersect, setIntersect] = useState(false);
 
   const preview = (file, size) => {
     file.actualSizeInKb = size;
@@ -91,8 +93,10 @@ export default function TableItem(props) {
       } else {
         isApiCallSuccess = false;
         setLoading(false);
-        setShowMoreDataMsg(false);
-        setNoResults(true);
+        setShowMoreDataMsg(true);
+        if (fileList.length <= 0) {
+          setNoResults(true);
+        }
       }
     } catch (e) {
       isApiCallSuccess = false;
@@ -114,11 +118,20 @@ export default function TableItem(props) {
         setShowLoadMoreBtn(false);
       }
     }
+
+    if (!intersect) {
+      if (showMoreDataMsg) {
+      } else {
+        setShowLoadMoreBtn(true);
+      }
+    }
   };
 
   const scrollCallback = (entries, observer) => {
     setLoading(true);
     if (entries[0].isIntersecting) {
+      setIntersect(true);
+      isIntersectRef.current = false;
       if (!initialLoad) {
         if (isApiCallSuccess) {
           setApiCallTimes((apicallTimes) => apicallTimes + 1);
@@ -131,6 +144,7 @@ export default function TableItem(props) {
 
   useEffect(() => {
     scroll = new IntersectionObserver(scrollCallback, {
+      root: document.querySelector(".table"),
       rootMargin: "50px",
       threshold: 1,
     });
@@ -222,10 +236,12 @@ export default function TableItem(props) {
           </Button>
         </div>
       )}
-      {showMoreDataMsg && (
+      {showMoreDataMsg ? (
         <div className="no_more p-3 border mb-2">
           <p className="text-muted text-center mb-0">No More Results</p>
         </div>
+      ) : (
+        ""
       )}
       <div>{snackBar(showSnackBar)}</div>
       <div ref={bottomRef}></div>
