@@ -35,7 +35,7 @@ export default function RecentCard(props) {
     baseUrl,
     loadNewContent,
     handleClick,
-    tags
+    tags,
   } = props;
   const handleCardTitleClick = (file) => {
     file.actualSizeInKb = bytesToSize(file.file_size);
