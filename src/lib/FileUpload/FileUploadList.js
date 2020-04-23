@@ -11,7 +11,7 @@ import {
 } from "reactstrap";
 
 export default function FileUploadList(props) {
-  let { bytesToSize, tags, handleFileTagsDesc } = props;
+  let { bytesToSize, tags, handleFileTagsDesc, allUploadPercentage } = props;
   let [url, setUrl] = useState(null);
   let [selectFile, setSelectFile] = useState(null);
   let [selectFileType, setSelectFileType] = useState(null);
@@ -19,16 +19,10 @@ export default function FileUploadList(props) {
   let [description, setDescription] = useState("");
   let [selectedTags, setSelectedTags] = useState([]);
   const elementsRef = useRef([]);
+
   let [displayName, setDisplayName] = useState();
 
-  let {
-    files,
-    deleteFile,
-    updateFile,
-    submitFiles,
-    fileStatusMsg,
-    uploadPercentage,
-  } = props;
+  let { files, deleteFile, updateFile, submitFiles } = props;
 
   let resetClass = () => {
     elementsRef.current.forEach((item) => {
@@ -205,7 +199,7 @@ export default function FileUploadList(props) {
                 <Col md={12}>
                   <FormGroup>
                     <Button color="primary" onClick={updateFileTagsDesc}>
-                      Update
+                      Save
                     </Button>
                   </FormGroup>
                 </Col>
@@ -228,7 +222,7 @@ export default function FileUploadList(props) {
                         Size
                       </th>
                       <th scope="col" className="view-header">
-                        View
+                        Edit
                       </th>
                       <th scope="col" className="delete-header">
                         Delete
@@ -237,10 +231,20 @@ export default function FileUploadList(props) {
                   </thead>
                   <tbody>
                     {files.map((file, index) => {
+                      let percentageValue;
+                      if (allUploadPercentage) {
+                        percentageValue = allUploadPercentage[file.name];
+                      }
                       return (
                         <tr key={file.name}>
                           <th className="name-header">
                             <small>{file.name}</small>
+                            {percentageValue && (
+                              <Progress
+                                className="ind_progress"
+                                value={percentageValue}
+                              />
+                            )}
                           </th>
                           <td className="type-header">
                             <small>{file.type}</small>
@@ -281,14 +285,6 @@ export default function FileUploadList(props) {
         </Row>
       </Container>
       <Container className="upload-footer p-3">
-        {fileStatusMsg && (
-          <div className="fileupload_progress">
-            <h6 className="text-center">{fileStatusMsg}</h6>
-            {uploadPercentage > 0 ? (
-              <Progress value={uploadPercentage} />
-            ) : null}
-          </div>
-        )}
         <Row>
           <Col>
             <input
