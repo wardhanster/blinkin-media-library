@@ -45,6 +45,7 @@ export default function MediaFileList(props) {
   let [recentData, setRecentData] = useState(null);
   let [searchClear, setsearchClear] = useState(false);
   let [newBaseUrl, setNewBaseUrl] = useState(null);
+  let perPageCount = 4;
 
   let searchTerms = (search) => {
     setSearch(search);
@@ -125,6 +126,7 @@ export default function MediaFileList(props) {
         handleClick={handleClick}
       />
       <TableItem
+        perPageCount={perPageCount}
         icons={fontAwesomeIcons}
         baseUrl={baseUrl}
         searchClear={searchClear}
