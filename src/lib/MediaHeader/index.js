@@ -8,6 +8,8 @@ import {
   Button,
   Input,
   Container,
+  FormGroup,
+  Label,
 } from "reactstrap";
 
 import "./media_header.css";
@@ -30,23 +32,21 @@ export default function MediaHeader(props) {
     }
   };
 
-  React.useEffect(() => {
-    let activeDiv = document.querySelector(".filter-container");
-    if (!showSearch) {
-      activeDiv.classList.remove("slidedown");
-      activeDiv.classList.add("slideup");
-    } else {
-      activeDiv.classList.remove("slideup");
-      activeDiv.classList.add("slidedown");
-    }
-  }, [showSearch]);
-
   let handleSearchSubmit = () => {
-    searchCallback(searchText);
+    let searchTerms = {
+      search: searchText,
+      tags,
+      file_extension: fileType,
+    };
+    searchCallback(searchTerms);
   };
 
   let handleClearSearch = () => {
     setSearchText("");
+    resetElements(tagsRef.current);
+    resetElements(fileTypeRef.current);
+    setTags([]);
+    setFileType([]);
     clearSearch();
   };
 
@@ -59,7 +59,7 @@ export default function MediaHeader(props) {
       tagsRef.current[index].classList.remove("btn-primary");
       tagsRef.current[index].classList.add("btn-outline-primary");
       if (tags.indexOf(tag) >= 0) {
-        tags.splice(index, 1);
+        tags.splice(tags.indexOf(tag), 1);
         setTags(tags);
       }
     }
@@ -83,6 +83,7 @@ export default function MediaHeader(props) {
   };
 
   let handleFileType = (file, index) => {
+    debugger;
     if (fileTypeRef.current[index].classList.contains("btn-outline-primary")) {
       setFileType([...fileType, file]);
       fileTypeRef.current[index].classList.add("btn-primary");
@@ -91,7 +92,7 @@ export default function MediaHeader(props) {
       fileTypeRef.current[index].classList.remove("btn-primary");
       fileTypeRef.current[index].classList.add("btn-outline-primary");
       if (fileType.indexOf(file) >= 0) {
-        fileType.splice(index, 1);
+        fileType.splice(fileType.indexOf(file), 1);
         setFileType(fileType);
       }
     }
@@ -157,11 +158,33 @@ export default function MediaHeader(props) {
     setFileType([]);
   };
 
+  let handleNewTags = (e) => {
+    console.log(e);
+  };
+
   return (
     <Container className="media_header">
-      <Row className="media_header_title mb-3">
-        <Col xs="6"></Col>
-        <Col xs="5">
+      <Row className="media_header_title mb-2 pt-3">
+        <Col xs="8">
+          <Container>
+            <Row form>
+              <Col md={3}>
+                <FormGroup>
+                  <Label for="exampleCity">Tags</Label>
+                  <div className="btn-group  btn-group-sm">{returnTags()}</div>
+                </FormGroup>
+              </Col>
+              <Col md={1}></Col>
+              <Col md={8}>
+                <FormGroup>
+                  <Label for="exampleState">File Type</Label>
+                  <div className="btn-group  btn-group-sm">{fileTypes()}</div>
+                </FormGroup>
+              </Col>
+            </Row>
+          </Container>
+        </Col>
+        <Col xs="4" className="search_container">
           <InputGroup className="mt-2">
             <Input
               placeholder="Search"
@@ -182,51 +205,14 @@ export default function MediaHeader(props) {
             </InputGroupAddon>
           </InputGroup>
         </Col>
-        <Col xs="1">
+        {/* <Col xs="1">
           <div className="mt-2">
             <Button color="primary" onClick={handleClicktoShowSearch}>
               <i className="fa fa-filter" aria-hidden="true"></i>
             </Button>
           </div>
-        </Col>
+        </Col> */}
       </Row>
-      <div id="filter" className="filter-container slideup">
-        <Container>
-          <Row>
-            <Col xs="12">
-              <div className="tags d-inline">
-                <div className="d-inline text-weight">Tags : </div>
-                <div className="d-inline">
-                  <div className="btn-group  btn-group-sm">{returnTags()}</div>
-                </div>
-              </div>
-              <div className="file-filter d-inline ml-3">
-                <div className="d-inline text-weight">Files : </div>
-                <div className="d-inline">
-                  <div className="btn-group  btn-group-sm">{fileTypes()}</div>
-                </div>
-              </div>
-              <div className="ml-5 d-inline">
-                <Button
-                  className="btn-sm"
-                  color="primary"
-                  onClick={handleUpdate}
-                >
-                  Update
-                </Button>
-              </div>
-              <div className="ml-2 d-inline">
-                <Button
-                  className="btn btn-default btn-sm"
-                  onClick={clearAllUpdates}
-                >
-                  Clear
-                </Button>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </div>
     </Container>
   );
 }
