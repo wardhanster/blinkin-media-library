@@ -68,8 +68,9 @@ export default function TableItem(props) {
   };
 
   const callAPI = async (search = null) => {
+    setLoading(true);
     setShowLoadMoreBtn(true);
-
+    debugger;
     let { result: data, baseUrl } = await fetchAPI(pageNumRef.current, search);
     try {
       setBaseUrl(baseUrl);
@@ -102,12 +103,14 @@ export default function TableItem(props) {
         setShowLoadMoreBtn(false);
         if (fileList.length <= 0) {
           setNoResults(true);
+          setShowMoreDataMsg(false);
         }
       }
     } catch (e) {
       isApiCallSuccess = false;
       setLoading(false);
       setShowMoreDataMsg(true);
+
       setShowLoadMoreBtn(false);
     }
 
@@ -129,9 +132,9 @@ export default function TableItem(props) {
     //   } catch (e) {}
     // }
 
-    if (!intersect && !showLoadMoreBtn) {
-      setShowLoadMoreBtn(true);
-    }
+    // if (!intersect && !showLoadMoreBtn) {
+    // setShowLoadMoreBtn(true);
+    // }
 
     try {
       if (data.length > 0) {
@@ -141,38 +144,31 @@ export default function TableItem(props) {
     }
   };
 
-  const scrollCallback = (entries, observer) => {
-    setLoading(true);
-    if (entries[0].isIntersecting) {
-      setIntersect(true);
-      isIntersectRef.current = false;
-      if (!initialLoad) {
-        setApiCallTimes((apicallTimes) => apicallTimes + 1);
-      }
-    }
-  };
+  // const scrollCallback = (entries, observer) => {
+  //   setLoading(true);
+  //   if (entries[0].isIntersecting) {
+  //     setIntersect(true);
+  //     isIntersectRef.current = false;
+  //     if (!initialLoad) {
+  //       setApiCallTimes((apicallTimes) => apicallTimes + 1);
+  //     }
+  //   }
+  // };
 
-  useEffect(() => {
-    scroll = new IntersectionObserver(scrollCallback, {
-      rootMargin: "50px",
-      threshold: 1,
-    });
-    scroll.observe(bottomRef.current);
-    return () => {
-      scroll.unobserve(bottomRef.current);
-    };
-  }, [bottomRef]);
+  // useEffect(() => {
+  //   scroll = new IntersectionObserver(scrollCallback, {
+  //     rootMargin: "50px",
+  //     threshold: 1,
+  //   });
+  //   scroll.observe(bottomRef.current);
+  //   return () => {
+  //     scroll.unobserve(bottomRef.current);
+  //   };
+  // }, [bottomRef]);
 
   useEffect(() => {
     callAPI(search);
   }, [apicallTimes]);
-
-  let refresh = () => {
-    if (pageNumRef > 1) {
-      pageNumRef.current = pageNumRef.current - 1;
-    }
-    setApiCallTimes((apicallTimes) => apicallTimes + 1);
-  };
 
   useEffect(() => {
     if (search || searchClear) {
