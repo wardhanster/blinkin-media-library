@@ -68,6 +68,8 @@ export default function TableItem(props) {
   };
 
   const callAPI = async (search = null) => {
+    setShowLoadMoreBtn(true);
+
     let { result: data, baseUrl } = await fetchAPI(pageNumRef.current, search);
     try {
       setBaseUrl(baseUrl);
@@ -89,11 +91,15 @@ export default function TableItem(props) {
         }
         if (data.length >= perPageCount) {
           pageNumRef.current++;
+        } else {
+          setShowMoreDataMsg(true);
+          setShowLoadMoreBtn(false);
         }
       } else {
         isApiCallSuccess = false;
         setLoading(false);
         setShowMoreDataMsg(true);
+        setShowLoadMoreBtn(false);
         if (fileList.length <= 0) {
           setNoResults(true);
         }
@@ -102,28 +108,36 @@ export default function TableItem(props) {
       isApiCallSuccess = false;
       setLoading(false);
       setShowMoreDataMsg(true);
+      setShowLoadMoreBtn(false);
     }
 
     initialLoad = false;
     setMainLoading(false);
-    if (
-      document.documentElement.scrollHeight >
-      document.documentElement.clientHeight
-    ) {
-      setShowLoadMoreBtn(false);
-    } else {
-      if (data.length > 0) {
-        setShowLoadMoreBtn(true);
-      } else {
-        setShowLoadMoreBtn(false);
-      }
+    // scrlHeight = document.documentElement.scrollHeight;
+    // clientH = document.documentElement.clientHeight + 100;
+
+    // if (scrlHeight >= clientH) {
+    //   // setShowLoadMoreBtn(false);
+    // } else {
+    //   try {
+    //     if (data.length > 0) {
+    //       debugger;
+    //       setShowLoadMoreBtn(true);
+    //     } else {
+    //       // setShowLoadMoreBtn(false);
+    //     }
+    //   } catch (e) {}
+    // }
+
+    if (!intersect && !showLoadMoreBtn) {
+      setShowLoadMoreBtn(true);
     }
 
-    if (!intersect) {
-      if (showMoreDataMsg) {
-      } else {
-        setShowLoadMoreBtn(true);
+    try {
+      if (data.length > 0) {
       }
+    } catch (e) {
+      // setShowLoadMoreBtn(false);
     }
   };
 
@@ -133,18 +147,13 @@ export default function TableItem(props) {
       setIntersect(true);
       isIntersectRef.current = false;
       if (!initialLoad) {
-        if (isApiCallSuccess) {
-          setApiCallTimes((apicallTimes) => apicallTimes + 1);
-        } else {
-          callAPI(search);
-        }
+        setApiCallTimes((apicallTimes) => apicallTimes + 1);
       }
     }
   };
 
   useEffect(() => {
     scroll = new IntersectionObserver(scrollCallback, {
-      root: document.querySelector(".table"),
       rootMargin: "50px",
       threshold: 1,
     });
@@ -174,13 +183,11 @@ export default function TableItem(props) {
       pageNumRef.current = 1;
       searchFirst.current = true;
       callAPI(search);
+      setShowLoadMoreBtn(true);
     }
   }, [search, searchClear]);
 
   let loadNext = () => {
-    if (pageNumRef.current >= fileList.length) {
-      pageNumRef.current = pageNumRef.current + 1;
-    }
     setApiCallTimes((apicallTimes) => apicallTimes + 1);
   };
 
@@ -229,12 +236,14 @@ export default function TableItem(props) {
         </>
       )}
 
-      {showLoadMoreBtn && (
-        <div className="text-center">
+      {showLoadMoreBtn ? (
+        <div className="text-center load_more_container">
           <Button color="link" onClick={loadNext}>
             Load More
           </Button>
         </div>
+      ) : (
+        ""
       )}
       {showMoreDataMsg ? (
         <div className="no_more p-3 border mb-2">
