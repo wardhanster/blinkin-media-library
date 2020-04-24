@@ -35,5 +35,13 @@
   margin-top: 1.7%;
 }
 .tags_select {
-  height: 30px !important;
+  height: 65px !important;
+}
+.search_holder {
+  width: 90% !important;
+  text-align: center;
+  margin: auto;
+}
+.tag_label {
+  text-align: right;
 }
