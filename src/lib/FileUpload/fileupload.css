@@ -105,3 +105,19 @@
 .ind_progress .progress-bar {
   height: 5px !important;
 }
+.fade_container {
+  color: green;
+  font-weight: bold;
+}
+.type-desc {
+  display: block;
+  width: 150px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.upload-list-container {
+  height: 400px;
+  overflow: auto;
+  display: block;
+}
