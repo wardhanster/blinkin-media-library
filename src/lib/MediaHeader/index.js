@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import {
   Row,
@@ -12,25 +12,28 @@ import {
   Label,
 } from "reactstrap";
 
+import { Multiselect } from "react-widgets";
+import "react-widgets/dist/css/react-widgets.css";
+
 import "./media_header.css";
 
 export default function MediaHeader(props) {
   let { searchCallback, clearSearch, defaultTags } = props;
 
   let [fileType, setFileType] = useState([]);
-  let [tags, setTags] = useState([]);
   let [searchText, setSearchText] = useState(null);
+  let [tagVal, setTagVal] = useState([]);
 
-  const tagsRef = useRef([]);
   const fileTypeRef = useRef([]);
+  const recentUpdateRef = useRef(false);
 
   let handleSearchSubmit = () => {
     let searchTerms = {};
     if (searchText) {
       searchTerms["search"] = searchText;
     }
-    if (tags.length > 0) {
-      searchTerms["tags"] = tags;
+    if (tagVal.length > 0) {
+      searchTerms["tags"] = tagVal;
     }
     if (fileType.length > 0) {
       searchTerms["file_extension"] = fileType;
@@ -41,59 +44,46 @@ export default function MediaHeader(props) {
 
   let handleClearSearch = () => {
     setSearchText("");
-    resetElements(tagsRef.current);
     resetElements(fileTypeRef.current);
-    setTags([]);
+    setTagVal([]);
     setFileType([]);
     clearSearch();
   };
 
-  let handleTags = (tag, index) => {
-    if (tagsRef.current[index].classList.contains("btn-outline-primary")) {
-      setTags([...tags, tag]);
-      tagsRef.current[index].classList.add("btn-primary");
-      tagsRef.current[index].classList.remove("btn-outline-primary");
-    } else {
-      tagsRef.current[index].classList.remove("btn-primary");
-      tagsRef.current[index].classList.add("btn-outline-primary");
-      if (tags.indexOf(tag) >= 0) {
-        tags.splice(tags.indexOf(tag), 1);
-        setTags(tags);
-      }
-    }
-  };
-
-  let returnTags = () => {
-    let returnItem = defaultTags.map((tag, index) => {
-      return (
-        <button
-          key={index}
-          ref={(ref) => (tagsRef.current[index] = ref)}
-          type="button"
-          className={"btn btn-outline-primary"}
-          onClick={() => handleTags(tag, index)}
-        >
-          {tag}
-        </button>
-      );
-    });
-    return returnItem;
-  };
-
   let handleFileType = (file, index) => {
+    // debugger;
+    recentUpdateRef.current = true;
     if (fileTypeRef.current[index].classList.contains("btn-outline-primary")) {
-      setFileType([...fileType, file]);
+      setFileType((fileType) => [...fileType, file]);
       fileTypeRef.current[index].classList.add("btn-primary");
       fileTypeRef.current[index].classList.remove("btn-outline-primary");
     } else {
       fileTypeRef.current[index].classList.remove("btn-primary");
       fileTypeRef.current[index].classList.add("btn-outline-primary");
       if (fileType.indexOf(file) >= 0) {
-        fileType.splice(fileType.indexOf(file), 1);
-        setFileType(fileType);
+        // fileType.splice(fileType.filter((item) => item != "pdf"));
+        setFileType(fileType.filter((item) => item != file));
       }
     }
   };
+
+  useEffect(() => {
+    // handleSearchSubmit();
+    console.log(tagVal);
+    console.log(fileType);
+    console.log(searchText);
+
+    if (
+      tagVal.length > 0 ||
+      fileType.length > 0 ||
+      searchText ||
+      recentUpdateRef.current
+    ) {
+      handleSearchSubmit();
+    } else {
+      console.log("am no");
+    }
+  }, [tagVal, fileType, searchText]);
 
   let fileTypes = () => {
     let files = [
@@ -135,56 +125,66 @@ export default function MediaHeader(props) {
     });
   };
 
+  let handleNewTag = (value) => {
+    if (value.length <= 0) {
+      recentUpdateRef.current = true;
+    }
+    setTagVal(value);
+  };
+
   return (
     <Container className="media_header">
-      <Row className="media_header_title mb-2 pt-3">
-        <Col xs="8">
+      <Row className="media_header_title mb-2 pt-3 justify-content-between">
+        <Col xs="12">
           <Container>
             <Row form>
-              <Col md={3}>
-                <FormGroup>
-                  <Label for="exampleCity">Tags</Label>
-                  <div className="btn-group  btn-group-sm">{returnTags()}</div>
-                </FormGroup>
-              </Col>
-              <Col md={1}></Col>
-              <Col md={8}>
+              <Col md={6}>
                 <FormGroup>
                   <Label for="exampleState">File Type</Label>
                   <div className="btn-group  btn-group-sm">{fileTypes()}</div>
                 </FormGroup>
               </Col>
+              <Col md="6" className="search_container">
+                <InputGroup className="mt-2 search_holder">
+                  <Input
+                    placeholder="Search"
+                    value={searchText || ""}
+                    onChange={(e) => setSearchText(e.target.value)}
+                  />
+                  <InputGroupAddon
+                    className="clearSearchBtn"
+                    addonType="append"
+                  >
+                    <Button color="primary" onClick={handleSearchSubmit}>
+                      Search
+                    </Button>
+                    <Button
+                      className="clearBtn"
+                      color="primary"
+                      onClick={handleClearSearch}
+                    >
+                      Clear
+                    </Button>
+                  </InputGroupAddon>
+                </InputGroup>
+              </Col>
             </Row>
           </Container>
         </Col>
-        <Col xs="4" className="search_container">
-          <InputGroup className="mt-2">
-            <Input
-              placeholder="Search"
-              value={searchText || ""}
-              onChange={(e) => setSearchText(e.target.value)}
-            />
-            <InputGroupAddon className="clearSearchBtn" addonType="append">
-              <Button color="primary" onClick={handleSearchSubmit}>
-                Search
-              </Button>
-              <Button
-                className="clearBtn"
-                color="primary"
-                onClick={handleClearSearch}
-              >
-                Clear
-              </Button>
-            </InputGroupAddon>
-          </InputGroup>
+
+        <Col md="12" className="mt-2">
+          <FormGroup row>
+            <Label className="tag_label" sm={1}>
+              Tags
+            </Label>
+            <Col sm={10}>
+              <Multiselect
+                data={defaultTags}
+                onChange={(value) => handleNewTag(value)}
+              />
+            </Col>
+          </FormGroup>
         </Col>
-        {/* <Col xs="1">
-          <div className="mt-2">
-            <Button color="primary" onClick={handleClicktoShowSearch}>
-              <i className="fa fa-filter" aria-hidden="true"></i>
-            </Button>
-          </div>
-        </Col> */}
       </Row>
     </Container>
   );
