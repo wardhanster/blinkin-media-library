@@ -28,6 +28,11 @@
   border: 1px solid grey;
 }
 
+.load_more_container {
+  padding: 2%;
+  margin-bottom: 2%;
+}
+
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #snackbar {
   visibility: hidden; /* Hidden by default. Visible on click */
