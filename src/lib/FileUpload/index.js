@@ -43,13 +43,13 @@ export default function FileUpload(props) {
 
       fileItems[files[fileIndex].name] = progressPercentage;
 
-      let res = Object.values(fileItems).reduce((total, num) => {
-        return total + num;
-      });
-
       let newState = Object.assign({}, fileItems);
       newState[files[fileIndex].name] = progressPercentage;
       setAllUploadPercentage(newState);
+
+      let res = Object.values(fileItems).reduce((total, num) => {
+        return total + num;
+      });
 
       if (res === expectedPercentage) {
         fileItems = {};
