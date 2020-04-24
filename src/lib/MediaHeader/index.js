@@ -16,7 +16,6 @@ import "./media_header.css";
 
 export default function MediaHeader(props) {
   let { searchCallback, clearSearch, defaultTags } = props;
-  let [showSearch, setshowSearch] = useState(false);
 
   let [fileType, setFileType] = useState([]);
   let [tags, setTags] = useState([]);
@@ -25,19 +24,18 @@ export default function MediaHeader(props) {
   const tagsRef = useRef([]);
   const fileTypeRef = useRef([]);
 
-  const handleClicktoShowSearch = () => {
-    setshowSearch(!showSearch);
-    if (showSearch) {
-      clearAllUpdates(true);
-    }
-  };
-
   let handleSearchSubmit = () => {
-    let searchTerms = {
-      search: searchText,
-      tags,
-      file_extension: fileType,
-    };
+    let searchTerms = {};
+    if (searchText) {
+      searchTerms["search"] = searchText;
+    }
+    if (tags.length > 0) {
+      searchTerms["tags"] = tags;
+    }
+    if (fileType.length > 0) {
+      searchTerms["file_extension"] = fileType;
+    }
+
     searchCallback(searchTerms);
   };
 
@@ -83,7 +81,6 @@ export default function MediaHeader(props) {
   };
 
   let handleFileType = (file, index) => {
-    debugger;
     if (fileTypeRef.current[index].classList.contains("btn-outline-primary")) {
       setFileType([...fileType, file]);
       fileTypeRef.current[index].classList.add("btn-primary");
@@ -111,6 +108,7 @@ export default function MediaHeader(props) {
       "rtf",
       "pdf",
       "ods",
+      "ppt",
     ];
     let returnFileType = files.map((file, index) => {
       return (
@@ -128,15 +126,6 @@ export default function MediaHeader(props) {
     return returnFileType;
   };
 
-  let handleUpdate = () => {
-    let searchTerms = {
-      search: searchText,
-      tags,
-      file_extension: fileType,
-    };
-    searchCallback(searchTerms);
-  };
-
   let resetElements = (elements) => {
     elements.forEach((element) => {
       if (element.classList.contains("btn-primary")) {
@@ -144,22 +133,6 @@ export default function MediaHeader(props) {
         element.classList.add("btn-outline-primary");
       }
     });
-  };
-
-  let clearAllUpdates = (slideup = null) => {
-    if (searchText) {
-      searchCallback(searchText);
-    } else if (tags.length > 0 || fileType.length > 0) {
-      clearSearch();
-    }
-    resetElements(tagsRef.current);
-    resetElements(fileTypeRef.current);
-    setTags([]);
-    setFileType([]);
-  };
-
-  let handleNewTags = (e) => {
-    console.log(e);
   };
 
   return (
