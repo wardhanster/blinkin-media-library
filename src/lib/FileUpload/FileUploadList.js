@@ -8,6 +8,8 @@ import {
   Progress,
   FormGroup,
   Label,
+  Fade,
+  Table,
 } from "reactstrap";
 
 export default function FileUploadList(props) {
@@ -20,9 +22,13 @@ export default function FileUploadList(props) {
   let [selectedTags, setSelectedTags] = useState([]);
   const elementsRef = useRef([]);
 
+  const [fadeIn, setFadeIn] = useState(false);
+
   let [displayName, setDisplayName] = useState();
 
   let { files, deleteFile, updateFile, submitFiles } = props;
+
+  const toggleFade = () => setFadeIn(!fadeIn);
 
   let resetClass = () => {
     elementsRef.current.forEach((item) => {
@@ -35,6 +41,7 @@ export default function FileUploadList(props) {
 
   let handlePreview = (index, e) => {
     resetClass();
+    setFadeIn(false);
     setSelectFile(files[index]);
     setFileIndex(String(index));
     setDisplayName(files[index].name);
@@ -130,6 +137,7 @@ export default function FileUploadList(props) {
   };
 
   let updateFileTagsDesc = () => {
+    setFadeIn(true);
     handleFileTagsDesc(fileIndex, { tags: selectedTags, description });
   };
 
@@ -164,7 +172,7 @@ export default function FileUploadList(props) {
     <>
       <Container>
         <Row>
-          <Col xs="6">
+          <Col xs="5">
             {preview}
             {selectFile && (
               <Row form className="desc_tags_container">
@@ -197,23 +205,43 @@ export default function FileUploadList(props) {
                   </FormGroup>
                 </Col>
                 <Col md={12}>
-                  <FormGroup>
-                    <Button color="primary" onClick={updateFileTagsDesc}>
-                      Save
-                    </Button>
-                  </FormGroup>
+                  <Row>
+                    <Col md="6">
+                      <FormGroup>
+                        <Button
+                          color="primary"
+                          onClick={updateFileTagsDesc}
+                          block
+                        >
+                          Save
+                        </Button>
+                      </FormGroup>
+                    </Col>
+                    <Col md="6">
+                      <Fade
+                        in={fadeIn}
+                        tag="h6"
+                        className="fade_container mt-2"
+                      >
+                        Saved Changes !!!
+                      </Fade>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             )}
           </Col>
-          <Col xs="6">
+          <Col xs="7">
             {files.length > 0 ? (
               <div className="table-responsive">
-                <table className="table table-fixed">
+                <Table className="upload-list-container">
                   <thead>
                     <tr>
                       <th scope="col" className="name-header">
                         Name
+                      </th>
+                      <th scope="col" className="type-header">
+                        Description
                       </th>
                       <th scope="col" className="type-header">
                         Type
@@ -231,6 +259,7 @@ export default function FileUploadList(props) {
                   </thead>
                   <tbody>
                     {files.map((file, index) => {
+                      console.log(file);
                       let percentageValue;
                       if (allUploadPercentage) {
                         percentageValue = allUploadPercentage[file.name];
@@ -246,6 +275,12 @@ export default function FileUploadList(props) {
                               />
                             )}
                           </th>
+                          <td
+                            className="type-desc"
+                            title={file.description ? file.description : ""}
+                          >
+                            {file.description && file.description}
+                          </td>
                           <td className="type-header">
                             <small>{file.type}</small>
                           </td>
@@ -257,7 +292,10 @@ export default function FileUploadList(props) {
                               className="btn btn-sm btn-primary"
                               onClick={(e) => handlePreview(index, e)}
                             >
-                              <i className="fa fa-eye" aria-hidden="true"></i>
+                              <i
+                                className="fa fa-pencil"
+                                aria-hidden="true"
+                              ></i>
                             </button>
                           </td>
                           <td className="delete-header">
@@ -272,7 +310,7 @@ export default function FileUploadList(props) {
                       );
                     })}
                   </tbody>
-                </table>
+                </Table>
               </div>
             ) : (
               <div className="files_list p-3">
