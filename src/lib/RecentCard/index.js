@@ -50,9 +50,9 @@ export default function RecentCard(props) {
       <Container>
         <Row>
           {result &&
-            result.map((card) => {
+            result.map((card, index) => {
               return (
-                <Col xs="3" key={`${card.upload_name}`}>
+                <Col xs="3" key={index}>
                   <Card className="quick_card">
                     {image.indexOf(card.file_extension) > -1 ? (
                       <CardImg
