@@ -119,7 +119,6 @@ export default function FileUploadList(props) {
       elementsRef.current[index].classList.add("btn-primary");
       elementsRef.current[index].classList.remove("btn-outline-primary");
       setSelectedTags((selectedTags) => [...selectedTags, tag]);
-      console.log(selectedTags);
     } else {
       elementsRef.current[index].classList.remove("btn-primary");
       elementsRef.current[index].classList.add("btn-outline-primary");
@@ -259,7 +258,6 @@ export default function FileUploadList(props) {
                   </thead>
                   <tbody>
                     {files.map((file, index) => {
-                      console.log(file);
                       let percentageValue;
                       if (allUploadPercentage) {
                         percentageValue = allUploadPercentage[file.name];
