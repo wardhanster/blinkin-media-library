@@ -9,6 +9,12 @@
 .th_name {
   width: 200px !important;
 }
+.w-10 {
+  width: 10% !important;
+}
+.w-30 {
+  width: 30% !important;
+}
 .table_header_filename {
   overflow: hidden;
   white-space: nowrap;
