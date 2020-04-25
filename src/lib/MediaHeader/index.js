@@ -43,10 +43,11 @@ export default function MediaHeader(props) {
   };
 
   let handleClearSearch = () => {
-    setSearchText("");
+    setSearchText(null);
     resetElements(fileTypeRef.current);
     setTagVal([]);
     setFileType([]);
+    recentUpdateRef.current = false;
     clearSearch();
   };
 
@@ -62,17 +63,12 @@ export default function MediaHeader(props) {
       fileTypeRef.current[index].classList.add("btn-outline-primary");
       if (fileType.indexOf(file) >= 0) {
         // fileType.splice(fileType.filter((item) => item != "pdf"));
-        setFileType(fileType.filter((item) => item != file));
+        setFileType(fileType.filter((item) => item !== file));
       }
     }
   };
 
   useEffect(() => {
-    // handleSearchSubmit();
-    console.log(tagVal);
-    console.log(fileType);
-    console.log(searchText);
-
     if (
       tagVal.length > 0 ||
       fileType.length > 0 ||
@@ -80,8 +76,6 @@ export default function MediaHeader(props) {
       recentUpdateRef.current
     ) {
       handleSearchSubmit();
-    } else {
-      console.log("am no");
     }
   }, [tagVal, fileType, searchText]);
 
@@ -181,6 +175,7 @@ export default function MediaHeader(props) {
               <Multiselect
                 data={defaultTags}
                 onChange={(value) => handleNewTag(value)}
+                value={tagVal}
               />
             </Col>
           </FormGroup>
