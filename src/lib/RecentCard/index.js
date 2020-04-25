@@ -35,6 +35,7 @@ export default function RecentCard(props) {
     baseUrl,
     loadNewContent,
     handleClick,
+    triggerAfterUpload,
     tags,
   } = props;
   const handleCardTitleClick = (file) => {
@@ -95,6 +96,7 @@ export default function RecentCard(props) {
               uploadFiles={uploadFiles}
               bytesToSize={bytesToSize}
               loadNewContent={loadNewContent}
+              triggerAfterUpload={triggerAfterUpload}
             />
           </Col>
         </Row>
