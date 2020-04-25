@@ -9,7 +9,6 @@ import "./table.css";
 
 let isApiCallSuccess = false;
 let initialLoad = true;
-let scroll;
 
 const snackBar = (status) => {
   return (
@@ -231,7 +230,7 @@ export default function TableItem(props) {
               )}
             </tbody>
           </Table>
-          {noResults && <div className="center">No Results. Please Update</div>}
+          {noResults && <div className="center">No Results Found</div>}
           {loading === true ? <Loading /> : null}
         </>
       )}
