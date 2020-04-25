@@ -7,7 +7,13 @@ import FileUploadList from "./FileUploadList";
 import FilePreviewModal from "./FilePreviewModal";
 
 export default function FileUpload(props) {
-  const { uploadFiles, bytesToSize, loadNewContent, tags } = props;
+  const {
+    uploadFiles,
+    bytesToSize,
+    loadNewContent,
+    tags,
+    triggerAfterUpload,
+  } = props;
 
   let fileInput = useRef(null);
   let [files, setFiles] = useState([]);
@@ -57,7 +63,9 @@ export default function FileUpload(props) {
         setUploadPercentage(null);
         setAllUploadPercentage({});
         setModalStatus((modalStatus) => !modalStatus);
-        loadNewContent();
+        // loadNewContent();
+        triggerAfterUpload(files[0].name);
+        setFiles([]);
       }
     }
   };
