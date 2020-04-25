@@ -13,13 +13,26 @@ let image = [
   "webp",
   "image",
 ];
+let video = [
+  "mpeg",
+  "ogg",
+  "mp2t",
+  "mp4",
+  "webm",
+  "3gpp",
+  "3gpp2",
+  "mp4",
+  "3gp",
+  "x-ms-video",
+  "video",
+];
 function fileshow(file_extension, url) {
   let filePreview;
   if (image.indexOf(file_extension) > -1) {
     filePreview = (
       <img src={url} className="image_preview" alt="preview_image" />
     );
-  } else if (file_extension === "video") {
+  } else if (video.indexOf(file_extension) > -1) {
     filePreview = (
       <video className="preview-video" controls>
         <source src={url} type="video/mp4" />
