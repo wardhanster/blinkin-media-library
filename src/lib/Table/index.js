@@ -70,7 +70,6 @@ export default function TableItem(props) {
   const callAPI = async (search = null) => {
     setLoading(true);
     setShowLoadMoreBtn(true);
-    debugger;
     let { result: data, baseUrl } = await fetchAPI(pageNumRef.current, search);
     try {
       setBaseUrl(baseUrl);
@@ -98,12 +97,16 @@ export default function TableItem(props) {
         }
       } else {
         isApiCallSuccess = false;
-        setLoading(false);
-        setShowMoreDataMsg(true);
-        setShowLoadMoreBtn(false);
-        if (fileList.length <= 0) {
+
+        if (!isApiCallSuccess && pageNumRef.current <= 1) {
           setNoResults(true);
           setShowMoreDataMsg(false);
+          setShowLoadMoreBtn(false);
+          setLoading(false);
+        } else {
+          setLoading(false);
+          setShowMoreDataMsg(true);
+          setShowLoadMoreBtn(false);
         }
       }
     } catch (e) {
@@ -175,6 +178,7 @@ export default function TableItem(props) {
       setFileList([]);
       setLoading(true);
       setShowMoreDataMsg(false);
+      setNoResults(false);
       initialLoad = true;
       pageNumRef.current = 1;
       searchFirst.current = true;
