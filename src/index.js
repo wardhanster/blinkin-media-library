@@ -55,6 +55,11 @@ export default function MediaFileList(props) {
     setSearch(null);
     setsearchClear((searchClear) => true);
   };
+
+  let triggerAfterUpload = (val) => {
+    setsearchClear((searchClear) => val);
+  };
+
   function fontAwesomeIcons(format) {
     let formatType;
 
@@ -124,6 +129,7 @@ export default function MediaFileList(props) {
         baseUrl={newBaseUrl}
         loadNewContent={loadNewContent}
         handleClick={handleClick}
+        triggerAfterUpload={triggerAfterUpload}
       />
       <TableItem
         perPageCount={perPageCount}
