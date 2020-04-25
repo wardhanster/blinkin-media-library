@@ -62,10 +62,19 @@ export default function FileUpload(props) {
         setLoadingMsg(null);
         setUploadPercentage(null);
         setAllUploadPercentage({});
-        setModalStatus((modalStatus) => !modalStatus);
-        // loadNewContent();
-        triggerAfterUpload(files[0].name);
-        setFiles([]);
+        setModalStatus((modalStatus) => false);
+
+        if (fileInput) {
+          fileInput.current.value = null;
+        }
+        triggerAfterUpload(new Date().getTime());
+        expectedPercentage = 0;
+        let newset = [...files];
+        newset.splice(0, newset.length);
+        setFiles(newset);
+        if (document.body.classList.contains("modal-open")) {
+          document.body.classList.remove("modal-open");
+        }
       }
     }
   };
@@ -94,25 +103,29 @@ export default function FileUpload(props) {
 
   return (
     <Container className="fileUploader">
-      <FilePreviewModal
-        className="modal-xl preview-modal"
-        modalStatus={modalStatus}
-        toggle={onToggle}
-        render={() => (
-          <FileUploadList
-            files={files}
-            tags={tags}
-            deleteFile={deleteFile}
-            updateFile={handleOnChange}
-            submitFiles={handleSubmitFiles}
-            fileStatusMsg={loadingMsg}
-            uploadPercentage={uploadPercentage}
-            bytesToSize={bytesToSize}
-            handleFileTagsDesc={handleFileTagsDesc}
-            allUploadPercentage={allUploadPercentage}
-          />
-        )}
-      />
+      {files.length > 0 ? (
+        <FilePreviewModal
+          className="modal-xl preview-modal"
+          modalStatus={modalStatus}
+          toggle={onToggle}
+          render={() => (
+            <FileUploadList
+              files={files}
+              tags={tags}
+              deleteFile={deleteFile}
+              updateFile={handleOnChange}
+              submitFiles={handleSubmitFiles}
+              fileStatusMsg={loadingMsg}
+              uploadPercentage={uploadPercentage}
+              bytesToSize={bytesToSize}
+              handleFileTagsDesc={handleFileTagsDesc}
+              allUploadPercentage={allUploadPercentage}
+            />
+          )}
+        />
+      ) : (
+        ""
+      )}
       <div className="centered-container d-inline">
         <label className="btn btn-default fileLabel">
           <i className="fa fa-cloud-upload fa-3x" aria-hidden="true"></i>
