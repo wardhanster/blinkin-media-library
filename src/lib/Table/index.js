@@ -68,7 +68,7 @@ export default function TableItem(props) {
 
   const callAPI = async (search = null) => {
     setLoading(true);
-    setShowLoadMoreBtn(true);
+    setShowLoadMoreBtn(false);
     let { result: data, baseUrl } = await fetchAPI(pageNumRef.current, search);
     try {
       setBaseUrl(baseUrl);
@@ -90,6 +90,7 @@ export default function TableItem(props) {
         }
         if (data.length >= perPageCount) {
           pageNumRef.current++;
+          setShowLoadMoreBtn(true);
         } else {
           setShowMoreDataMsg(true);
           setShowLoadMoreBtn(false);
@@ -174,6 +175,7 @@ export default function TableItem(props) {
 
   useEffect(() => {
     if (search || searchClear) {
+      setShowLoadMoreBtn(false);
       setFileList([]);
       setLoading(true);
       setShowMoreDataMsg(false);
@@ -182,7 +184,6 @@ export default function TableItem(props) {
       pageNumRef.current = 1;
       searchFirst.current = true;
       callAPI(search);
-      setShowLoadMoreBtn(true);
     }
   }, [search, searchClear]);
 
