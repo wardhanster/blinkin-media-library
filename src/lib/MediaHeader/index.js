@@ -12,7 +12,7 @@ import {
   Label,
 } from "reactstrap";
 
-import { Multiselect } from "react-widgets";
+import Multiselect from "react-widgets/lib/Multiselect";
 import "react-widgets/dist/css/react-widgets.css";
 
 import "./media_header.css";
