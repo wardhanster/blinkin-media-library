@@ -62,12 +62,15 @@ export default function FileUpload(props) {
         setLoadingMsg(null);
         setUploadPercentage(null);
         setAllUploadPercentage({});
-        setModalStatus((modalStatus) => false);
 
         if (fileInput) {
           fileInput.current.value = null;
         }
-        triggerAfterUpload(new Date().getTime());
+        setTimeout(() => {
+          setModalStatus((modalStatus) => false);
+          triggerAfterUpload(new Date().getTime());
+        }, 800);
+
         expectedPercentage = 0;
         let newset = [...files];
         newset.splice(0, newset.length);
