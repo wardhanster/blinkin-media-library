@@ -21,6 +21,7 @@ export default function FileUploadList(props) {
   let [description, setDescription] = useState("");
   let [selectedTags, setSelectedTags] = useState([]);
   const elementsRef = useRef([]);
+  let [uploadType, setUploadType] = useState(false);
 
   const [fadeIn, setFadeIn] = useState(false);
 
@@ -138,6 +139,11 @@ export default function FileUploadList(props) {
   let updateFileTagsDesc = () => {
     setFadeIn(true);
     handleFileTagsDesc(fileIndex, { tags: selectedTags, description });
+  };
+
+  let handleFileUpload = () => {
+    setUploadType((uploadType) => true);
+    submitFiles();
   };
 
   let returnBtnGroup = (selectFile) => {
@@ -328,10 +334,16 @@ export default function FileUploadList(props) {
               className=""
               multiple
               onChange={(e) => updateFile(e, true)}
+              disabled={uploadType}
             />
           </Col>
           <Col>
-            <Button color="primary" className="btn-block" onClick={submitFiles}>
+            <Button
+              color="primary"
+              className="btn-block"
+              onClick={handleFileUpload}
+              disabled={uploadType}
+            >
               Upload
             </Button>
           </Col>
