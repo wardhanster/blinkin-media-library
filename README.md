@@ -117,7 +117,32 @@ since callback will be called for every update on progress percentage handled so
   };
 ```
 
-## Note - only in case of more then perPageCount > n then page number will update (n is set to 4 now) or else it will remain as same page and data will update into next api request
-
-# Need Suggestions 
-### Need to handle perpagecount from props i guess now
+## Handling window key
+```js
+window.String.ML_name || "Name"
+window.String.ML_description || "Description"
+window.String.ML_type || "Type"
+window.String.ML_size || "Size"
+window.String.ML_createdAt || "Created At"
+window.String.ML_copy || "Copy"
+window.String.ML_loadMore || "Load More"
+window.String.ML_noMoreResults || "No More Results"
+window.String.ML_noResultsFound || "No Results Found"
+window.String.ML_browse || "Browse"
+window.String.ML_tags || "Tags"
+window.String.ML_fileType || "File Type"
+window.String.ML_search || "Search"
+window.String.ML_clear || "Clear"
+window.String.ML_quickAccess || "Quick access"
+window.String.ML_edit || "Edit"
+window.String.ML_delete || "Delete"
+window.String.ML_upload || "Upload"
+window.String.ML_imageOrVideoPreview || "Image / Video Preview"
+window.String.ML_save || "Save"
+window.String.ML_max100Character || "Max 100 Character"
+window.String.ML_savedChanges || "Saved Changes"
+window.String.ML_noMoreFilesOrAllFilesUpdated || " No More Files/All Files are Updated"
+window.String.ML_formatNotAbleToLoad || "Format Not able to load"
+window.String.ML_fileFormatNotAbleToLoad || "File Format Not able to load"
+window.String.ML_fileSize || "File Size"
+```
