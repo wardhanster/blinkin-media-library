@@ -210,13 +210,12 @@ export default function TableItem(props) {
           <Table>
             <thead>
               <tr>
-                <th className="th_name">Name</th>
-                <th>Description</th>
-                <th>Type</th>
-                <th>Size</th>
-                <th>Created At</th>
-                <th>Copy</th>
-                {/* <th>Delete</th> */}
+                <th className="th_name">{window.String.ML_name || " Name"}</th>
+                <th>{window.String.ML_description || " Description"}</th>
+                <th>{window.String.ML_type || " Type"}</th>
+                <th>{window.String.ML_size || " Size"}</th>
+                <th>{window.String.ML_createdAt || " Created At"}</th>
+                <th>{window.String.ML_copy || " Copy"}</th>
               </tr>
             </thead>
             <tbody>
@@ -231,7 +230,11 @@ export default function TableItem(props) {
               )}
             </tbody>
           </Table>
-          {noResults && <div className="center">No Results Found</div>}
+          {noResults && (
+            <div className="center">
+              {window.String.ML_noResultsFound || "No Results Found"}
+            </div>
+          )}
           {loading === true ? <Loading /> : null}
         </>
       )}
@@ -239,7 +242,7 @@ export default function TableItem(props) {
       {showLoadMoreBtn ? (
         <div className="text-center load_more_container">
           <Button color="link" onClick={loadNext}>
-            Load More
+            {window.String.ML_loadMore || "Load More"}
           </Button>
         </div>
       ) : (
@@ -247,7 +250,9 @@ export default function TableItem(props) {
       )}
       {showMoreDataMsg ? (
         <div className="no_more p-3 border mb-2">
-          <p className="text-muted text-center mb-0">No More Results</p>
+          <p className="text-muted text-center mb-0">
+            {window.String.ML_noMoreResults || "No More Results"}
+          </p>
         </div>
       ) : (
         ""
