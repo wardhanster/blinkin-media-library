@@ -48,8 +48,9 @@ function fileshow(file_extension, url) {
   } else {
     filePreview = (
       <div className="default_preview">
-        <b className="file_format">{file_extension}</b> File format Not able to
-        load
+        <b className="file_format">{file_extension}</b>{" "}
+        {window.String.ML_fileFormatNotAbleToLoad ||
+          "File Format Not able to load"}
       </div>
     );
   }
@@ -79,7 +80,9 @@ export default function SidePreview(props) {
             <b>{upload_description}</b>
           </CardText>
           <p>
-            <b>File size - {actualSizeInKb}</b>
+            <b>
+              {window.String.ML_fileSize || "File Size"} - {actualSizeInKb}
+            </b>
           </p>
         </CardBody>
       </Card>
