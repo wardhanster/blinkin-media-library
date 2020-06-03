@@ -9,11 +9,20 @@ import {
   FormGroup,
   Label,
   Fade,
-  Table,
+  Table
 } from "reactstrap";
 
 export default function FileUploadList(props) {
-  let { bytesToSize, tags, handleFileTagsDesc, allUploadPercentage } = props;
+  let {
+    bytesToSize,
+    tags,
+    handleFileTagsDesc,
+    allUploadPercentage,
+    files,
+    deleteFile,
+    updateFile,
+    submitFiles
+  } = props;
   let [url, setUrl] = useState(null);
   let [selectFile, setSelectFile] = useState(null);
   let [selectFileType, setSelectFileType] = useState(null);
@@ -22,26 +31,28 @@ export default function FileUploadList(props) {
   let [selectedTags, setSelectedTags] = useState([]);
   const elementsRef = useRef([]);
   let [uploadType, setUploadType] = useState(false);
-
+  let [allFiles, setAllFiles] = useState(files);
   const [fadeIn, setFadeIn] = useState(false);
 
   let [displayName, setDisplayName] = useState();
 
-  let { files, deleteFile, updateFile, submitFiles } = props;
-
   const toggleFade = () => setFadeIn(!fadeIn);
 
   let resetClass = () => {
-    elementsRef.current.forEach((item) => {
-      if (item.classList.contains("btn-primary")) {
-        item.classList.remove("btn-primary");
-        item.classList.add("btn-outline-primary");
-      }
-    });
+    try {
+      elementsRef.current.forEach(item => {
+        if (item.classList.contains("btn-primary")) {
+          item.classList.remove("btn-primary");
+          item.classList.add("btn-outline-primary");
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   let handlePreview = (index, e) => {
-    resetClass();
+    // resetClass();
     setFadeIn(false);
     setSelectFile(files[index]);
     setFileIndex(String(index));
@@ -64,10 +75,11 @@ export default function FileUploadList(props) {
     let indexString = String(index);
     if (fileIndex) {
       if (fileIndex === indexString) {
-        setSelectFileType((selectFileType) => null);
-        setSelectFile((selectFile) => null);
+        setSelectFileType(selectFileType => null);
+        setSelectFile(selectFile => null);
       }
     }
+    elementsRef.current[index] = null;
     deleteFile(index, e);
   };
 
@@ -116,23 +128,7 @@ export default function FileUploadList(props) {
     );
   }
 
-  let handleTags = (tag, index) => {
-    if (elementsRef.current[index].classList.contains("btn-outline-primary")) {
-      elementsRef.current[index].classList.add("btn-primary");
-      elementsRef.current[index].classList.remove("btn-outline-primary");
-      setSelectedTags((selectedTags) => [...selectedTags, tag]);
-    } else {
-      elementsRef.current[index].classList.remove("btn-primary");
-      elementsRef.current[index].classList.add("btn-outline-primary");
-      const tagIndex = selectedTags.indexOf(tag);
-      if (tagIndex > -1) {
-        selectedTags.splice(tagIndex, 1);
-        setSelectedTags(selectedTags);
-      }
-    }
-  };
-
-  let handleDescription = (e) => {
+  let handleDescription = e => {
     setDescription(e.target.value);
     e.preventDefault();
   };
@@ -144,36 +140,46 @@ export default function FileUploadList(props) {
 
   let handleFileUpload = () => {
     // document.querySelectorAll(".disable_btn")[0].disabled = true;
-    setUploadType((uploadType) => true);
-    debugger;
+    setUploadType(uploadType => true);
     submitFiles();
   };
 
-  let returnBtnGroup = (selectFile) => {
-    let returnItem = tags.map((tag, index) => {
-      let classNew;
-      if (selectFile.tags) {
-        classNew = selectedTags.indexOf(tag) >= 0;
-        if (classNew) {
-          elementsRef.current[index].classList.add("btn-primary");
-          elementsRef.current[index].classList.remove("btn-outline-primary");
-        }
-      } else {
-        classNew = false;
+  const handleNewTags = (tag, e) => {
+    e.persist();
+    debugger;
+    if (files[fileIndex].tags.indexOf(tag) > -1) {
+      files[fileIndex].tags.pop(tag);
+      e.target.classList.remove("btn-primary");
+      e.target.classList.add("btn-outline-primary");
+      debugger;
+      const tagIndex = selectFile.tags.indexOf(tag);
+      if (tagIndex > -1) {
+        selectedTags.splice(tagIndex, 1);
+        setSelectedTags(selectedTags);
       }
+    } else {
+      e.target.classList.add("btn-primary");
+      e.target.classList.remove("btn-outline-primary");
+      // files[fileIndex].tags.push(tag);
+      setSelectedTags(selectedTags => [...selectedTags, tag]);
+    }
+  };
+
+  const returnGroup = selectFile => {
+    selectFile["tags"] = selectFile["tags"] ? selectFile["tags"] : [];
+    return tags.map((tag, index) => {
+      let act = selectFile.tags.indexOf(tag) > -1 ? true : false;
       return (
         <button
           key={index}
-          ref={(ref) => (elementsRef.current[index] = ref)}
           type="button"
-          className={"btn btn-outline-primary"}
-          onClick={() => handleTags(tag, index)}
+          className={`${act ? "btn btn-primary" : "btn btn-outline-primary"}`}
+          onClick={e => handleNewTags(tag, e)}
         >
           {tag}
         </button>
       );
     });
-    return returnItem;
   };
 
   return (
@@ -198,7 +204,8 @@ export default function FileUploadList(props) {
                       className="btn-group btn-group-sm tags-container"
                       role="group"
                     >
-                      {returnBtnGroup(selectFile)}
+                      {/* {returnBtnGroup(selectFile)} */}
+                      {returnGroup(selectFile)}
                     </div>
                   </FormGroup>
                 </Col>
@@ -302,7 +309,7 @@ export default function FileUploadList(props) {
                           <td className="view-header text-muted">
                             <button
                               className="btn btn-sm btn-primary"
-                              onClick={(e) => handlePreview(index, e)}
+                              onClick={e => handlePreview(index, e)}
                             >
                               <i
                                 className="fa fa-pencil"
@@ -313,7 +320,7 @@ export default function FileUploadList(props) {
                           <td className="delete-header">
                             <button
                               className="btn btn-danger btn-sm"
-                              onClick={(e) => handleDelete(index, e)}
+                              onClick={e => handleDelete(index, e)}
                             >
                               <i className="fa fa-trash" aria-hidden="true"></i>
                             </button>
@@ -342,7 +349,7 @@ export default function FileUploadList(props) {
               type="file"
               className=""
               multiple
-              onChange={(e) => updateFile(e, true)}
+              onChange={e => updateFile(e, true)}
               disabled={uploadType}
             />
           </Col>
