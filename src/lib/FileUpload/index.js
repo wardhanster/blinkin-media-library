@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Container } from "reactstrap";
 
 import "./fileupload.css";
@@ -12,7 +12,7 @@ export default function FileUpload(props) {
     bytesToSize,
     loadNewContent,
     tags,
-    triggerAfterUpload,
+    triggerAfterUpload
   } = props;
 
   let fileInput = useRef(null);
@@ -22,8 +22,16 @@ export default function FileUpload(props) {
   let [uploadPercentage, setUploadPercentage] = useState(0);
   let [allUploadPercentage, setAllUploadPercentage] = useState({});
 
+  useEffect(() => {
+    if (files.length === 0) {
+      if (fileInput) {
+        fileInput.current.value = null;
+      }
+    }
+  }, [files]);
+
   const deleteFile = useCallback((val, e) => {
-    setFiles((files) => files.filter((file, index) => index !== val));
+    setFiles(files => files.filter((file, index) => index !== val));
   }, []);
 
   const handleOnChange = (e, append = false) => {
@@ -67,7 +75,7 @@ export default function FileUpload(props) {
           fileInput.current.value = null;
         }
         setTimeout(() => {
-          setModalStatus((modalStatus) => false);
+          setModalStatus(modalStatus => false);
           triggerAfterUpload(new Date().getTime());
         }, 800);
 
@@ -92,7 +100,7 @@ export default function FileUpload(props) {
     setLoadingMsg(null);
     setUploadPercentage(null);
     setAllUploadPercentage({});
-    setModalStatus((modalStatus) => !modalStatus);
+    setModalStatus(modalStatus => !modalStatus);
     if (fileInput) {
       fileInput.current.value = null;
     }
@@ -137,7 +145,7 @@ export default function FileUpload(props) {
             ref={fileInput}
             type="file"
             hidden
-            onChange={(e) => handleOnChange(e)}
+            onChange={e => handleOnChange(e)}
             multiple
           />
         </label>
