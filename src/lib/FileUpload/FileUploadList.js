@@ -32,6 +32,7 @@ export default function FileUploadList(props) {
   let [selectedTags, setSelectedTags] = useState([]);
   const elementsRef = useRef([]);
   let [uploadType, setUploadType] = useState(false);
+  let [disableFile, setDisableFile] = useState(false);
   let [allFiles, setAllFiles] = useState(files);
   const [fadeIn, setFadeIn] = useState(false);
 
@@ -100,6 +101,14 @@ export default function FileUploadList(props) {
     }
   }, [selectFile]);
 
+  useEffect(() => {
+    if (files.length <= 0) {
+      setUploadType((uploadType) => true);
+    } else {
+      setUploadType((uploadType) => false);
+    }
+  }, [files]);
+
   let preview;
   if (url) {
     if (selectFileType === "image") {
@@ -142,6 +151,7 @@ export default function FileUploadList(props) {
   let handleFileUpload = () => {
     // document.querySelectorAll(".disable_btn")[0].disabled = true;
     setUploadType((uploadType) => true);
+    setDisableFile((disableFile) => true);
     submitFiles();
   };
 
@@ -364,7 +374,7 @@ export default function FileUploadList(props) {
               className=""
               multiple
               onChange={(e) => updateFile(e, true)}
-              disabled={uploadType}
+              disabled={disableFile}
             />
           </Col>
           <Col>
