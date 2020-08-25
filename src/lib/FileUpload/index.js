@@ -12,7 +12,7 @@ export default function FileUpload(props) {
     bytesToSize,
     loadNewContent,
     tags,
-    triggerAfterUpload
+    triggerAfterUpload,
   } = props;
 
   let fileInput = useRef(null);
@@ -21,6 +21,7 @@ export default function FileUpload(props) {
   let [loadingMsg, setLoadingMsg] = useState(null);
   let [uploadPercentage, setUploadPercentage] = useState(0);
   let [allUploadPercentage, setAllUploadPercentage] = useState({});
+  let [uploadSizeMsg, setUploadSizeMsg] = useState([]);
 
   useEffect(() => {
     if (files.length === 0) {
@@ -31,16 +32,38 @@ export default function FileUpload(props) {
   }, [files]);
 
   const deleteFile = useCallback((val, e) => {
-    setFiles(files => files.filter((file, index) => index !== val));
+    setFiles((files) => files.filter((file, index) => index !== val));
   }, []);
 
   const handleOnChange = (e, append = false) => {
     e.preventDefault();
+    let filesList = Array.from(e.target.files);
+    // let filteredFiles = filesList.filter((file) => file.size < 20000000);
+    function partition(array, isValid) {
+      return array.reduce(
+        ([pass, fail], elem) => {
+          return isValid(elem)
+            ? [[...pass, elem], fail]
+            : [pass, [...fail, elem]];
+        },
+        [[], []]
+      );
+    }
+    let [filteredFiles, filterMsg] = partition(
+      filesList,
+      (e) => e.size < 20000000
+    );
+
+    setUploadSizeMsg(filterMsg);
+
     if (append) {
-      setFiles([...files, ...Array.from(e.target.files)]);
+      setFiles([...files, ...filteredFiles]);
     } else {
-      if (e.target.files.length > 0) {
-        setFiles(Array.from(e.target.files));
+      if (filteredFiles.length > 0) {
+        setFiles(filteredFiles);
+        setModalStatus(true);
+      } else if (filterMsg.length > 0) {
+        debugger;
         setModalStatus(true);
       }
     }
@@ -75,7 +98,7 @@ export default function FileUpload(props) {
           fileInput.current.value = null;
         }
         setTimeout(() => {
-          setModalStatus(modalStatus => false);
+          setModalStatus((modalStatus) => false);
           triggerAfterUpload(new Date().getTime());
         }, 800);
 
@@ -100,7 +123,7 @@ export default function FileUpload(props) {
     setLoadingMsg(null);
     setUploadPercentage(null);
     setAllUploadPercentage({});
-    setModalStatus(modalStatus => !modalStatus);
+    setModalStatus((modalStatus) => !modalStatus);
     if (fileInput) {
       fileInput.current.value = null;
     }
@@ -114,7 +137,7 @@ export default function FileUpload(props) {
 
   return (
     <Container className="fileUploader">
-      {files.length > 0 ? (
+      {files.length > 0 || uploadSizeMsg.length > 0 ? (
         <FilePreviewModal
           className="modal-xl preview-modal"
           modalStatus={modalStatus}
@@ -131,6 +154,7 @@ export default function FileUpload(props) {
               bytesToSize={bytesToSize}
               handleFileTagsDesc={handleFileTagsDesc}
               allUploadPercentage={allUploadPercentage}
+              uploadFilesFailed={uploadSizeMsg}
             />
           )}
         />
@@ -145,7 +169,7 @@ export default function FileUpload(props) {
             ref={fileInput}
             type="file"
             hidden
-            onChange={e => handleOnChange(e)}
+            onChange={(e) => handleOnChange(e)}
             multiple
           />
         </label>
