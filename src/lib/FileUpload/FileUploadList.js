@@ -9,7 +9,8 @@ import {
   FormGroup,
   Label,
   Fade,
-  Table
+  Table,
+  Alert,
 } from "reactstrap";
 
 export default function FileUploadList(props) {
@@ -21,7 +22,7 @@ export default function FileUploadList(props) {
     files,
     deleteFile,
     updateFile,
-    submitFiles
+    submitFiles,
   } = props;
   let [url, setUrl] = useState(null);
   let [selectFile, setSelectFile] = useState(null);
@@ -40,7 +41,7 @@ export default function FileUploadList(props) {
 
   let resetClass = () => {
     try {
-      elementsRef.current.forEach(item => {
+      elementsRef.current.forEach((item) => {
         if (item.classList.contains("btn-primary")) {
           item.classList.remove("btn-primary");
           item.classList.add("btn-outline-primary");
@@ -75,8 +76,8 @@ export default function FileUploadList(props) {
     let indexString = String(index);
     if (fileIndex) {
       if (fileIndex === indexString) {
-        setSelectFileType(selectFileType => null);
-        setSelectFile(selectFile => null);
+        setSelectFileType((selectFileType) => null);
+        setSelectFile((selectFile) => null);
       }
     }
     elementsRef.current[index] = null;
@@ -128,7 +129,7 @@ export default function FileUploadList(props) {
     );
   }
 
-  let handleDescription = e => {
+  let handleDescription = (e) => {
     setDescription(e.target.value);
     e.preventDefault();
   };
@@ -140,7 +141,7 @@ export default function FileUploadList(props) {
 
   let handleFileUpload = () => {
     // document.querySelectorAll(".disable_btn")[0].disabled = true;
-    setUploadType(uploadType => true);
+    setUploadType((uploadType) => true);
     submitFiles();
   };
 
@@ -161,11 +162,11 @@ export default function FileUploadList(props) {
       e.target.classList.add("btn-primary");
       e.target.classList.remove("btn-outline-primary");
       // files[fileIndex].tags.push(tag);
-      setSelectedTags(selectedTags => [...selectedTags, tag]);
+      setSelectedTags((selectedTags) => [...selectedTags, tag]);
     }
   };
 
-  const returnGroup = selectFile => {
+  const returnGroup = (selectFile) => {
     selectFile["tags"] = selectFile["tags"] ? selectFile["tags"] : [];
     return tags.map((tag, index) => {
       let act = selectFile.tags.indexOf(tag) > -1 ? true : false;
@@ -174,7 +175,7 @@ export default function FileUploadList(props) {
           key={index}
           type="button"
           className={`${act ? "btn btn-primary" : "btn btn-outline-primary"}`}
-          onClick={e => handleNewTags(tag, e)}
+          onClick={(e) => handleNewTags(tag, e)}
         >
           {tag}
         </button>
@@ -309,7 +310,7 @@ export default function FileUploadList(props) {
                           <td className="view-header text-muted">
                             <button
                               className="btn btn-sm btn-primary"
-                              onClick={e => handlePreview(index, e)}
+                              onClick={(e) => handlePreview(index, e)}
                             >
                               <i
                                 className="fa fa-pencil"
@@ -320,7 +321,7 @@ export default function FileUploadList(props) {
                           <td className="delete-header">
                             <button
                               className="btn btn-danger btn-sm"
-                              onClick={e => handleDelete(index, e)}
+                              onClick={(e) => handleDelete(index, e)}
                             >
                               <i className="fa fa-trash" aria-hidden="true"></i>
                             </button>
@@ -341,6 +342,19 @@ export default function FileUploadList(props) {
             )}
           </Col>
         </Row>
+        <Row>
+          <Col>
+            {props.uploadFilesFailed.map((file) => {
+              return (
+                <Alert color="warning">
+                  <strong>{file.name}</strong>{" "}
+                  {window.String.ML_fileSizeExit ||
+                    "This file is too large to upload.The maximum supported file size is 20mb"}
+                </Alert>
+              );
+            })}
+          </Col>
+        </Row>
       </Container>
       <Container className="upload-footer p-3">
         <Row>
@@ -349,7 +363,7 @@ export default function FileUploadList(props) {
               type="file"
               className=""
               multiple
-              onChange={e => updateFile(e, true)}
+              onChange={(e) => updateFile(e, true)}
               disabled={uploadType}
             />
           </Col>
