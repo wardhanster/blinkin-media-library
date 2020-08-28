@@ -55,6 +55,7 @@ export default function FileUploadList(props) {
 
   let handlePreview = (index, e) => {
     // resetClass();
+    setUrl(null);
     setFadeIn(false);
     setSelectFile(files[index]);
     setFileIndex(String(index));
