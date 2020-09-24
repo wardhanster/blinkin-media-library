@@ -210,12 +210,12 @@ export default function TableItem(props) {
           <Table>
             <thead>
               <tr>
-                <th className="th_name">{window.String.ML_name || " Name"}</th>
-                <th>{window.String.ML_description || " Description"}</th>
-                <th>{window.String.ML_type || " Type"}</th>
-                <th>{window.String.ML_size || " Size"}</th>
-                <th>{window.String.ML_createdAt || " Created At"}</th>
-                <th>{window.String.ML_copy || " Copy"}</th>
+                <th className="th_name">{window.strings.ML_name || " Name"}</th>
+                <th>{window.strings.ML_description || " Description"}</th>
+                <th>{window.strings.ML_type || " Type"}</th>
+                <th>{window.strings.ML_size || " Size"}</th>
+                <th>{window.strings.ML_createdAt || " Created At"}</th>
+                <th>{window.strings.ML_copy || " Copy"}</th>
               </tr>
             </thead>
             <tbody>
@@ -232,7 +232,7 @@ export default function TableItem(props) {
           </Table>
           {noResults && (
             <div className="center">
-              {window.String.ML_noResultsFound || "No Results Found"}
+              {window.strings.ML_noResultsFound || "No Results Found"}
             </div>
           )}
           {loading === true ? <Loading /> : null}
@@ -242,7 +242,7 @@ export default function TableItem(props) {
       {showLoadMoreBtn ? (
         <div className="text-center load_more_container">
           <Button color="link" onClick={loadNext}>
-            {window.String.ML_loadMore || "Load More"}
+            {window.strings.ML_loadMore || "Load More"}
           </Button>
         </div>
       ) : (
@@ -251,7 +251,7 @@ export default function TableItem(props) {
       {showMoreDataMsg ? (
         <div className="no_more p-3 border mb-2">
           <p className="text-muted text-center mb-0">
-            {window.String.ML_noMoreResults || "No More Results"}
+            {window.strings.ML_noMoreResults || "No More Results"}
           </p>
         </div>
       ) : (

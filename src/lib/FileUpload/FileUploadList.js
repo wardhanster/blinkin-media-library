@@ -127,14 +127,14 @@ export default function FileUploadList(props) {
       preview = (
         <div className="d-flex justify-content-center align-items-center">
           {selectFileType}
-          {window.String.ML_formatNotAbleToLoad || "Format Not able to load"}
+          {window.strings.ML_formatNotAbleToLoad || "Format Not able to load"}
         </div>
       );
     }
   } else {
     preview = (
       <h5 className="d-flex justify-content-center align-items-center">
-        {window.String.ML_imageOrVideoPreview || "Image / Video Preview"}
+        {window.strings.ML_imageOrVideoPreview || "Image / Video Preview"}
       </h5>
     );
   }
@@ -205,12 +205,12 @@ export default function FileUploadList(props) {
                 <Col md={12}>
                   <FormGroup>
                     <Label for="name">
-                      {window.String.ML_name || "Name"} {displayName}
+                      {window.strings.ML_name || "Name"} {displayName}
                     </Label>
                   </FormGroup>
                   <FormGroup>
                     <Label for="tags">
-                      {window.String.ML_tags || "Tags"} -{" "}
+                      {window.strings.ML_tags || "Tags"} -{" "}
                     </Label>
                     <div
                       className="btn-group btn-group-sm tags-container"
@@ -224,8 +224,9 @@ export default function FileUploadList(props) {
                 <Col md={12}>
                   <FormGroup>
                     <Label for="description">
-                      {window.String.ML_description || "Description"} (
-                      {window.String.ML_max100Character || "Max 100 Character"})
+                      {window.strings.ML_description || "Description"} (
+                      {window.strings.ML_max100Character || "Max 100 Character"}
+                      )
                     </Label>
                     <textarea
                       value={description}
@@ -255,7 +256,7 @@ export default function FileUploadList(props) {
                         tag="h6"
                         className="fade_container mt-2"
                       >
-                        {window.String.ML_savedChanges || "Saved Changes"}
+                        {window.strings.ML_savedChanges || "Saved Changes"}
                       </Fade>
                     </Col>
                   </Row>
@@ -270,22 +271,22 @@ export default function FileUploadList(props) {
                   <thead>
                     <tr>
                       <th scope="col" className="name-header">
-                        {window.String.ML_name || "Name"}
+                        {window.strings.ML_name || "Name"}
                       </th>
                       <th scope="col" className="type-header">
-                        {window.String.ML_description || "Description"}
+                        {window.strings.ML_description || "Description"}
                       </th>
                       <th scope="col" className="type-header">
-                        {window.String.ML_type || "Type"}
+                        {window.strings.ML_type || "Type"}
                       </th>
                       <th scope="col" className="size-header">
-                        {window.String.ML_size || "Size"}
+                        {window.strings.ML_size || "Size"}
                       </th>
                       <th scope="col" className="view-header">
-                        {window.String.ML_edit || "Edit"}
+                        {window.strings.ML_edit || "Edit"}
                       </th>
                       <th scope="col" className="delete-header">
-                        {window.String.ML_delete || "Delete"}
+                        {window.strings.ML_delete || "Delete"}
                       </th>
                     </tr>
                   </thead>
@@ -346,7 +347,7 @@ export default function FileUploadList(props) {
             ) : (
               <div className="files_list p-3">
                 <h6 className="text-center text-muted">
-                  {window.String.ML_noMoreFilesOrAllFilesUpdated ||
+                  {window.strings.ML_noMoreFilesOrAllFilesUpdated ||
                     " No More Files/All Files are Updated"}
                 </h6>
               </div>
@@ -359,7 +360,7 @@ export default function FileUploadList(props) {
               return (
                 <Alert color="warning">
                   <strong>{file.name}</strong>{" "}
-                  {window.String.ML_fileSizeExit ||
+                  {window.strings.ML_fileSizeExit ||
                     "This file is too large to upload.The maximum supported file size is 20mb"}
                 </Alert>
               );
@@ -385,7 +386,7 @@ export default function FileUploadList(props) {
               onClick={handleFileUpload}
               disabled={uploadType}
             >
-              {window.String.ML_upload || "Upload"}
+              {window.strings.ML_upload || "Upload"}
             </Button>
           </Col>
         </Row>

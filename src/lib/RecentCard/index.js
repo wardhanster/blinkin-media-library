@@ -48,7 +48,7 @@ export default function RecentCard(props) {
   return (
     <div className="mb-4 mt-2 recent-card">
       <h5 className="text-muted mb-3">
-        {window.String.ML_quickAccess || "Quick access"}
+        {window.strings.ML_quickAccess || "Quick access"}
       </h5>
       <Container>
         <Row>

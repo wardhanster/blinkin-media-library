@@ -164,7 +164,7 @@ export default function FileUpload(props) {
       <div className="centered-container d-inline">
         <label className="btn btn-default fileLabel">
           <i className="fa fa-cloud-upload fa-3x" aria-hidden="true"></i>
-          {window.String.ML_browse || "Browse"}
+          {window.strings.ML_browse || "Browse"}
           <input
             ref={fileInput}
             type="file"

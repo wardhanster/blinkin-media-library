@@ -135,7 +135,7 @@ export default function MediaHeader(props) {
               <Col md={6}>
                 <FormGroup>
                   <Label for="exampleState">
-                    {window.String.ML_fileType || "File Type"}
+                    {window.strings.ML_fileType || "File Type"}
                   </Label>
                   <div className="btn-group  btn-group-sm">{fileTypes()}</div>
                 </FormGroup>
@@ -143,7 +143,7 @@ export default function MediaHeader(props) {
               <Col md="6" className="search_container">
                 <InputGroup className="mt-2 search_holder">
                   <Input
-                    placeholder={window.String.ML_search || "Search"}
+                    placeholder={window.strings.ML_search || "Search"}
                     value={searchText || ""}
                     onChange={(e) => setSearchText(e.target.value)}
                   />
@@ -152,14 +152,14 @@ export default function MediaHeader(props) {
                     addonType="append"
                   >
                     <Button color="primary" onClick={handleSearchSubmit}>
-                      {window.String.ML_search || "Search"}
+                      {window.strings.ML_search || "Search"}
                     </Button>
                     <Button
                       className="clearBtn"
                       color="primary"
                       onClick={handleClearSearch}
                     >
-                      {window.String.ML_clear || "Clear"}
+                      {window.strings.ML_clear || "Clear"}
                     </Button>
                   </InputGroupAddon>
                 </InputGroup>
@@ -171,7 +171,7 @@ export default function MediaHeader(props) {
         <Col md="12" className="mt-2">
           <FormGroup row>
             <Label className="tag_label" sm={1}>
-              {window.String.ML_tags || "Tags"}
+              {window.strings.ML_tags || "Tags"}
             </Label>
             <Col sm={10}>
               <Multiselect
