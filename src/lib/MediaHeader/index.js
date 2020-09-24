@@ -141,7 +141,7 @@ export default function MediaHeader(props) {
                 </FormGroup>
               </Col>
               <Col md="6" className="search_container">
-                <InputGroup className="mt-2 search_holder">
+                <InputGroup className=" search_holder">
                   <Input
                     placeholder={window.strings.ML_search || "Search"}
                     value={searchText || ""}
