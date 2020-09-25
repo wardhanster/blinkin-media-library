@@ -23,7 +23,9 @@ export default function FilePreviewModal(props) {
         className={className}
         backdrop="static"
       >
-        <ModalHeader toggle={toggle}>File Preview</ModalHeader>
+        <ModalHeader toggle={toggle}>
+          {window.strings.ML_filePreview || "File Preview"}
+        </ModalHeader>
         <ModalBody>{props.render()}</ModalBody>
       </Modal>
     </div>
