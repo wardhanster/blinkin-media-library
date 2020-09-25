@@ -120,7 +120,8 @@ export default function FileUploadList(props) {
       preview = (
         <video className="preview-video" controls>
           <source src={url} type="video/mp4" />
-          Your browser does not support the video tag.
+          {window.strings.ML_videoNotSupported ||
+            " Your browser does not support the video tag."}
         </video>
       );
     } else {
