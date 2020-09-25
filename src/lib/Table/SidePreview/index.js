@@ -81,7 +81,7 @@ export default function SidePreview(props) {
           </CardText>
           <p>
             <b>
-              {window.String.ML_fileSize || "File Size"} - {actualSizeInKb}
+              {window.strings.ML_fileSize || "File Size"} - {actualSizeInKb}
             </b>
           </p>
         </CardBody>
