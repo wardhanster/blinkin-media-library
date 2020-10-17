@@ -63,7 +63,6 @@ export default function FileUpload(props) {
         setFiles(filteredFiles);
         setModalStatus(true);
       } else if (filterMsg.length > 0) {
-        debugger;
         setModalStatus(true);
       }
     }
