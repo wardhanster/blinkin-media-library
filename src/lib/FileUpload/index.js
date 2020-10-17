@@ -168,6 +168,7 @@ export default function FileUpload(props) {
           <input
             ref={fileInput}
             type="file"
+            accept="image/jpeg, image/png,image/jpg"
             hidden
             onChange={(e) => handleOnChange(e)}
             multiple

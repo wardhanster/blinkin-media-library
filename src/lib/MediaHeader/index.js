@@ -120,11 +120,23 @@ export default function MediaHeader(props) {
           <Container>
             <Row form>
               <Col md={6}>
-                <FormGroup>
+                {/* <FormGroup>
                   <Label for="filetype" className="mr-1">
                     {window.strings.ML_fileType || "File Type"}
                   </Label>
                   <div className="btn-group  btn-group-sm">{fileTypes()}</div>
+                </FormGroup> */}
+                <FormGroup row>
+                  <Label className="tag_label" sm={2}>
+                    {window.strings.ML_tags || "Tags"}
+                  </Label>
+                  <Col sm={10}>
+                    <Multiselect
+                      data={defaultTags}
+                      onChange={(value) => handleNewTag(value)}
+                      value={tagVal}
+                    />
+                  </Col>
                 </FormGroup>
               </Col>
               <Col md="6" className="search_container">
@@ -155,7 +167,7 @@ export default function MediaHeader(props) {
           </Container>
         </Col>
 
-        <Col md="12" className="mt-2">
+        {/* <Col md="12" className="mt-2">
           <FormGroup row>
             <Label className="tag_label" sm={1}>
               {window.strings.ML_tags || "Tags"}
@@ -168,7 +180,7 @@ export default function MediaHeader(props) {
               />
             </Col>
           </FormGroup>
-        </Col>
+        </Col> */}
       </Row>
     </Container>
   );

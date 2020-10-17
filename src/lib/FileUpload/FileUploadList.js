@@ -159,12 +159,10 @@ export default function FileUploadList(props) {
 
   const handleNewTags = (tag, e) => {
     e.persist();
-    debugger;
     if (files[fileIndex].tags.indexOf(tag) > -1) {
       files[fileIndex].tags.pop(tag);
       e.target.classList.remove("btn-primary");
       e.target.classList.add("btn-outline-primary");
-      debugger;
       const tagIndex = selectFile.tags.indexOf(tag);
       if (tagIndex > -1) {
         selectedTags.splice(tagIndex, 1);
@@ -367,6 +365,12 @@ export default function FileUploadList(props) {
               );
             })}
           </Col>
+          <Col>
+            <b>
+              {window.strings.ML_fileformatwarning ||
+                "Note: Only png,jpeg and jpg accepted"}
+            </b>
+          </Col>
         </Row>
       </Container>
       <Container className="upload-footer p-3">
@@ -375,6 +379,7 @@ export default function FileUploadList(props) {
             <input
               type="file"
               className=""
+              accept="image/jpeg, image/png,image/jpg"
               multiple
               onChange={(e) => updateFile(e, true)}
               disabled={disableFile}
