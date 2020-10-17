@@ -121,7 +121,7 @@ export default function MediaHeader(props) {
             <Row form>
               <Col md={6}>
                 <FormGroup>
-                  <Label for="exampleState">
+                  <Label for="filetype" className="mr-1">
                     {window.strings.ML_fileType || "File Type"}
                   </Label>
                   <div className="btn-group  btn-group-sm">{fileTypes()}</div>
