@@ -378,6 +378,7 @@ export default function FileUploadList(props) {
           <Col>
             <input
               type="file"
+              id="preview_fileInput"
               className=""
               accept="image/jpeg, image/png,image/jpg"
               multiple

@@ -37,39 +37,47 @@ export default function FileUpload(props) {
 
   const handleOnChange = (e, append = false) => {
     e.preventDefault();
-    let files = Array.from(e.target.files);
-    let filesList = files.filter(
+    let orginalFiles = Array.from(e.target.files);
+    let filesList = orginalFiles.filter(
       (file) => acceptFileType.indexOf(file.type) > -1
     );
 
     if (filesList.length <= 0) {
-      Swal.fire("only png,jpg and jpeg is accepted");
-    }
-    function partition(array, isValid) {
-      return array.reduce(
-        ([pass, fail], elem) => {
-          return isValid(elem)
-            ? [[...pass, elem], fail]
-            : [pass, [...fail, elem]];
-        },
-        [[], []]
+      Swal.fire(
+        window.strings.ML_fileformatwarning ||
+          "Note: Only png,jpeg and jpg accepted"
       );
-    }
-    let [filteredFiles, filterMsg] = partition(
-      filesList,
-      (e) => e.size < 20000000
-    );
-
-    setUploadSizeMsg(filterMsg);
-
-    if (append) {
-      setFiles([...files, ...filteredFiles]);
+      if (append) {
+        document.getElementById("preview_fileInput").value = null;
+      }
     } else {
-      if (filteredFiles.length > 0) {
-        setFiles(filteredFiles);
-        setModalStatus(true);
-      } else if (filterMsg.length > 0) {
-        setModalStatus(true);
+      // let filteredFiles = filesList.filter((file) => file.size < 20000000);
+      function partition(array, isValid) {
+        return array.reduce(
+          ([pass, fail], elem) => {
+            return isValid(elem)
+              ? [[...pass, elem], fail]
+              : [pass, [...fail, elem]];
+          },
+          [[], []]
+        );
+      }
+      let [filteredFiles, filterMsg] = partition(
+        filesList,
+        (e) => e.size < 20000000
+      );
+
+      setUploadSizeMsg(filterMsg);
+
+      if (append) {
+        setFiles([...files, ...filteredFiles]);
+      } else {
+        if (filteredFiles.length > 0) {
+          setFiles(filteredFiles);
+          setModalStatus(true);
+        } else if (filterMsg.length > 0) {
+          setModalStatus(true);
+        }
       }
     }
   };
