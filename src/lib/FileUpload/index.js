@@ -1,11 +1,11 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Container } from "reactstrap";
-
+import Swal from "sweetalert2";
 import "./fileupload.css";
 import FileUploadList from "./FileUploadList";
 
 import FilePreviewModal from "./FilePreviewModal";
-
+const acceptFileType = ["image/png", "image/jpeg", "image/jpg"];
 export default function FileUpload(props) {
   const {
     uploadFiles,
@@ -37,8 +37,14 @@ export default function FileUpload(props) {
 
   const handleOnChange = (e, append = false) => {
     e.preventDefault();
-    let filesList = Array.from(e.target.files);
-    // let filteredFiles = filesList.filter((file) => file.size < 20000000);
+    let files = Array.from(e.target.files);
+    let filesList = files.filter(
+      (file) => acceptFileType.indexOf(file.type) > -1
+    );
+
+    if (filesList.length <= 0) {
+      Swal.fire("only png,jpg and jpeg is accepted");
+    }
     function partition(array, isValid) {
       return array.reduce(
         ([pass, fail], elem) => {
