@@ -80,20 +80,7 @@ export default function MediaHeader(props) {
   }, [tagVal, fileType, searchText]);
 
   let fileTypes = () => {
-    let files = [
-      "jpeg",
-      "jpg",
-      "png",
-      "tiff",
-      "mpeg",
-      "mp4",
-      "3gp",
-      "docx",
-      "rtf",
-      "pdf",
-      "ods",
-      "ppt",
-    ];
+    let files = ["jpeg", "jpg", "png"];
     let returnFileType = files.map((file, index) => {
       return (
         <button
