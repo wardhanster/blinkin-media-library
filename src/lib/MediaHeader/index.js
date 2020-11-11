@@ -127,8 +127,8 @@ export default function MediaHeader(props) {
                   <div className="btn-group  btn-group-sm">{fileTypes()}</div>
                 </FormGroup> */}
                 <FormGroup row>
-                  <Label sm={1}>{window.strings.ML_tags || "Tags"}</Label>
-                  <Col sm={10}>
+                  <Label sm={2}>{window.strings.ML_tags || "Tags"}</Label>
+                  <Col sm={9}>
                     <Multiselect
                       data={defaultTags}
                       onChange={(value) => handleNewTag(value)}
