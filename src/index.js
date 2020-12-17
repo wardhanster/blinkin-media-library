@@ -38,7 +38,7 @@ let video = [
   "video",
 ];
 export default function MediaFileList(props) {
-  const { uploadFiles, fetchAPI, sideModal, toggle, tags } = props;
+  const { uploadFiles, fetchAPI, deleteApi, sideModal, toggle, tags } = props;
   let [search, setSearch] = useState(null);
   let [data, setData] = useState(null);
   let [activeModal, setActiveModal] = useState(null);
@@ -138,6 +138,7 @@ export default function MediaFileList(props) {
         searchClear={searchClear}
         search={search}
         fetchAPI={fetchApi}
+        deleteApi={deleteApi}
         handleClick={handleClick}
         bytesToSize={bytesToSize}
       />

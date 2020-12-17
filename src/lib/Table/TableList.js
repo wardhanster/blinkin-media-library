@@ -1,7 +1,15 @@
+import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 
 export default function TableList(props) {
-  let { preview, fileList, bytesToSize, icons, copyClipBoard } = props;
+  let {
+    preview,
+    fileList,
+    bytesToSize,
+    icons,
+    copyClipBoard,
+    deleteApi,
+  } = props;
 
   return fileList.map((file, index) => {
     let filesize = bytesToSize(file.file_size);
@@ -28,6 +36,12 @@ export default function TableList(props) {
             className="fa fa-clone copy-icon"
             aria-hidden="true"
           ></i>
+          <button
+            onClick={() => deleteApi(file)}
+            className="btn btn-link text-danger"
+          >
+            Delete
+          </button>
         </td>
       </tr>
     );

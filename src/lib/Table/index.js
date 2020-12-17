@@ -27,6 +27,7 @@ export default function TableItem(props) {
     icons,
     searchClear,
     perPageCount,
+    deleteApi,
   } = props;
 
   let [activePreviewData, setActivePreviewData] = useState(null);
@@ -226,6 +227,7 @@ export default function TableItem(props) {
                   preview={preview}
                   bytesToSize={bytesToSize}
                   copyClipBoard={copyClipBoard}
+                  deleteApi={deleteApi}
                 />
               )}
             </tbody>
