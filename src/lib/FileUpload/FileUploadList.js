@@ -245,7 +245,7 @@ export default function FileUploadList(props) {
                           onClick={updateFileTagsDesc}
                           block
                         >
-                          Save
+                          {window.strings.saveText || 'Save'}
                         </Button>
                       </FormGroup>
                     </Col>

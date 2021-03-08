@@ -39,7 +39,7 @@ export default function TableList(props) {
             onClick={() => deleteApi(file)}
             className="btn btn-link text-danger"
           >
-            Delete
+            {window.strings.ML_delete || 'Delete'}
           </button>
         </td>
       </tr>
