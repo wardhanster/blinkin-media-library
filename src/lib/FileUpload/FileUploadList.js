@@ -141,7 +141,7 @@ export default function FileUploadList(props) {
     } else if(selectFileType === 'pdf') {
       preview = (
         <div className="ml-preview-pdf">
-          <RenderPdf link={url} />
+          <RenderPdf link={url} color='#20a8d8' />
         </div>
       )
     } else {
