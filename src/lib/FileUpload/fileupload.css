@@ -121,3 +121,7 @@
   overflow: auto;
   display: block;
 }
+
+.ml-preview-pdf {
+  text-align: center;
+}

@@ -23,6 +23,8 @@ export default function FileUploadList(props) {
     deleteFile,
     updateFile,
     submitFiles,
+    acceptFileType,
+    RenderPdf
   } = props;
   let [url, setUrl] = useState(null);
   let [selectFile, setSelectFile] = useState(null);
@@ -53,6 +55,15 @@ export default function FileUploadList(props) {
     }
   };
 
+  const getFileType = (file) => {    
+    const { type } = file
+    if(type.includes('pdf')) {
+      return 'pdf'
+    } else {
+      return file.type.split("/")[0];
+    }    
+  }
+
   let handlePreview = (index, e) => {
     // resetClass();
     setUrl(null);
@@ -60,7 +71,7 @@ export default function FileUploadList(props) {
     setSelectFile(files[index]);
     setFileIndex(String(index));
     setDisplayName(files[index].name);
-    let fileType = files[index].type.split("/")[0];
+    let fileType = getFileType(files[index])
     setSelectFileType(fileType);
     if (files[index].description) {
       setDescription(files[index].description);
@@ -87,6 +98,7 @@ export default function FileUploadList(props) {
   };
 
   useEffect(() => {
+    console.log('selectFileType', selectFileType)
     if (selectFileType === "image") {
       let reader = new FileReader();
       reader.onloadend = () => {
@@ -95,6 +107,8 @@ export default function FileUploadList(props) {
       reader.readAsDataURL(selectFile);
     } else if (selectFileType === "video") {
       setUrl(URL.createObjectURL(selectFile));
+    } else if(selectFileType === 'pdf') {
+      setUrl(URL.createObjectURL(selectFile))
     } else if (selectFileType) {
       setUrl("not_valid");
     } else {
@@ -124,6 +138,12 @@ export default function FileUploadList(props) {
             " Your browser does not support the video tag."}
         </video>
       );
+    } else if(selectFileType === 'pdf') {
+      preview = (
+        <div className="ml-preview-pdf">
+          <RenderPdf link={url} />
+        </div>
+      )
     } else {
       preview = (
         <div className="d-flex justify-content-center align-items-center">
@@ -135,7 +155,7 @@ export default function FileUploadList(props) {
   } else {
     preview = (
       <h5 className="d-flex justify-content-center align-items-center">
-        {window.strings.ML_imageOrVideoPreview || "Image / Video Preview"}
+        {window.strings.ML_imageOrVideoPreview || "File Preview"}
       </h5>
     );
   }
@@ -368,7 +388,7 @@ export default function FileUploadList(props) {
           <Col>
             <b>
               {window.strings.ML_fileformatwarning ||
-                "Note: Only png,jpeg and jpg accepted"}
+                "Note: Only png, jpeg, jpg, pdf and mp4 accepted"}
             </b>
           </Col>
         </Row>
@@ -379,9 +399,9 @@ export default function FileUploadList(props) {
             <input
               type="file"
               id="preview_fileInput"
-              className=""
-              accept="image/jpeg, image/png,image/jpg"
+              className=""              
               multiple
+              accept={acceptFileType.join(',')}
               onChange={(e) => updateFile(e, true)}
               disabled={disableFile}
             />

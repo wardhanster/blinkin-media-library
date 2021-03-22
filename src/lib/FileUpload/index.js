@@ -5,7 +5,10 @@ import "./fileupload.css";
 import FileUploadList from "./FileUploadList";
 
 import FilePreviewModal from "./FilePreviewModal";
-const acceptFileType = ["image/png", "image/jpeg", "image/jpg"];
+const acceptFileType = [
+  "image/png", "image/jpeg", "image/jpg", "application/pdf",
+  "video/mp4"
+];
 export default function FileUpload(props) {
   const {
     uploadFiles,
@@ -13,6 +16,7 @@ export default function FileUpload(props) {
     loadNewContent,
     tags,
     triggerAfterUpload,
+    RenderPdf
   } = props;
 
   let fileInput = useRef(null);
@@ -45,7 +49,7 @@ export default function FileUpload(props) {
     if (filesList.length <= 0) {
       Swal.fire(
         window.strings.ML_fileformatwarning ||
-          "Note: Only png,jpeg and jpg accepted"
+          "Note: Only png, jpeg, jpg, pdf and mp4 accepted"
       );
       if (append) {
         document.getElementById("preview_fileInput").value = null;
@@ -161,8 +165,10 @@ export default function FileUpload(props) {
               tags={tags}
               deleteFile={deleteFile}
               updateFile={handleOnChange}
+              RenderPdf={RenderPdf}
               submitFiles={handleSubmitFiles}
               fileStatusMsg={loadingMsg}
+              acceptFileType={acceptFileType}
               uploadPercentage={uploadPercentage}
               bytesToSize={bytesToSize}
               handleFileTagsDesc={handleFileTagsDesc}
@@ -181,8 +187,8 @@ export default function FileUpload(props) {
           <input
             ref={fileInput}
             type="file"
-            accept="image/jpeg, image/png,image/jpg"
             hidden
+            accept={acceptFileType.join(',')}
             onChange={(e) => handleOnChange(e)}
             multiple
           />
