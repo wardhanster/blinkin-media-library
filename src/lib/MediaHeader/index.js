@@ -135,7 +135,7 @@ export default function MediaHeader(props) {
                   <Label sm={2}>{window.strings.ML_tags || "Tags"}</Label>
                   <Col sm={9}>
                     <Multiselect
-                      // data={defaultTags}
+                      data={defaultTags}
                       allowCreate={'onFilter'}
                       onCreate={(value) => handleNewTag(value, true)}
                       onChange={(value) => handleNewTag(value)}
