@@ -106,11 +106,16 @@ export default function MediaHeader(props) {
     });
   };
 
-  let handleNewTag = (value) => {
+  let handleNewTag = (value, isCreate) => {    
     if (value.length <= 0) {
       recentUpdateRef.current = true;
     }
-    setTagVal(value);
+    if(isCreate) {
+      setTagVal([...tagVal, value]);
+    } else {
+      setTagVal(value)
+    }
+    
   };
 
   return (
@@ -130,7 +135,9 @@ export default function MediaHeader(props) {
                   <Label sm={2}>{window.strings.ML_tags || "Tags"}</Label>
                   <Col sm={9}>
                     <Multiselect
-                      data={defaultTags}
+                      // data={defaultTags}
+                      allowCreate={'onFilter'}
+                      onCreate={(value) => handleNewTag(value, true)}
                       onChange={(value) => handleNewTag(value)}
                       value={tagVal}
                     />
