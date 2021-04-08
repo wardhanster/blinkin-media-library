@@ -66,11 +66,11 @@ export default function FileUploadList(props) {
 
   let handlePreview = (index, e) => {
     // resetClass();
-    setUrl(null);
+    // setUrl(null);
     setFadeIn(false);
     setSelectFile(files[index]);
     setFileIndex(String(index));
-    setDisplayName(files[index].name);
+    setDisplayName(files[index].name);    
     let fileType = getFileType(files[index])
     setSelectFileType(fileType);
     if (files[index].description) {
@@ -97,8 +97,7 @@ export default function FileUploadList(props) {
     deleteFile(index, e);
   };
 
-  useEffect(() => {
-    console.log('selectFileType', selectFileType)
+  useEffect(() => {    
     if (selectFileType === "image") {
       let reader = new FileReader();
       reader.onloadend = () => {
@@ -179,18 +178,16 @@ export default function FileUploadList(props) {
 
   const handleNewTags = (tag, e) => {
     e.persist();
-    if (files[fileIndex].tags.indexOf(tag) > -1) {
-      files[fileIndex].tags.pop(tag);
-      e.target.classList.remove("btn-primary");
-      e.target.classList.add("btn-outline-primary");
-      const tagIndex = selectFile.tags.indexOf(tag);
+    if (selectedTags.indexOf(tag) > -1) {      
+      // files[fileIndex].tags.pop(tag);      
+      const tagIndex = selectedTags.indexOf(tag);
       if (tagIndex > -1) {
-        selectedTags.splice(tagIndex, 1);
-        setSelectedTags(selectedTags);
+        const _tags = selectedTags.slice()
+        _tags.splice(tagIndex, 1);
+        // selectedTags.splice(tagIndex, 1);
+        setSelectedTags(_tags);        
       }
     } else {
-      e.target.classList.add("btn-primary");
-      e.target.classList.remove("btn-outline-primary");
       // files[fileIndex].tags.push(tag);
       setSelectedTags((selectedTags) => [...selectedTags, tag]);
     }
@@ -199,7 +196,7 @@ export default function FileUploadList(props) {
   const returnGroup = (selectFile) => {
     selectFile["tags"] = selectFile["tags"] ? selectFile["tags"] : [];
     return tags.map((tag, index) => {
-      let act = selectFile.tags.indexOf(tag) > -1 ? true : false;
+      let act = selectedTags.indexOf(tag) > -1 ? true : false;
       return (
         <button
           key={index}

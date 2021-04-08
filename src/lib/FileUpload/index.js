@@ -147,9 +147,10 @@ export default function FileUpload(props) {
   };
 
   let handleFileTagsDesc = (index, data) => {
-    files[index].tags = data.tags;
-    files[index].description = data.description;
-    setFiles(files);
+    const _files = files.slice()
+    _files[index].tags = data.tags;
+    _files[index].description = data.description;
+    setFiles(_files);
   };
 
   return (
