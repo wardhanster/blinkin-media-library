@@ -10,11 +10,12 @@ import {
 } from "reactstrap";
 
 import Multiselect from "react-widgets/lib/Multiselect";
+import DateRange from '../DateRange';
 import "react-widgets/dist/css/react-widgets.css";
 import "./media_header.css";
 
 export default function MediaHeader(props) {
-  let { searchCallback, clearSearch, defaultTags, isPublicImagesTab, DateRange } = props;
+  let { searchCallback, clearSearch, defaultTags, isPublicImagesTab } = props;
 
   let [fileType, setFileType] = useState([]);
   let [searchText, setSearchText] = useState(null);

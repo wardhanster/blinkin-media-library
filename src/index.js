@@ -38,7 +38,7 @@ let video = [
   "video",
 ];
 export default function MediaFileList(props) {
-  const { uploadFiles, fetchAPI, deleteApi, sideModal, toggle, tags, RenderPdf, DateRange } = props;
+  const { uploadFiles, fetchAPI, deleteApi, sideModal, toggle, tags, RenderPdf } = props;
   let [search, setSearch] = useState(null);
   let [data, setData] = useState(null);
   let [activeModal, setActiveModal] = useState(null);
@@ -162,7 +162,6 @@ export default function MediaFileList(props) {
         defaultTags={tags}
         searchCallback={searchTerms}
         clearSearch={loadNewContent}
-        DateRange={DateRange}
       />
       <RecentCard
         tags={tags}
@@ -198,7 +197,6 @@ export default function MediaFileList(props) {
           defaultTags={tags}
           searchCallback={searchTerms}
           clearSearch={loadNewContent}
-          DateRange={DateRange}
           isPublicImagesTab
       />
       <RecentCard
