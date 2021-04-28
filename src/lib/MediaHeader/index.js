@@ -4,42 +4,54 @@ import {
   Row,
   Col,
   InputGroup,
-  InputGroupAddon,
   Button,
   Input,
-  Container,
-  FormGroup,
-  Label,
+  Container, 
 } from "reactstrap";
 
 import Multiselect from "react-widgets/lib/Multiselect";
 import "react-widgets/dist/css/react-widgets.css";
-
 import "./media_header.css";
 
 export default function MediaHeader(props) {
-  let { searchCallback, clearSearch, defaultTags } = props;
+  let { searchCallback, clearSearch, defaultTags, isPublicImagesTab, DateRange } = props;
 
   let [fileType, setFileType] = useState([]);
   let [searchText, setSearchText] = useState(null);
   let [tagVal, setTagVal] = useState([]);
+  let [ filterParams, setFilterParams ] = useState({});
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [clear, setClear] = useState(false);
 
   const fileTypeRef = useRef([]);
   const recentUpdateRef = useRef(false);
 
   let handleSearchSubmit = () => {
-    let searchTerms = {};
-    if (searchText) {
-      searchTerms["search"] = searchText;
-    }
+    let searchFilter = { ...filterParams };
+
     if (tagVal.length > 0) {
-      searchTerms["tags"] = tagVal;
-    }
-    if (fileType.length > 0) {
-      searchTerms["file_extension"] = fileType;
+      searchFilter["tags"] = tagVal;
     }
 
-    searchCallback(searchTerms);
+    if (fileType.length > 0) {
+      searchFilter["file_extension"] = fileType;
+    }
+
+    let created_at;
+    if (startDate) {
+      created_at = startDate;
+    }
+
+    if (endDate) {
+      created_at += " to " + endDate;
+    }
+
+    if (created_at) {
+      searchFilter = { ...filterParams, created_at };
+    }
+
+    searchCallback(searchFilter);
   };
 
   let handleClearSearch = () => {
@@ -97,6 +109,21 @@ export default function MediaHeader(props) {
     return returnFileType;
   };
 
+  const handleFilterChange = (key, value) => {
+
+    const updatedFilterParams = { ...filterParams, [key]: value };
+    console.log(updatedFilterParams)
+    setFilterParams(updatedFilterParams);
+  }
+
+  const handleDate = (date, type) => {
+    if (type === "start") {
+      setStartDate(date);
+    } else if (type === "end") {
+      setEndDate(date);
+    }
+  };
+
   let resetElements = (elements) => {
     elements.forEach((element) => {
       if (element.classList.contains("btn-primary")) {
@@ -122,70 +149,76 @@ export default function MediaHeader(props) {
     <Container className="media_header">
       <Row className="media_header_title mb-2 pt-3 justify-content-between">
         <Col xs="12">
-          <Container>
-            <Row form>
-              <Col md={6}>
-                {/* <FormGroup>
-                  <Label for="filetype" className="mr-1">
-                    {window.strings.ML_fileType || "File Type"}
-                  </Label>
-                  <div className="btn-group  btn-group-sm">{fileTypes()}</div>
-                </FormGroup> */}
-                <FormGroup className='d-flex-imp' row>
-                  <Label sm={2}>{window.strings.ML_tags || "Tags"}</Label>
-                  <Col sm={9}>
-                    <Multiselect
+          <Row className="">
+          <div className="ml-3 small col-lg-4 mb-2">
+            <h6 className="d-flex font-weight-bold text-muted">
+              {window.strings.ML_FileName || "File Name"}
+            </h6>
+            <Input
+                placeholder={window.strings.ML_FileName || "File Name"}
+                value={filterParams["upload_name"] || ""}
+                onChange={(e) => handleFilterChange('upload_name', e.target.value)}
+            />
+          </div>
+          <div className={`ml-3 small ${isPublicImagesTab ? "col-lg-3" : "col-lg-4"} mb-2` }>
+            <h6 className="d-flex font-weight-bold text-muted">
+              {window.strings.ML_extention || "Extention"}
+            </h6>
+            <Input
+                placeholder={window.strings.ML_extention || "Extention"}
+                value={filterParams["file_extension"] || ""}
+                onChange={(e) => handleFilterChange('file_extension', e.target.value)}
+              />
+          </div>
+          { isPublicImagesTab && 
+          (<div className="ml-3 small col-lg-3 mb-2">
+            <h6 className="d-flex font-weight-bold text-muted">
+              {window.strings.ML_uploadedBy || "Uploaded By"}
+            </h6>
+            <Input
+                        placeholder={window.strings.ML_uploadedBy || "Uploaded By"}
+                        value={filterParams["uploader_name"] || ""}
+                        onChange={(e) => handleFilterChange('uploader_name', e.target.value)}
+            />
+          </div>)
+          }
+          <div className="ml-3 small col-lg-4 mb-2">
+            <h6 className="d-flex font-weight-bold text-muted">
+              {window.strings.ML_uplodedOn || "Uploaded On"}
+            </h6>
+            <DateRange clear={clear} handleDate={handleDate} />
+          </div>
+          <div className="ml-3 small col-lg-4 mb-2">
+            <h6 className="d-flex font-weight-bold text-muted">
+              {window.strings.ML_tags || "Tags"}
+            </h6>
+            <Multiselect
                       data={defaultTags}
-                      allowCreate={'onFilter'}
-                      onCreate={(value) => handleNewTag(value, true)}
                       onChange={(value) => handleNewTag(value)}
                       value={tagVal}
-                    />
-                  </Col>
-                </FormGroup>
-              </Col>
-              <Col md="6" className="search_container">
-                <InputGroup className=" search_holder">
-                  <Input
-                    placeholder={window.strings.ML_search || "Search"}
-                    value={searchText || ""}
-                    onChange={(e) => setSearchText(e.target.value)}
-                  />
-                  <InputGroupAddon
-                    className="clearSearchBtn"
-                    addonType="append"
-                  >
-                    <Button color="primary" onClick={handleSearchSubmit}>
-                      {window.strings.ML_search || "Search"}
-                    </Button>
-                    <Button
-                      className="clearBtn"
-                      color="primary"
-                      onClick={handleClearSearch}
-                    >
-                      {window.strings.ML_clear || "Clear"}
-                    </Button>
-                  </InputGroupAddon>
-                </InputGroup>
-              </Col>
-            </Row>
-          </Container>
+            />
+          </div>
+      </Row>
+      <div className="row ml-2">
+            <InputGroup className="">
+              <Button
+                color="primary" 
+                className="d-flex ml-2"
+                size="sm" 
+                onClick={handleSearchSubmit}>
+                {window.strings.ML_search || "Search"}
+              </Button>
+              <Button
+                className="d-flex ml-3 clearBtn"
+                size="sm"
+                color="primary"
+                onClick={handleClearSearch}
+              >
+                {window.strings.ML_clear || "Clear"}
+              </Button>
+            </InputGroup>
+      </div>
         </Col>
-
-        {/* <Col md="12" className="mt-2">
-          <FormGroup row>
-            <Label className="tag_label" sm={1}>
-              {window.strings.ML_tags || "Tags"}
-            </Label>
-            <Col sm={10}>
-              <Multiselect
-                data={defaultTags}
-                onChange={(value) => handleNewTag(value)}
-                value={tagVal}
-              />
-            </Col>
-          </FormGroup>
-        </Col> */}
       </Row>
     </Container>
   );

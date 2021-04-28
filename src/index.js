@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import MediaHeader from "./lib/MediaHeader";
 import TableItem from "./lib/Table";
 import RecentCard from "./lib/RecentCard";
-import { Container } from "reactstrap";
+import { Container, TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col } from "reactstrap";
 
 // function to convert byte to KB/MB/GB/TB
 function bytesToSize(bytes) {
@@ -38,14 +38,20 @@ let video = [
   "video",
 ];
 export default function MediaFileList(props) {
-  const { uploadFiles, fetchAPI, deleteApi, sideModal, toggle, tags, RenderPdf } = props;
+  const { uploadFiles, fetchAPI, deleteApi, sideModal, toggle, tags, RenderPdf, DateRange } = props;
   let [search, setSearch] = useState(null);
   let [data, setData] = useState(null);
   let [activeModal, setActiveModal] = useState(null);
   let [recentData, setRecentData] = useState(null);
   let [searchClear, setsearchClear] = useState(false);
   let [newBaseUrl, setNewBaseUrl] = useState(null);
+  const [activeTab, setActiveTab] = useState('ownFiles');
+
   let perPageCount = 4;
+
+  const toggleTabs = tab => {
+    if(activeTab !== tab) setActiveTab(tab);
+  }
 
   let searchTerms = (search) => {
     setSearch(search);
@@ -96,8 +102,25 @@ export default function MediaFileList(props) {
     }
   };
 
-  let fetchApi = async (pagenum, search) => {
-    let response = await fetchAPI(pagenum, search);
+  let fetchOwnFilesApi = async (pagenum, search) => {
+    let response = await fetchAPI(pagenum, search, false);
+    let result = response.data;
+    let baseUrl = response.baseUrl;
+    if (!recentData && result) {
+      if (result.length > 3) {
+        setRecentData(result.slice(0, 3));
+        setNewBaseUrl(baseUrl);
+      }
+    }
+
+    return {
+      result,
+      baseUrl,
+    };
+  };
+
+  let fetchPublicFilesApi = async (pagenum, search) => {
+    let response = await fetchAPI(pagenum, search, true);
     let result = response.data;
     let baseUrl = response.baseUrl;
     if (!recentData && result) {
@@ -114,11 +137,32 @@ export default function MediaFileList(props) {
   };
 
   return (
-    <Container>
+    <Container className="p-3 mt-3 bg-white border">
+      <Nav tabs>
+      <NavItem>
+          <NavLink
+            className={`${activeTab === 'ownFiles'  && "active"}`}
+            onClick={() => { toggleTabs('ownFiles'); }}
+          >
+            Own Files
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            className={`${activeTab === 'globalFiles' && "active"} `}
+            onClick={() => { toggleTabs('globalFiles'); }}
+          >
+            Global Files
+          </NavLink>
+        </NavItem>        
+      </Nav>
+      <TabContent activeTab={activeTab}>
+      <TabPane tabId="ownFiles">
       <MediaHeader
         defaultTags={tags}
         searchCallback={searchTerms}
         clearSearch={loadNewContent}
+        DateRange={DateRange}
       />
       <RecentCard
         tags={tags}
@@ -138,7 +182,7 @@ export default function MediaFileList(props) {
         baseUrl={baseUrl}
         searchClear={searchClear}
         search={search}
-        fetchAPI={fetchApi}
+        fetchAPI={fetchOwnFilesApi}
         deleteApi={deleteApi}
         handleClick={handleClick}
         bytesToSize={bytesToSize}
@@ -148,6 +192,45 @@ export default function MediaFileList(props) {
           data,
           `${data.props.data.upload_name} - ${data.props.data.actualSizeInKb}`
         )}
+        </TabPane>
+        <TabPane tabId="globalFiles">
+        <MediaHeader
+          defaultTags={tags}
+          searchCallback={searchTerms}
+          clearSearch={loadNewContent}
+          DateRange={DateRange}
+          isPublicImagesTab
+      />
+      <RecentCard
+        tags={tags}
+        icons={fontAwesomeIcons}
+        result={recentData}
+        RenderPdf={RenderPdf}
+        uploadFiles={uploadFiles}
+        bytesToSize={bytesToSize}
+        baseUrl={newBaseUrl}
+        loadNewContent={loadNewContent}
+        handleClick={handleClick}
+        triggerAfterUpload={triggerAfterUpload}
+      />
+      <TableItem
+        perPageCount={perPageCount}
+        icons={fontAwesomeIcons}
+        baseUrl={baseUrl}
+        searchClear={searchClear}
+        search={search}
+        fetchAPI={fetchPublicFilesApi}
+        deleteApi={deleteApi}
+        handleClick={handleClick}
+        bytesToSize={bytesToSize}
+      />
+      {activeModal &&
+        sideModal(
+          data,
+          `${data.props.data.upload_name} - ${data.props.data.actualSizeInKb}`
+        )}
+        </TabPane>
+      </TabContent>
     </Container>
   );
 }

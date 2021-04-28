@@ -70,7 +70,8 @@ export default function TableItem(props) {
   const callAPI = async (search = null) => {
     setLoading(true);
     setShowLoadMoreBtn(false);
-    let { result: data, baseUrl } = await fetchAPI(pageNumRef.current, search);
+    let dsfdsf= await fetchAPI(pageNumRef.current, search);
+    const { result: data, baseUrl }  = dsfdsf;
     try {
       setBaseUrl(baseUrl);
       if (data.length > 0) {
@@ -85,7 +86,6 @@ export default function TableItem(props) {
           // setFileList((fileList) => [...fileList, ...data]);
           // Remove duplicates in case if exist
           let newFiles = [...fileList, ...data];
-          console.log(newFiles);
           let newfileList = removeDuplicates(newFiles);
           setFileList((fileList) => newfileList);
         }
@@ -208,8 +208,9 @@ export default function TableItem(props) {
         <Loading />
       ) : (
         <>
-          <Table>
-            <thead>
+        <div className="table-responsive mt-3 mb-3  ">
+          <Table className="table-outline mb-0 d-none d-sm-table table table-hover overflow-auto">
+            <thead className="thead-light text-left">
               <tr>
                 <th className="th_name">{window.strings.ML_name || " Name"}</th>
                 <th>{window.strings.ML_description || " Description"}</th>
@@ -238,6 +239,7 @@ export default function TableItem(props) {
             </div>
           )}
           {loading === true ? <Loading /> : null}
+          </div>
         </>
       )}
 
@@ -249,7 +251,7 @@ export default function TableItem(props) {
         </div>
       ) : (
         ""
-      )}
+      )} 
       {showMoreDataMsg ? (
         <div className="no_more p-3 border mb-2">
           <p className="text-muted text-center mb-0">

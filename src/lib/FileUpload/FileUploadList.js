@@ -11,6 +11,7 @@ import {
   Fade,
   Table,
   Alert,
+  Input
 } from "reactstrap";
 
 export default function FileUploadList(props) {
@@ -32,6 +33,7 @@ export default function FileUploadList(props) {
   let [fileIndex, setFileIndex] = useState(null);
   let [description, setDescription] = useState("");
   let [selectedTags, setSelectedTags] = useState([]);
+  let [makePublic, setMakePublic] = useState(false);
   const elementsRef = useRef([]);
   let [uploadType, setUploadType] = useState(false);
   let [disableFile, setDisableFile] = useState(false);
@@ -82,6 +84,12 @@ export default function FileUploadList(props) {
       setSelectedTags(files[index].tags);
     } else {
       setSelectedTags([]);
+    }
+
+    if (files[index].is_global) {
+      setMakePublic(files[index].is_global || false);
+    } else {
+      setMakePublic(false);
     }
   };
 
@@ -166,7 +174,7 @@ export default function FileUploadList(props) {
 
   let updateFileTagsDesc = () => {
     setFadeIn(true);
-    handleFileTagsDesc(fileIndex, { tags: selectedTags, description });
+    handleFileTagsDesc(fileIndex, { tags: selectedTags, description, makePublic });
   };
 
   let handleFileUpload = () => {
@@ -252,6 +260,17 @@ export default function FileUploadList(props) {
                       rows="3"
                     ></textarea>
                   </FormGroup>
+                </Col>
+                <Col className="md-12 ml-3">
+                <FormGroup row>
+                  <FormGroup check>
+                    <Label check>
+                      <Input checked={makePublic}
+                      onChange={(e) => setMakePublic(e.target.checked)} type="checkbox" id="makePublic" />{' '}
+                      {window.strings.ML_makePublic || "Allow others to see ?"}
+                    </Label>
+                  </FormGroup>
+                </FormGroup>
                 </Col>
                 <Col md={12}>
                   <Row>

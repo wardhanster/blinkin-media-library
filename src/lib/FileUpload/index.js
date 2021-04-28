@@ -150,6 +150,7 @@ export default function FileUpload(props) {
     const _files = files.slice()
     _files[index].tags = data.tags;
     _files[index].description = data.description;
+    _files[index].is_global = data.makePublic;
     setFiles(_files);
   };
 
