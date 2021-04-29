@@ -57,11 +57,13 @@ export default function MediaHeader(props) {
 
   let handleClearSearch = () => {
     setSearchText(null);
+    setFilterParams({})
     resetElements(fileTypeRef.current);
     setTagVal([]);
     setFileType([]);
     recentUpdateRef.current = false;
     clearSearch();
+    searchCallback({});
   };
 
   let handleFileType = (file, index) => {
@@ -189,7 +191,7 @@ export default function MediaHeader(props) {
             </h6>
             <DateRange clear={clear} handleDate={handleDate} />
           </div>
-          <div className="ml-3 small col-lg-4 mb-2">
+          <div className="ml-3 small col-lg-4 mb-2 tags-dropdown-container">
             <h6 className="d-flex font-weight-bold text-muted">
               {window.strings.ML_tags || "Tags"}
             </h6>

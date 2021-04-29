@@ -49,3 +49,7 @@
 .d-flex-imp {
   display: flex !important;
 }
+
+.tags-dropdown-container .rw-multiselect{
+  padding: 0;
+}
