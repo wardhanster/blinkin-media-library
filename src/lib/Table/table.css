@@ -65,6 +65,11 @@
 }
 
 .action-icon {cursor: pointer;}
+.main-header-30{ width: 30% !important;}
+.main-header-20{ width: 20% !important;}
+.main-header-15{ width: 15% !important;}
+.main-header-10{ width: 10% !important;}
+.data-table{ table-layout: fixed;}
 /* Animations to fade the snackbar in and out */
 @-webkit-keyframes fadein {
   from {

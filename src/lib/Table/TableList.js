@@ -15,7 +15,7 @@ export default function TableList(props) {
     let filesize = bytesToSize(file.file_size);
     return (
       <tr key={index}>
-        <th scope="row" color="primary" className="table_header_filename">
+        <td scope="row" color="primary" className="table_header_filename">
           <i className={icons(file.file_extension)} aria-hidden="true"></i>
           <span
             className="file_name_preview"
@@ -24,8 +24,8 @@ export default function TableList(props) {
           >
             {file.upload_name}
           </span>
-        </th>
-        <td>{file.upload_description}</td>
+        </td>
+        <td className="table_header_filename">{file.upload_description}</td>
         <td>{file.file_extension}</td>
         <td>{filesize}</td>
         <td>{file.created_at}</td>
