@@ -56,7 +56,7 @@ export default function TableItem(props) {
 
   useEffect(() => {
     if (activePreviewData) {
-      handleClick(<SidePreview data={activePreviewData} />, () => {
+      handleClick(<SidePreview downloadAsset={downloadAsset} data={activePreviewData} />, () => {
         setActivePreviewData(null);
       });
     }

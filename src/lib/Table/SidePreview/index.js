@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardText, CardBody, CardTitle } from "reactstrap";
+import { Card, CardText, CardBody, CardTitle, Button } from "reactstrap";
 
 import "./sidepreview.css";
 let image = [
@@ -84,6 +84,10 @@ export default function SidePreview(props) {
               {window.strings.ML_fileSize || "File Size"} - {actualSizeInKb}
             </b>
           </p>
+          <Button onClick={() => props.downloadAsset(url)} className="btn btn-sm">Download <i
+            className="fa fa-download"
+            aria-hidden="true"
+          ></i> </Button>
         </CardBody>
       </Card>
     </>
