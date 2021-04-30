@@ -171,6 +171,7 @@ export default function MediaFileList(props) {
         uploadFiles={uploadFiles}
         bytesToSize={bytesToSize}
         baseUrl={newBaseUrl}
+        downloadAsset={downloadAsset}
         loadNewContent={loadNewContent}
         handleClick={handleClick}
         triggerAfterUpload={triggerAfterUpload}

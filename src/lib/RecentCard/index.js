@@ -43,7 +43,7 @@ export default function RecentCard(props) {
     file.actualSizeInKb = bytesToSize(file.file_size);
     file.url = `${baseUrl}${file.file_url}`;
     file.random = Math.random();
-    handleClick(<SidePreview data={file} />);
+    handleClick(<SidePreview downloadAsset={props.downloadAsset} data={file} />);
   };
 
   return (
