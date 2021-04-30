@@ -64,6 +64,7 @@
   animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
 
+.action-icon {cursor: pointer;}
 /* Animations to fade the snackbar in and out */
 @-webkit-keyframes fadein {
   from {

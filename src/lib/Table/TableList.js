@@ -39,13 +39,13 @@ export default function TableList(props) {
           <i
             title="Delete"
             onClick={() => deleteApi(file)}
-            className="fa fa-trash text-danger  mr-2"
+            className="fa fa-trash text-danger action-icon  mr-2"
             aria-hidden="true"
           ></i>
           <i
             title="Delete"
             onClick={() => downloadAsset(file.file_url)}
-            className="fa fa-download"
+            className="fa fa-download action-icon"
             aria-hidden="true"
           ></i>
         </td>
