@@ -37,19 +37,19 @@ export default function TableList(props) {
             className="fa fa-clone copy-icon mr-2"
             aria-hidden="true"
           ></i>
-          <i
+         {!isGlobal && ( <i
             title="Delete"
             onClick={() => deleteApi(file)}
             className="fa fa-trash text-danger action-icon  mr-2"
             aria-hidden="true"
-          ></i>
-          {!isGlobal && (<i
+          ></i>) } 
+          <i
             title="Download"
             onClick={() => downloadAsset(file.file_url)}
             className="fa fa-download action-icon"
             aria-hidden="true"
           >
-          </i>) }          
+          </i>         
         </td>
       </tr>
     );
