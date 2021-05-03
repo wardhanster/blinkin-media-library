@@ -218,6 +218,7 @@ export default function MediaFileList(props) {
         perPageCount={perPageCount}
         icons={fontAwesomeIcons}
         baseUrl={baseUrl}
+        downloadAsset={downloadAsset}
         searchClear={searchClear}
         search={search}
         fetchAPI={fetchPublicFilesApi}
