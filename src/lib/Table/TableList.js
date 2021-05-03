@@ -43,7 +43,7 @@ export default function TableList(props) {
             className="fa fa-trash text-danger action-icon  mr-2"
             aria-hidden="true"
           ></i>
-          {isGlobal && (<i
+          {!isGlobal && (<i
             title="Download"
             onClick={() => downloadAsset(file.file_url)}
             className="fa fa-download action-icon"
