@@ -57,11 +57,13 @@ export default function MediaHeader(props) {
 
   let handleClearSearch = () => {
     setSearchText(null);
+    setFilterParams({})
     resetElements(fileTypeRef.current);
     setTagVal([]);
     setFileType([]);
     recentUpdateRef.current = false;
     clearSearch();
+    searchCallback({});
   };
 
   let handleFileType = (file, index) => {
