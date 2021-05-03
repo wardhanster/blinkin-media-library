@@ -9,7 +9,8 @@ export default function TableList(props) {
     copyClipBoard,
     deleteApi,
     downloadAsset,
-    isGlobal
+    isGlobal,
+    baseUrl
   } = props;
 
   return fileList.map((file, index) => {
@@ -45,7 +46,7 @@ export default function TableList(props) {
           ></i>) } 
           <i
             title="Download"
-            onClick={() => downloadAsset(file.file_url)}
+            onClick={() => downloadAsset(baseUrl+file.file_url)}
             className="fa fa-download action-icon"
             aria-hidden="true"
           >

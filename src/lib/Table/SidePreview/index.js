@@ -65,7 +65,7 @@ export default function SidePreview(props) {
     file_extension,
     url,
   } = props.data;
-
+console.log(url)
   return (
     <>
       <Card>
