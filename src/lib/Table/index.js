@@ -28,7 +28,8 @@ export default function TableItem(props) {
     searchClear,
     perPageCount,
     deleteApi,
-    downloadAsset
+    downloadAsset,
+    isGlobal
   } = props;
 
   let [activePreviewData, setActivePreviewData] = useState(null);
@@ -207,14 +208,14 @@ export default function TableItem(props) {
     <>
       {mainLoading ? (
         <Loading />
-      ) : (
+      ) : ( 
         <>
         <div className="table-responsive mt-3 mb-3  ">
           <Table className="table-outline mb-0 d-none d-sm-table table table-hover overflow-auto data-table">
             <thead className="thead-light text-left">
               <tr>
                 <th className="th_name main-header-35">{window.strings.ML_name || " Name"}</th>
-                <th className="main-header-20">{window.strings.ML_description || " Description"}</th>
+                <th className="main-header-20">{isGlobal ? window.strings.ML_uploadedBy || " Uploaded By" : window.strings.ML_description || " Description"  }</th>
                 <th className="main-header-10">{window.strings.ML_type || " Type"}</th>
                 <th className="main-header-10">{window.strings.ML_size || " Size"}</th>
                 <th className="main-header-15">{window.strings.ML_createdAt || " Created At"}</th>
@@ -232,6 +233,7 @@ export default function TableItem(props) {
                   bytesToSize={bytesToSize}
                   copyClipBoard={copyClipBoard}
                   deleteApi={deleteApi}
+                  isGlobal={isGlobal}
                 />
               )}
             </tbody>

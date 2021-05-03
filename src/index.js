@@ -42,7 +42,8 @@ export default function MediaFileList(props) {
   let [search, setSearch] = useState(null);
   let [data, setData] = useState(null);
   let [activeModal, setActiveModal] = useState(null);
-  let [recentData, setRecentData] = useState(null);
+  let [recentOwnAssetsData, setRecentOwnAssetsData] = useState(null);
+  let [recentPublicAssetsData, setRecentPublicAssetsData] = useState(null);
   let [searchClear, setsearchClear] = useState(false);
   let [newBaseUrl, setNewBaseUrl] = useState(null);
   const [activeTab, setActiveTab] = useState('ownFiles');
@@ -106,9 +107,9 @@ export default function MediaFileList(props) {
     let response = await fetchAPI(pagenum, search, false);
     let result = response.data;
     let baseUrl = response.baseUrl;
-    if (!recentData && result) {
+    if (!recentOwnAssetsData && result) {
       if (result.length > 3) {
-        setRecentData(result.slice(0, 3));
+        setRecentOwnAssetsData(result.slice(0, 3));
         setNewBaseUrl(baseUrl);
       }
     }
@@ -123,9 +124,9 @@ export default function MediaFileList(props) {
     let response = await fetchAPI(pagenum, search, true);
     let result = response.data;
     let baseUrl = response.baseUrl;
-    if (!recentData && result) {
+    if (!recentPublicAssetsData && result) {
       if (result.length > 3) {
-        setRecentData(result.slice(0, 3));
+        setRecentPublicAssetsData(result.slice(0, 3));
         setNewBaseUrl(baseUrl);
       }
     }
@@ -166,7 +167,7 @@ export default function MediaFileList(props) {
       <RecentCard
         tags={tags}
         icons={fontAwesomeIcons}
-        result={recentData}
+        result={recentOwnAssetsData}
         RenderPdf={RenderPdf}
         uploadFiles={uploadFiles}
         bytesToSize={bytesToSize}
@@ -204,7 +205,7 @@ export default function MediaFileList(props) {
       <RecentCard
         tags={tags}
         icons={fontAwesomeIcons}
-        result={recentData}
+        result={recentPublicAssetsData}
         RenderPdf={RenderPdf}
         uploadFiles={uploadFiles}
         bytesToSize={bytesToSize}
@@ -223,6 +224,7 @@ export default function MediaFileList(props) {
         deleteApi={deleteApi}
         handleClick={handleClick}
         bytesToSize={bytesToSize}
+        isGlobal
       />
       {activeModal &&
         sideModal(

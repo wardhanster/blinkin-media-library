@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export default function TableList(props) {
   let {
@@ -8,7 +8,8 @@ export default function TableList(props) {
     icons,
     copyClipBoard,
     deleteApi,
-    downloadAsset
+    downloadAsset,
+    isGlobal
   } = props;
 
   return fileList.map((file, index) => {
@@ -25,10 +26,10 @@ export default function TableList(props) {
             {file.upload_name}
           </span>
         </td>
-        <td className="table_header_filename">{file.upload_description}</td>
+        <td className="table_header_filename">{ isGlobal ? file.uploader_name : file.upload_description}</td>
         <td>{file.file_extension}</td>
         <td>{filesize}</td>
-        <td>{file.created_at}</td>
+        <td>{file.created_at}</td> 
         <td>
           <i
             title="Copy Url"
@@ -43,11 +44,12 @@ export default function TableList(props) {
             aria-hidden="true"
           ></i>
           <i
-            title="Delete"
+            title="Download"
             onClick={() => downloadAsset(file.file_url)}
             className="fa fa-download action-icon"
             aria-hidden="true"
-          ></i>
+          >
+          </i>
         </td>
       </tr>
     );
