@@ -55,6 +55,12 @@ export default function MediaHeader(props) {
     searchCallback(searchFilter);
   };
 
+  let onClear = () => {
+    setStartDate(null)
+    setEndDate(null)
+    setClear(!clear);
+  }
+
   let handleClearSearch = () => {
     setSearchText(null);
     setClear(!clear);
@@ -64,6 +70,8 @@ export default function MediaHeader(props) {
     setFileType([]);
     recentUpdateRef.current = false;
     clearSearch();
+    setStartDate(null)
+    setEndDate(null)
     searchCallback({});
   };
 
@@ -191,7 +199,7 @@ export default function MediaHeader(props) {
             <h6 className="d-flex font-weight-bold text-muted">
               {window.strings.ML_uplodedOn || "Uploaded On"}
             </h6>
-            <DateRange clear={clear} handleDate={handleDate} />
+            <DateRange clear={clear} handleDate={handleDate} onClear={onClear} />
           </div>
           <div className="ml-3 small col-lg-4 mb-2 tags-dropdown-container">
             <h6 className="d-flex font-weight-bold text-muted">
