@@ -38,9 +38,7 @@ function DateRange({ handleDate, clear }) {
   };
 
   useEffect(() => {
-    if (clear) {
       clearBoth();
-    }
   }, [clear]);
 
   return (

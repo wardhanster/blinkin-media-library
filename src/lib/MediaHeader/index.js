@@ -57,6 +57,7 @@ export default function MediaHeader(props) {
 
   let handleClearSearch = () => {
     setSearchText(null);
+    setClear(!clear);
     setFilterParams({})
     resetElements(fileTypeRef.current);
     setTagVal([]);
@@ -148,6 +149,7 @@ export default function MediaHeader(props) {
     
   };
 
+  console.log('cleawr', clear)
   return (
     <Container className="media_header">
       <Row className="media_header_title mb-2 pt-3 justify-content-between">
