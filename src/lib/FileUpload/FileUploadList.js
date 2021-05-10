@@ -33,7 +33,7 @@ export default function FileUploadList(props) {
   let [fileIndex, setFileIndex] = useState(null);
   let [description, setDescription] = useState("");
   let [selectedTags, setSelectedTags] = useState([]);
-  let [makePublic, setMakePublic] = useState(false);
+  let [makePublic, setMakePublic] = useState({});
   const elementsRef = useRef([]);
   let [uploadType, setUploadType] = useState(false);
   let [disableFile, setDisableFile] = useState(false);
@@ -86,11 +86,6 @@ export default function FileUploadList(props) {
       setSelectedTags([]);
     }
 
-    if (files[index].is_global) {
-      setMakePublic(files[index].is_global || false);
-    } else {
-      setMakePublic(false);
-    }
   };
 
   let handleDelete = (index, e) => {
@@ -103,6 +98,7 @@ export default function FileUploadList(props) {
     }
     elementsRef.current[index] = null;
     deleteFile(index, e);
+    delete makePublic[index];
   };
 
   useEffect(() => {    
@@ -174,8 +170,15 @@ export default function FileUploadList(props) {
 
   let updateFileTagsDesc = () => {
     setFadeIn(true);
-    handleFileTagsDesc(fileIndex, { tags: selectedTags, description, makePublic });
+    handleFileTagsDesc(fileIndex, { tags: selectedTags, description, makePublic: makePublic[fileIndex] || false });
   };
+
+  let onMakePublicChange = (e, index) => {
+    const updatedMakePublic = { ...makePublic, [index]: e.target.checked };
+    setMakePublic(updatedMakePublic);
+
+    handleFileTagsDesc(index, {  makePublic: e.target.checked });
+  }
 
   let handleFileUpload = () => {
     // document.querySelectorAll(".disable_btn")[0].disabled = true;
@@ -261,17 +264,6 @@ export default function FileUploadList(props) {
                     ></textarea>
                   </FormGroup>
                 </Col>
-                <Col className="md-12 ml-3">
-                <FormGroup row>
-                  <FormGroup check>
-                    <Label check>
-                      <Input checked={makePublic}
-                      onChange={(e) => setMakePublic(e.target.checked)} type="checkbox" id="makePublic" />{' '}
-                      {window.strings.ML_makePublic || "Allow others to see ?"}
-                    </Label>
-                  </FormGroup>
-                </FormGroup>
-                </Col>
                 <Col md={12}>
                   <Row>
                     <Col md="6">
@@ -317,6 +309,9 @@ export default function FileUploadList(props) {
                       <th scope="col" className="size-header">
                         {window.strings.ML_size || "Size"}
                       </th>
+                      <th scope="col" className="size-header">
+                      {window.strings.ML_makePublic || "Make public ?"}
+                      </th>                      
                       <th scope="col" className="view-header">
                         {window.strings.ML_edit || "Edit"}
                       </th>
@@ -353,6 +348,16 @@ export default function FileUploadList(props) {
                           </td>
                           <td className="size-header">
                             <small>{bytesToSize(file.size)}</small>
+                          </td>
+                          <td className="size-header">
+                            <div className="make-public-checkbox"> 
+                              <Input
+                              checked={makePublic[index] || false}
+                              onChange={(e) => onMakePublicChange(e, index)}
+                              type="checkbox"
+                              id="makePublic"
+                            />
+                            </div>
                           </td>
                           <td className="view-header text-muted">
                             <button

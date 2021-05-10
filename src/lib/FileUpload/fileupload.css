@@ -125,3 +125,8 @@
 .ml-preview-pdf {
   text-align: center;
 }
+
+.make-public-checkbox {
+  display: flex;
+  justify-content: center;
+}
