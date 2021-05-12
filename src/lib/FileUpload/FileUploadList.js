@@ -232,7 +232,7 @@ export default function FileUploadList(props) {
     <>
       <Container>
         <Row>
-          <Col xs="4">
+          <Col xs="5">
             {preview}
             {selectFile && (
               <Row form className="desc_tags_container">
@@ -298,7 +298,7 @@ export default function FileUploadList(props) {
               </Row>
             )}
           </Col>
-          <Col xs="8">
+          <Col xs="7">
             {files.length > 0 ? (
               <div className="table-responsive">
                 <Table className="upload-list-container">
