@@ -180,7 +180,11 @@ export default function FileUploadList(props) {
     const updatedMakePublic = { ...makePublic, [index]: e.target.checked };
     setMakePublic(updatedMakePublic);
 
-    handleFileTagsDesc(index, { makePublic: e.target.checked });
+    handleFileTagsDesc(index, { 
+      makePublic: e.target.checked ,
+      tags: files[index].tags,
+      description: files[index].description
+    });
   };
 
   let handleFileUpload = () => {
