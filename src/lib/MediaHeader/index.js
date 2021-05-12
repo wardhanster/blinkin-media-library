@@ -14,6 +14,8 @@ import DateRange from '../DateRange';
 import "react-widgets/dist/css/react-widgets.css";
 import "./media_header.css";
 
+const filterFileTypes = ["png", "jpeg", "jpg", "pdf", "mp4"];
+
 export default function MediaHeader(props) {
   let { searchCallback, clearSearch, defaultTags, isPublicImagesTab } = props;
 
@@ -175,13 +177,12 @@ export default function MediaHeader(props) {
           </div>
           <div className={`ml-3 small ${isPublicImagesTab ? "col-lg-3" : "col-lg-4"} mb-2` }>
             <h6 className="d-flex font-weight-bold text-muted">
-              {window.strings.ML_extention || "Extention"}
+              {window.strings.ML_extention || "FileType"}
             </h6>
-            <Input
-                placeholder={window.strings.ML_extention || "Extention"}
-                value={filterParams["file_extension"] || ""}
-                onChange={(e) => handleFilterChange('file_extension', e.target.value)}
-              />
+            <Input type="select" name="FileType" onChange={(e) => handleFilterChange('file_extension', e.target.value)} value={filterParams["file_extension"] || ""} id="FileType">
+              <option>Select Type</option>
+              {filterFileTypes.map((type) => (<option key={type} value={type}>{type}</option>))}
+            </Input>
           </div>
           { isPublicImagesTab && 
           (<div className="ml-3 small col-lg-3 mb-2">

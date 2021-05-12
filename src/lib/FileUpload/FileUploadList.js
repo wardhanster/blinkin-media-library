@@ -156,9 +156,14 @@ export default function FileUploadList(props) {
     }
   } else {
     preview = (
-      <h5 className="d-flex justify-content-center align-items-center">
-        {window.strings.ML_imageOrVideoPreview || 'File Preview'}
-      </h5>
+      <React.Fragment>
+        <h5 className="d-flex justify-content-center align-items-center">
+          {window.strings.ML_imageOrVideoPreview || 'Image/ Video Preview'}
+        </h5>
+        <div className="file-preview">
+          <span>{window.strings.ML_imageOrVideoPreviewText || "Click Edit icon to Preview the Image / Video" } </span>
+       </div>
+      </React.Fragment>
     );
   }
 
@@ -180,7 +185,11 @@ export default function FileUploadList(props) {
     const updatedMakePublic = { ...makePublic, [index]: e.target.checked };
     setMakePublic(updatedMakePublic);
 
-    handleFileTagsDesc(index, { makePublic: e.target.checked });
+    handleFileTagsDesc(index, { 
+      makePublic: e.target.checked ,
+      tags: files[index].tags,
+      description: files[index].description
+    });
   };
 
   let handleFileUpload = () => {
@@ -228,7 +237,7 @@ export default function FileUploadList(props) {
     <>
       <Container>
         <Row>
-          <Col xs="4">
+          <Col xs="5">
             {preview}
             {selectFile && (
               <Row form className="desc_tags_container">
@@ -294,7 +303,7 @@ export default function FileUploadList(props) {
               </Row>
             )}
           </Col>
-          <Col xs="8">
+          <Col xs="7">
             {files.length > 0 ? (
               <div className="table-responsive">
                 <Table className="upload-list-container">
