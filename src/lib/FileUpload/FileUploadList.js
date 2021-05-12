@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 
 import {
   Container,
@@ -11,8 +11,8 @@ import {
   Fade,
   Table,
   Alert,
-  Input
-} from "reactstrap";
+  Input,
+} from 'reactstrap';
 
 export default function FileUploadList(props) {
   let {
@@ -25,13 +25,13 @@ export default function FileUploadList(props) {
     updateFile,
     submitFiles,
     acceptFileType,
-    RenderPdf
+    RenderPdf,
   } = props;
   let [url, setUrl] = useState(null);
   let [selectFile, setSelectFile] = useState(null);
   let [selectFileType, setSelectFileType] = useState(null);
   let [fileIndex, setFileIndex] = useState(null);
-  let [description, setDescription] = useState("");
+  let [description, setDescription] = useState('');
   let [selectedTags, setSelectedTags] = useState([]);
   let [makePublic, setMakePublic] = useState({});
   const elementsRef = useRef([]);
@@ -47,9 +47,9 @@ export default function FileUploadList(props) {
   let resetClass = () => {
     try {
       elementsRef.current.forEach((item) => {
-        if (item.classList.contains("btn-primary")) {
-          item.classList.remove("btn-primary");
-          item.classList.add("btn-outline-primary");
+        if (item.classList.contains('btn-primary')) {
+          item.classList.remove('btn-primary');
+          item.classList.add('btn-outline-primary');
         }
       });
     } catch (e) {
@@ -57,14 +57,14 @@ export default function FileUploadList(props) {
     }
   };
 
-  const getFileType = (file) => {    
-    const { type } = file
-    if(type.includes('pdf')) {
-      return 'pdf'
+  const getFileType = (file) => {
+    const { type } = file;
+    if (type.includes('pdf')) {
+      return 'pdf';
     } else {
-      return file.type.split("/")[0];
-    }    
-  }
+      return file.type.split('/')[0];
+    }
+  };
 
   let handlePreview = (index, e) => {
     // resetClass();
@@ -72,20 +72,19 @@ export default function FileUploadList(props) {
     setFadeIn(false);
     setSelectFile(files[index]);
     setFileIndex(String(index));
-    setDisplayName(files[index].name);    
-    let fileType = getFileType(files[index])
+    setDisplayName(files[index].name);
+    let fileType = getFileType(files[index]);
     setSelectFileType(fileType);
     if (files[index].description) {
       setDescription(files[index].description);
     } else {
-      setDescription("");
+      setDescription('');
     }
     if (files[index].tags) {
       setSelectedTags(files[index].tags);
     } else {
       setSelectedTags([]);
     }
-
   };
 
   let handleDelete = (index, e) => {
@@ -101,19 +100,19 @@ export default function FileUploadList(props) {
     delete makePublic[index];
   };
 
-  useEffect(() => {    
-    if (selectFileType === "image") {
+  useEffect(() => {
+    if (selectFileType === 'image') {
       let reader = new FileReader();
       reader.onloadend = () => {
         setUrl(reader.result);
       };
       reader.readAsDataURL(selectFile);
-    } else if (selectFileType === "video") {
+    } else if (selectFileType === 'video') {
       setUrl(URL.createObjectURL(selectFile));
-    } else if(selectFileType === 'pdf') {
-      setUrl(URL.createObjectURL(selectFile))
+    } else if (selectFileType === 'pdf') {
+      setUrl(URL.createObjectURL(selectFile));
     } else if (selectFileType) {
-      setUrl("not_valid");
+      setUrl('not_valid');
     } else {
       setUrl(null);
     }
@@ -129,36 +128,36 @@ export default function FileUploadList(props) {
 
   let preview;
   if (url) {
-    if (selectFileType === "image") {
+    if (selectFileType === 'image') {
       preview = (
         <img src={url} className="img-fluid preview-image" alt="preview" />
       );
-    } else if (selectFileType === "video") {
+    } else if (selectFileType === 'video') {
       preview = (
         <video className="preview-video" controls>
           <source src={url} type="video/mp4" />
           {window.strings.ML_videoNotSupported ||
-            " Your browser does not support the video tag."}
+            ' Your browser does not support the video tag.'}
         </video>
       );
-    } else if(selectFileType === 'pdf') {
+    } else if (selectFileType === 'pdf') {
       preview = (
         <div className="ml-preview-pdf">
-          <RenderPdf link={url} color='#20a8d8' />
+          <RenderPdf link={url} color="#20a8d8" />
         </div>
-      )
+      );
     } else {
       preview = (
         <div className="d-flex justify-content-center align-items-center">
           {selectFileType}
-          {window.strings.ML_formatNotAbleToLoad || "Format Not able to load"}
+          {window.strings.ML_formatNotAbleToLoad || 'Format Not able to load'}
         </div>
       );
     }
   } else {
     preview = (
       <h5 className="d-flex justify-content-center align-items-center">
-        {window.strings.ML_imageOrVideoPreview || "File Preview"}
+        {window.strings.ML_imageOrVideoPreview || 'File Preview'}
       </h5>
     );
   }
@@ -170,15 +169,19 @@ export default function FileUploadList(props) {
 
   let updateFileTagsDesc = () => {
     setFadeIn(true);
-    handleFileTagsDesc(fileIndex, { tags: selectedTags, description, makePublic: makePublic[fileIndex] || false });
+    handleFileTagsDesc(fileIndex, {
+      tags: selectedTags,
+      description,
+      makePublic: makePublic[fileIndex] || false,
+    });
   };
 
   let onMakePublicChange = (e, index) => {
     const updatedMakePublic = { ...makePublic, [index]: e.target.checked };
     setMakePublic(updatedMakePublic);
 
-    handleFileTagsDesc(index, {  makePublic: e.target.checked });
-  }
+    handleFileTagsDesc(index, { makePublic: e.target.checked });
+  };
 
   let handleFileUpload = () => {
     // document.querySelectorAll(".disable_btn")[0].disabled = true;
@@ -189,14 +192,14 @@ export default function FileUploadList(props) {
 
   const handleNewTags = (tag, e) => {
     e.persist();
-    if (selectedTags.indexOf(tag) > -1) {      
-      // files[fileIndex].tags.pop(tag);      
+    if (selectedTags.indexOf(tag) > -1) {
+      // files[fileIndex].tags.pop(tag);
       const tagIndex = selectedTags.indexOf(tag);
       if (tagIndex > -1) {
-        const _tags = selectedTags.slice()
+        const _tags = selectedTags.slice();
         _tags.splice(tagIndex, 1);
         // selectedTags.splice(tagIndex, 1);
-        setSelectedTags(_tags);        
+        setSelectedTags(_tags);
       }
     } else {
       // files[fileIndex].tags.push(tag);
@@ -205,14 +208,14 @@ export default function FileUploadList(props) {
   };
 
   const returnGroup = (selectFile) => {
-    selectFile["tags"] = selectFile["tags"] ? selectFile["tags"] : [];
+    selectFile['tags'] = selectFile['tags'] ? selectFile['tags'] : [];
     return tags.map((tag, index) => {
       let act = selectedTags.indexOf(tag) > -1 ? true : false;
       return (
         <button
           key={index}
           type="button"
-          className={`${act ? "btn btn-primary" : "btn btn-outline-primary"}`}
+          className={`${act ? 'btn btn-primary' : 'btn btn-outline-primary'}`}
           onClick={(e) => handleNewTags(tag, e)}
         >
           {tag}
@@ -225,19 +228,19 @@ export default function FileUploadList(props) {
     <>
       <Container>
         <Row>
-          <Col xs="5">
+          <Col xs="4">
             {preview}
             {selectFile && (
               <Row form className="desc_tags_container">
                 <Col md={12}>
                   <FormGroup>
                     <Label for="name">
-                      {window.strings.ML_name || "Name"} {displayName}
+                      {window.strings.ML_name || 'Name'} {displayName}
                     </Label>
                   </FormGroup>
                   <FormGroup>
                     <Label for="tags">
-                      {window.strings.ML_tags || "Tags"} -{" "}
+                      {window.strings.ML_tags || 'Tags'} -{' '}
                     </Label>
                     <div
                       className="btn-group btn-group-sm tags-container"
@@ -251,8 +254,8 @@ export default function FileUploadList(props) {
                 <Col md={12}>
                   <FormGroup>
                     <Label for="description">
-                      {window.strings.ML_description || "Description"} (
-                      {window.strings.ML_max100Character || "Max 100 Character"}
+                      {window.strings.ML_description || 'Description'} (
+                      {window.strings.ML_max100Character || 'Max 100 Character'}
                       )
                     </Label>
                     <textarea
@@ -283,7 +286,7 @@ export default function FileUploadList(props) {
                         tag="h6"
                         className="fade_container mt-2"
                       >
-                        {window.strings.ML_savedChanges || "Saved Changes"}
+                        {window.strings.ML_savedChanges || 'Saved Changes'}
                       </Fade>
                     </Col>
                   </Row>
@@ -291,32 +294,32 @@ export default function FileUploadList(props) {
               </Row>
             )}
           </Col>
-          <Col xs="7">
+          <Col xs="8">
             {files.length > 0 ? (
               <div className="table-responsive">
                 <Table className="upload-list-container">
                   <thead>
                     <tr>
                       <th scope="col" className="name-header">
-                        {window.strings.ML_name || "Name"}
+                        {window.strings.ML_name || 'Name'}
                       </th>
                       <th scope="col" className="type-header">
-                        {window.strings.ML_description || "Description"}
+                        {window.strings.ML_description || 'Description'}
                       </th>
                       <th scope="col" className="type-header">
-                        {window.strings.ML_type || "Type"}
+                        {window.strings.ML_type || 'Type'}
                       </th>
                       <th scope="col" className="size-header">
-                        {window.strings.ML_size || "Size"}
+                        {window.strings.ML_size || 'Size'}
                       </th>
-                      <th scope="col" className="size-header">
-                      {window.strings.ML_makePublic || "Make public ?"}
-                      </th>                      
+                      <th scope="col" className="size-header make-public">
+                        {window.strings.ML_makePublic || 'Make public ?'}
+                      </th>
                       <th scope="col" className="view-header">
-                        {window.strings.ML_edit || "Edit"}
+                        {window.strings.ML_edit || 'Edit'}
                       </th>
                       <th scope="col" className="delete-header">
-                        {window.strings.ML_delete || "Delete"}
+                        {window.strings.ML_delete || 'Delete'}
                       </th>
                     </tr>
                   </thead>
@@ -339,7 +342,7 @@ export default function FileUploadList(props) {
                           </th>
                           <td
                             className="type-desc"
-                            title={file.description ? file.description : ""}
+                            title={file.description ? file.description : ''}
                           >
                             {file.description && file.description}
                           </td>
@@ -350,13 +353,13 @@ export default function FileUploadList(props) {
                             <small>{bytesToSize(file.size)}</small>
                           </td>
                           <td className="size-header">
-                            <div className="make-public-checkbox"> 
+                            <div className="make-public-checkbox">
                               <Input
-                              checked={makePublic[index] || false}
-                              onChange={(e) => onMakePublicChange(e, index)}
-                              type="checkbox"
-                              id="makePublic"
-                            />
+                                checked={makePublic[index] || false}
+                                onChange={(e) => onMakePublicChange(e, index)}
+                                type="checkbox"
+                                id="makePublic"
+                              />
                             </div>
                           </td>
                           <td className="view-header text-muted">
@@ -388,7 +391,7 @@ export default function FileUploadList(props) {
               <div className="files_list p-3">
                 <h6 className="text-center text-muted">
                   {window.strings.ML_noMoreFilesOrAllFilesUpdated ||
-                    " No More Files/All Files are Updated"}
+                    ' No More Files/All Files are Updated'}
                 </h6>
               </div>
             )}
@@ -399,9 +402,9 @@ export default function FileUploadList(props) {
             {props.uploadFilesFailed.map((file) => {
               return (
                 <Alert color="warning">
-                  <strong>{file.name}</strong>{" "}
+                  <strong>{file.name}</strong>{' '}
                   {window.strings.ML_fileSizeExit ||
-                    "This file is too large to upload.The maximum supported file size is 20mb"}
+                    'This file is too large to upload.The maximum supported file size is 20mb'}
                 </Alert>
               );
             })}
@@ -409,7 +412,7 @@ export default function FileUploadList(props) {
           <Col>
             <b>
               {window.strings.ML_fileformatwarning ||
-                "Note: Only png, jpeg, jpg, pdf and mp4 accepted"}
+                'Note: Only png, jpeg, jpg, pdf and mp4 accepted'}
             </b>
           </Col>
         </Row>
@@ -420,7 +423,7 @@ export default function FileUploadList(props) {
             <input
               type="file"
               id="preview_fileInput"
-              className=""              
+              className=""
               multiple
               accept={acceptFileType.join(',')}
               onChange={(e) => updateFile(e, true)}
@@ -434,7 +437,7 @@ export default function FileUploadList(props) {
               onClick={handleFileUpload}
               disabled={uploadType}
             >
-              {window.strings.ML_upload || "Upload"}
+              {window.strings.ML_upload || 'Upload'}
             </Button>
           </Col>
         </Row>
