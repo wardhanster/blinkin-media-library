@@ -156,9 +156,14 @@ export default function FileUploadList(props) {
     }
   } else {
     preview = (
-      <h5 className="d-flex justify-content-center align-items-center">
-        {window.strings.ML_imageOrVideoPreview || 'File Preview'}
-      </h5>
+      <React.Fragment>
+        <h5 className="d-flex justify-content-center align-items-center">
+          {window.strings.ML_imageOrVideoPreview || 'Image/ Video Preview'}
+        </h5>
+        <div className="file-preview">
+          <span>{window.strings.ML_imageOrVideoPreview || "Click Edit icon to Preview the Image / Video" } </span>
+       </div>
+      </React.Fragment>
     );
   }
 

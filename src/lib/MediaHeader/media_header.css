@@ -53,3 +53,11 @@
 .tags-dropdown-container .rw-multiselect{
   padding: 0;
 }
+
+.tags-dropdown-container .rw-widget-container {
+  padding: 7px 4px 6px 4px !important;
+}
+
+.tags-dropdown-container  .rw-multiselect .rw-input-reset {
+  height: auto;
+}
