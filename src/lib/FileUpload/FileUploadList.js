@@ -161,7 +161,7 @@ export default function FileUploadList(props) {
           {window.strings.ML_imageOrVideoPreview || 'Image/ Video Preview'}
         </h5>
         <div className="file-preview">
-          <span>{window.strings.ML_imageOrVideoPreview || "Click Edit icon to Preview the Image / Video" } </span>
+          <span>{window.strings.ML_imageOrVideoPreviewText || "Click Edit icon to Preview the Image / Video" } </span>
        </div>
       </React.Fragment>
     );
