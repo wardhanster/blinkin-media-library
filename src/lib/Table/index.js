@@ -211,7 +211,7 @@ export default function TableItem(props) {
       ) : ( 
         <>
         <div className="table-responsive mt-3 mb-3  ">
-          <Table className="table-outline mb-0 d-none d-sm-table table table-hover overflow-auto data-table">
+          <Table className="table-outline mb-0 d-none d-sm-table table table-hover overflow-auto">
             <thead className="thead-light text-left">
               <tr>
                 <th className="th_name main-header-35">{window.strings.ML_name || " Name"}</th>
