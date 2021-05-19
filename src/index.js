@@ -138,7 +138,7 @@ export default function MediaFileList(props) {
   };
 
   return (
-    <Container className="p-3 mt-3 bg-white border">
+    <div className="p-3 mt-3 bg-white border">
       <Nav tabs>
       <NavItem>
           <NavLink
@@ -234,6 +234,6 @@ export default function MediaFileList(props) {
         )}
         </TabPane>
       </TabContent>
-    </Container>
+    </div>
   );
 }
