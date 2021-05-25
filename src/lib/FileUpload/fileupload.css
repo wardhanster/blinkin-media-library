@@ -125,3 +125,24 @@
 .ml-preview-pdf {
   text-align: center;
 }
+
+.make-public-checkbox {
+  display: flex;
+  justify-content: center;
+}
+
+#makePublic{
+  margin-top: 10px;
+  position: relative;
+}
+
+.make-public { min-width: 130px;}
+.file-preview {
+  display: flex;
+  justify-content: center;
+  padding-top: 100px;
+}
+.file-preview span {
+  font-size: 20px;
+  opacity: 0.5;
+}

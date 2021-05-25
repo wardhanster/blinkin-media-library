@@ -28,6 +28,8 @@ export default function TableItem(props) {
     searchClear,
     perPageCount,
     deleteApi,
+    downloadAsset,
+    isGlobal
   } = props;
 
   let [activePreviewData, setActivePreviewData] = useState(null);
@@ -55,7 +57,7 @@ export default function TableItem(props) {
 
   useEffect(() => {
     if (activePreviewData) {
-      handleClick(<SidePreview data={activePreviewData} />, () => {
+      handleClick(<SidePreview downloadAsset={downloadAsset} data={activePreviewData} />, () => {
         setActivePreviewData(null);
       });
     }
@@ -70,7 +72,8 @@ export default function TableItem(props) {
   const callAPI = async (search = null) => {
     setLoading(true);
     setShowLoadMoreBtn(false);
-    let { result: data, baseUrl } = await fetchAPI(pageNumRef.current, search);
+    let dsfdsf= await fetchAPI(pageNumRef.current, search);
+    const { result: data, baseUrl }  = dsfdsf;
     try {
       setBaseUrl(baseUrl);
       if (data.length > 0) {
@@ -85,7 +88,6 @@ export default function TableItem(props) {
           // setFileList((fileList) => [...fileList, ...data]);
           // Remove duplicates in case if exist
           let newFiles = [...fileList, ...data];
-          console.log(newFiles);
           let newfileList = removeDuplicates(newFiles);
           setFileList((fileList) => newfileList);
         }
@@ -206,28 +208,32 @@ export default function TableItem(props) {
     <>
       {mainLoading ? (
         <Loading />
-      ) : (
+      ) : ( 
         <>
-          <Table>
-            <thead>
+        <div className="table-responsive mt-3 mb-3  ">
+          <Table className="table-outline mb-0 d-none d-sm-table table table-hover overflow-auto data-table">
+            <thead className="thead-light text-left">
               <tr>
-                <th className="th_name">{window.strings.ML_name || " Name"}</th>
-                <th>{window.strings.ML_description || " Description"}</th>
-                <th>{window.strings.ML_type || " Type"}</th>
-                <th>{window.strings.ML_size || " Size"}</th>
-                <th>{window.strings.ML_createdAt || " Created At"}</th>
-                <th>{window.strings.ML_copy || " Copy"}</th>
+                <th className="th_name main-header-35">{window.strings.ML_name || " Name"}</th>
+                <th className="main-header-20">{isGlobal ? window.strings.ML_uploadedBy || " Uploaded By" : window.strings.ML_description || " Description"  }</th>
+                <th className="main-header-10">{window.strings.ML_type || " Type"}</th>
+                <th className="main-header-10">{window.strings.ML_size || " Size"}</th>
+                <th className="main-header-15">{window.strings.ML_createdAt || " Created At"}</th>
+                <th className="main-header-10">{window.strings.ML_copy || " Copy"}</th>
               </tr>
             </thead>
             <tbody>
               {fileList.length > 0 && (
                 <TableList
+                  downloadAsset={downloadAsset}
+                  baseUrl={baseUrl}
                   icons={icons}
                   fileList={fileList}
                   preview={preview}
                   bytesToSize={bytesToSize}
                   copyClipBoard={copyClipBoard}
                   deleteApi={deleteApi}
+                  isGlobal={isGlobal}
                 />
               )}
             </tbody>
@@ -238,6 +244,7 @@ export default function TableItem(props) {
             </div>
           )}
           {loading === true ? <Loading /> : null}
+          </div>
         </>
       )}
 
@@ -249,7 +256,7 @@ export default function TableItem(props) {
         </div>
       ) : (
         ""
-      )}
+      )} 
       {showMoreDataMsg ? (
         <div className="no_more p-3 border mb-2">
           <p className="text-muted text-center mb-0">
